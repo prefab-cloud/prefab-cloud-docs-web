@@ -1,7 +1,7 @@
 ---
-title: Feature Flag Basics
+title: Experimentation Basics
 sidebar_label: Basics
-slug: /feature-flags/basics
+slug: /experimentation/basics
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

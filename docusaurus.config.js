@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Prefab.Cloud Documentation',
   tagline: 'API Docs for Prefab.Cloud',
-  url: 'https://prefab.cloud',
+  url: 'https://docs.prefab.cloud',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',

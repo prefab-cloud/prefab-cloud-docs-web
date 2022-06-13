@@ -5,115 +5,20 @@ sidebar_label: Ruby
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## This is how you feature flag
+## Getting Started With the Ruby SDK
 
-
-
-<Tabs>
-<TabItem value="js" label="JavaScript">
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
+```ruby
+# gem install prefab-cloud-ruby
+client = Prefab::Client.new # reads PREFAB_API_KEY env var
+# or
+client = Prefab::Client.new(api_key: "<%= api_key %>")
 ```
 
-</TabItem>
-<TabItem value="py" label="Python">
-
-```py
-def hello_world():
-  print("Hello, world!")
+```ruby
+client = Prefab::Client.new
+@feature_flags = client.feature_flag_client
+flag_name = "MyFeature"
+puts "#{flag_name} is #{@feature_flags.feature_is_on? flag_name}"
 ```
 
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
-
-</TabItem>
-</Tabs>
-
-
-
-<Tabs>
-<TabItem value="js" label="JavaScript">
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
-
-</TabItem>
-<TabItem value="py" label="Python">
-
-```py
-def hello_world():
-  print("Hello, world!")
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
-
-</TabItem>
-</Tabs>
-
-
-
-And you will get the following:
-
-```mdx-code-block
-<BrowserWindow>
-<Tabs>
-<TabItem value="js" label="JavaScript">
-```
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="py" label="Python">
-```
-
-```py
-def hello_world():
-  print("Hello, world!")
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="java" label="Java">
-```
-
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-</BrowserWindow>
-```
+Now create a flag named MyFeature in the UI. Drag the slider to 100% and run the program again and run your program again.
