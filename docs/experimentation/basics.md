@@ -8,113 +8,76 @@ import TabItem from '@theme/TabItem';
 
 ## This is how you feature flag
 
+Feature flags are the greatest thing in the world so when we built them for ourselves at Prefab.cloud we decided to make the same APIs we use internally available to all.
+
+Feature flags can be created and controlled from within the Prefab.cloud UI or via code. Each feature flag can be set to anywhere from 0 to 100% on.
 
 
 <Tabs>
-<TabItem value="js" label="JavaScript">
+<TabItem value="ruby" label="Ruby">
 
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
+```ruby
+client = Prefab::Client.new(api_key: "<%= api_key %>")
+@feature_flags = client.feature_flag_client
 
-</TabItem>
-<TabItem value="py" label="Python">
+# Create a flag that is on for 10% of traffic, the entire beta group and user:1
+@feature_flags.upsert(Prefab::FeatureFlag.new(feature: "MyFeature", pct: 0.1, whitelisted: ["betas", "user:1"]))
 
-```py
-def hello_world():
-  print("Hello, world!")
+# Use Flags By Themselves
+puts @feature_flags.feature_is_on? "MyFeature"  # returns yes 10 pct of the time
+
+# A single user should get the same result each time
+puts @feature_flags.feature_is_on? "MyFeature", "user:1123" # with 10% probability user1123 will return yes, and if they do they always will
+
+# Utilize the allowlist attributes to easily feature flag groups of people
+puts @feature_flags.feature_is_on_for? "MyFeature", "user:234", attributes: ["betas"]}"
 ```
 
 </TabItem>
 <TabItem value="java" label="Java">
 
 ```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
+PrefabCloudClient.Builder builder = new PrefabCloudClient.Builder();
+final PrefabCloudClient prefabCloudClient = new PrefabCloudClient(builder);
+final FeatureFlagClient featureFlagClient = prefabCloudClient.featureFlagClient();
+
+//Create a flag that is on for 10 % of traffic, the entire beta group and user:1
+    featureFlagClient.upsert("MyFeature", Prefab.FeatureFlag.newBuilder()
+    .setPct(0.1)
+    .addWhitelisted("betas")
+    .addWhitelisted("user:1")
+    .build());
+
+//returns yes 10 pct of the time
+    print(featureFlagClient.featureIsOn("MyFeature"));
+
+//A single user should get the same result each time
+//with 10 % probability user1123 will return yes, and if they do they always will
+    print(featureFlagClient.featureIsOnFor("MyFeature",
+    Optional.of("user:1123"),
+    Lists.newArrayList()));
+
+//Utilize the allowlist attributes to easily feature flag groups of people
+    print(featureFlagClient.featureIsOnFor("MyFeature",
+    Optional.of("user:234"),
+    Lists.newArrayList("betas")));
 ```
 
 </TabItem>
-</Tabs>
-
-
-
-<Tabs>
 <TabItem value="js" label="JavaScript">
 
 ```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
+var prefab = new PrefabCloudClient();
 
-</TabItem>
-<TabItem value="py" label="Python">
+prefab.featureFlagIsOn("MyFeature") // returns yes 10 pct of the time
 
-```py
-def hello_world():
-  print("Hello, world!")
-```
+// A single user should get the same result each time
+prefab.featureFlagIsOn("MyFeature", "user:1123") //with 10% probability user1123 will return yes, and if they do they always will
 
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
+//Utilize the allowlist attributes to easily feature flag groups of people
+prefab.featureFlagIsOn("user:234", ["betas"])
 ```
 
 </TabItem>
 </Tabs>
 
-
-
-And you will get the following:
-
-```mdx-code-block
-<BrowserWindow>
-<Tabs>
-<TabItem value="js" label="JavaScript">
-```
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="py" label="Python">
-```
-
-```py
-def hello_world():
-  print("Hello, world!")
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="java" label="Java">
-```
-
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-</BrowserWindow>
-```

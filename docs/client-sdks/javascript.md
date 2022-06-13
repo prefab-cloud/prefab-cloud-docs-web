@@ -1,7 +1,6 @@
 ---
-title: Feature Flag Basics
-sidebar_label: Basics
-slug: /feature-flags/basics
+title: JavaScript
+sidebar_label: JavaScript
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

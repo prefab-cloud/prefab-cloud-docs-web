@@ -1,7 +1,13 @@
 ---
-title: TypeScript
-sidebar_label: TypeScript
+title: Bootstrapping
+sidebar_label: Bootstrapping
+sidebar_position: 2
 ---
+
+
+
+
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
