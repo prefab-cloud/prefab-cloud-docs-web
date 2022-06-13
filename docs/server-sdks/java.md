@@ -2,118 +2,29 @@
 title: Java SDK
 sidebar_label: Java
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
-## This is how you feature flag
+## Getting Started With the Java SDK
 
-
-
-<Tabs>
-<TabItem value="js" label="JavaScript">
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
+```xml
+<dependency>
+    <groupId>cloud.prefab</groupId>
+    <artifactId>prefab-cloud-java</artifactId>
+    <version>0.1.0</version>
+</dependency>
 ```
-
-</TabItem>
-<TabItem value="py" label="Python">
-
-```py
-def hello_world():
-  print("Hello, world!")
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
 ```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
-
-</TabItem>
-</Tabs>
-
-
-
-<Tabs>
-<TabItem value="js" label="JavaScript">
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
-
-</TabItem>
-<TabItem value="py" label="Python">
-
-```py
-def hello_world():
-  print("Hello, world!")
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
-
-</TabItem>
-</Tabs>
-
-
-
-And you will get the following:
-
-```mdx-code-block
-<BrowserWindow>
-<Tabs>
-<TabItem value="js" label="JavaScript">
-```
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="py" label="Python">
-```
-
-```py
-def hello_world():
-  print("Hello, world!")
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="java" label="Java">
+final PrefabCloudClient prefabCloudClient = new PrefabCloudClient(new PrefabCloudClient.Builder());
+// or
+final PrefabCloudClient prefabCloudClient = new PrefabCloudClient(new PrefabCloudClient.Builder()
+.setApikey("<%= api_key %>"));
 ```
 
 ```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
+final PrefabCloudClient prefabCloudClient = new PrefabCloudClient(new PrefabCloudClient.Builder());
+final FeatureFlagClient featureFlagClient = prefabCloudClient.featureFlagClient();
+
+String flagName = "MyFeature";
+print(String.format("%s is %b", flagName, featureFlagClient.featureIsOn(flagName));
 ```
 
-```mdx-code-block
-</TabItem>
-</Tabs>
-</BrowserWindow>
-```
+Now create a flag named MyFeature in the UI. Drag the slider to 100% and run the program again and run your program again.
