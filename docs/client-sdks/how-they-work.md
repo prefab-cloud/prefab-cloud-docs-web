@@ -1,7 +1,6 @@
 ---
-title: Feature Flag Basics
-sidebar_label: Basics
-slug: /feature-flags/basics
+title: How Client SDKs Work
+sidebar_label: How they work
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
