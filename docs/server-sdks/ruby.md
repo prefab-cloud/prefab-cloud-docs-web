@@ -40,7 +40,7 @@ Prefab::Client.initialize(options)
 
 If your application is using Rails put your initializer in `config/initializers/prefab.rb`. For many popular forking webserver, read on.
 
-## Special Considerations with Unicorn & Puma
+### Special Considerations with Unicorn & Puma
 
 Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork.
 
@@ -84,12 +84,10 @@ my-first-ff: false
 ### Getting Started
 ```ruby
 config_key = "my-first-int-config"
-@config = Prefab::Client.config_client
-puts "#{config_key} is: #{@config.getInt(config_key)}"
+puts "#{config_key} is: #{Prefab::Configs.getInt(config_key)}"
 
 flag_name = "my-first-ff"
-@feature_flags = Prefab::Client.feature_flag_client
-puts "#{flag_name} is: #{@feature_flags.feature_is_on? flag_name}"
+puts "#{flag_name} is: #{Prefab::Features.feature_is_on? flag_name}"
 ```
 
 Run these and you should see the following:
@@ -119,28 +117,33 @@ Congrats! You're ready to rock!
 
 Feature flags become more powerful when we give the flag evaluation rules more information to work with.
 
-The two pieces of information we use are 
-1. The lookup key
-2. Attributes
+We do this by passing the feature flag client a `Prefab::Identity`.
+
+```ruby
+identity = Prefab::Identity.new(tracking_id, 
+                            { #attributes
+                              team_id: 432,
+                              user_id: 123,
+                              subscription_level: 'pro'
+                            },
+                            { #private_attributes
+                              email: "alice@example.com",
+                              sensitive_info: "sensitive"
+                            }
+)
+```
 
 The lookup key serves two purposes. First, it will be the unique key that helps us target a specific user using `Lookup Key In` when evaluating a flag.
 
 Second, this key is used to make sure that percent rollout evaluations are consistently applied.
 
-Attributes come into play when using the `Property Is One Of` and similar rule criteria.
+Attributes come into play when using the `Property Is One Of` and similar rule criteria. Private attributes can be used in just the same way as attributes,
+but they will never be sent to the Prefab API.
 
 ```ruby
-flag_name = "my-first-ff"
-attributes = {
-  email: 'alice@example.com',
-  team_id: 432,
-  subscription_level: 'pro'
-}
-@feature_flags = Prefab::Client.feature_flag_client
+result = Prefab::Features.feature_is_on? "my-first-ff", identity
 
-result = @feature_flags.feature_is_on? flag_name, user.tracking_id, attributes
-
-puts "#{flag_name} is: #{result}"
+puts "my-first-ff is: #{result} for #{identity}"
 ```
 
 :::tip
@@ -152,9 +155,9 @@ How you choose the `tracking_id` for your user is up to you, but we have some su
 
 Feature flags don't have to return just true or false. If you have a string variants of feature flags, use:
 ```ruby
-@feature_flags.get_string("ff-with-string")
-@feature_flags.get_int("ff-with-int")
-@feature_flags.get_double("ff-with-double")
+Prefab::Feaures.get_string("ff-with-string")
+Prefab::Feaures.get_int("ff-with-int")
+Prefab::Feaures.get_double("ff-with-double")
 ```
 
 ## Namespaces
@@ -375,16 +378,14 @@ difference between a feature flag and an experiment.
 
 
 ```ruby
-  @experiments = Prefab::Client.experiment_client
-
-  variant = @experiments.get_string_variant("my-experiment", @tracking_id)
+  variant = Prefab::Experiments.get_string_variant("my-experiment", @tracking_id)
 ```
 This will record an exposure for `@tracking_id` and store it in the Prefab.Cloud. Prefab.Cloud has a singer tap that Multano or other 
 tools can use to bring the raw exposure data into your data warehouse.
 
 There are instances were you may want to know what variant a user is in, but not necessarily expose them. In these instances you can just use the feature flag client.
 ```ruby
-  variant = @feature_flags.get_string("my-experiment", @tracking_id)
+  variant = Prefab::Features.get_string("my-experiment", @tracking_id)
 ````
 
 ## Debugging
