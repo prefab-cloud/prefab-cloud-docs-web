@@ -5,8 +5,16 @@ sidebar_label: How they work
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## This is how you feature flag
+## How Client SDK
 
+![image](/img/docs/client-sdks/client-sdks.png)
+
+Note that evaluation happens server side. 
+
+This helps prevent potentially sensitive data from leaking out of your system.
+
+
+[See server SDKs to compare](/docs/server-sdks/how-they-work)
 
 
 <Tabs>
