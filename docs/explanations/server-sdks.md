@@ -1,6 +1,6 @@
 ---
 title: How Server SDKs Work
-sidebar_label: How they work
+sidebar_label: Server SDKs
 ---
 
 ![image](/img/docs/server-sdks/server-sdks.png)

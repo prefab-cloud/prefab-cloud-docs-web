@@ -1,20 +1,12 @@
 ---
-title: How Client SDKs Work
-sidebar_label: How they work
+title: Server Knobs & Kill Switches
+sidebar_label: Server Knobs & Kill Switches
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## How Client SDK
+## This is how you feature flag
 
-![image](/img/docs/client-sdks/client-sdks.png)
-
-Note that evaluation happens server side. 
-
-This helps prevent potentially sensitive data from leaking out of your system.
-
-
-[See server SDKs to compare](/docs/server-sdks/how-they-work)
 
 
 <Tabs>

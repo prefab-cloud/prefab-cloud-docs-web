@@ -1,6 +1,6 @@
 ---
-title: Environments & API Keys 
-sidebar_label: Env & API keys
+title: Get Started
+sidebar_label: Get Started
 ---
 
 # Tutorial Intro

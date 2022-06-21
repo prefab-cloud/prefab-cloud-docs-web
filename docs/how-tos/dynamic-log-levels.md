@@ -1,7 +1,6 @@
 ---
-title: Feature Flag Basics
-sidebar_label: Basics
-slug: /feature-flags/basics
+title: Dynamic Log Levels
+sidebar_label: Dynamic Log Levels
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -40,18 +40,18 @@ Prefab::Client.initialize(options)
 
 If your application is using Rails put your initializer in `config/initializers/prefab.rb`. For many popular forking webserver, read on.
 
-### Special Considerations with Unicorn & Puma
+### Special Considerations with Unicorn & Puma when using workers
 
 Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork.
 
-For Unicorn, you can initialize inside an after_fork hook in your unicorn.rb config file:
+If using workers in Unicorn, you can initialize inside an after_fork hook in your unicorn.rb config file:
 ```ruby
 after_fork do |server,worker|
   Prefab::Client.initialize
 end
 ```
 
-For Puma, you can initialize inside an on_worker_boot hook in your puma.rb config file:
+If using workers in Puma, you can initialize inside an on_worker_boot hook in your puma.rb config file:
 ```ruby
 on_worker_boot do
   Prefab::Client.initialize
