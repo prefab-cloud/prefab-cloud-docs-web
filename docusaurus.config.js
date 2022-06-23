@@ -9,7 +9,7 @@ const config = {
   title: 'Prefab.Cloud Documentation',
   tagline: 'API Docs for Prefab.Cloud',
   url: 'https://docs.prefab.cloud',
-  baseUrl: '',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
