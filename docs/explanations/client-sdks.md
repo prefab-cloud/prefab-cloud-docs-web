@@ -14,7 +14,7 @@ Note that evaluation happens server side.
 This helps prevent potentially sensitive data from leaking out of your system.
 
 
-[See server SDKs to compare](/docs/server-sdks/how-they-work)
+[See server SDKs to compare](/docs/explanations/server-sdks.md)
 
 
 <Tabs>

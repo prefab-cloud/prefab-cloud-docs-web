@@ -23,7 +23,7 @@ and we can aggressively cache this in CDNs. As long as your services can still c
 
 #### Belts & Suspenders & More Suspenders 
 Here's how the load order works:
-1. First, the SDKs make a request to the Prefab HTTP APIs, cached by [Fast.ly](Fast.ly). 
+1. First, the SDKs make a request to the Prefab HTTP APIs, cached by [Fast.ly](https://Fast.ly). 
 2. If this fails, the SDKs will make a request to the Prefab GRPC APIs, which are running on the same Prefab infrastructure, but are a separate service. This cache is soft purged when you make configuration updates.
 3. If that fails, the SDKs  will hit [GoogleCloudStorage](https://cloud.google.com/storage). Your configuration is pushed here as you make updates and Google claims 99.999999999% of object durability here. Again, we front this with a Fast.ly CDN. This cache is soft purged when you make configuration updates. 
 4. Finally, in the case of Fast.ly outage, we switch again try the to a secondary CDN ([Cloudflare](https://www.cloudflare.com/)) fronting the same GCS. This cache has a 10 min TTL.

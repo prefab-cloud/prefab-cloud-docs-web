@@ -7,7 +7,7 @@ sidebar_label: Server SDKs
 
 Note that the evaluation is always happening in process in your application. Feature flags are stored in process so are lightning fast (no API calls when you access them).
 
-[See Client SDKs to compare](/docs/client-sdks/how-they-work)
+[See Client SDKs to compare](/docs/explanations/client-sdks.md)
 
 ## Implementation
 
