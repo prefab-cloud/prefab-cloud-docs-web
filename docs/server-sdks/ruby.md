@@ -29,7 +29,8 @@ options = Prefab::Options.new(
   initialization_timeout_sec: 30, # how long to wait before on_init_failure
   on_init_failure: :raise, #options :unlock_and_continue, :lock_and_keep_trying, :raise
   new_config_callback: nil, #callback method
-  live_override_url: nil
+  live_override_url: nil,
+  datasources: ALL, #LOCAL_ONLY
 )
 
 Prefab::Client.initialize(options)

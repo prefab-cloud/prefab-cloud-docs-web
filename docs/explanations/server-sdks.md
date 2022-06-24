@@ -1,6 +1,7 @@
 ---
 title: How Server SDKs Work
 sidebar_label: Server SDKs
+sidebar_position: 6
 ---
 
 ![image](/img/docs/server-sdks/server-sdks.png)
@@ -16,10 +17,3 @@ The general purpose Prefab config system will then push & pull changes down to y
 The expected latency is < 100 ms.
 
 Feature flags are built on top of the Prefab config store so all reliability notes are applicable for Feature Flags as well.
-
-## Load Order
-
-## Resiliency
-
-
-## Emergency Overrides

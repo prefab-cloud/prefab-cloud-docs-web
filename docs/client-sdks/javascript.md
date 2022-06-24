@@ -5,115 +5,63 @@ sidebar_label: JavaScript
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## This is how you feature flag
-
-
+To install the Javascript SDK, you can use jsdelivr, npm or yarn:
 
 <Tabs>
-<TabItem value="js" label="JavaScript">
 
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
+  <TabItem value="JSDelivr">
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/prefab-cloud/build/prefab-cloud-javascript-client.min.js"></script>
 ```
 
-</TabItem>
-<TabItem value="py" label="Python">
+  </TabItem>
+  <TabItem value="NPM">
 
-```py
-def hello_world():
-  print("Hello, world!")
+```shell
+npm install prefab-cloud-javascript-client
 ```
 
-</TabItem>
-<TabItem value="java" label="Java">
+  </TabItem>
+  <TabItem value="yarn">
 
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
+```shell
+yarn add prefab-cloud-javascript-client
 ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 
+## Initialization
 
-<Tabs>
-<TabItem value="js" label="JavaScript">
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
+```jsx
+// Include this if using prefab-c via npm
+// import prefab from 'prefab-cloud-javascript-client';
+const user = {
+  lookupKey: 'abda123'
+};
+await prefab.initialize(
+    'YOUR_CLIENT_SDK_KEY',
+    user,
+);
 ```
 
-</TabItem>
-<TabItem value="py" label="Python">
 
-```py
-def hello_world():
-  print("Hello, world!")
+## Basic Usage
+
+```jsx
+configKey = "my-first-int-config"
+const config = prefab.getInt(configKey);
+
+
+flagName = "my-first-ff"
+const flag = prefab.feature_is_on?(flagName);
 ```
 
-</TabItem>
-<TabItem value="java" label="Java">
 
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
+## Options
+`prefab.initialize()` 3rd parameter is `options`. It takes:
 
-</TabItem>
-</Tabs>
-
-
-
-And you will get the following:
-
-```mdx-code-block
-<BrowserWindow>
-<Tabs>
-<TabItem value="js" label="JavaScript">
-```
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="py" label="Python">
-```
-
-```py
-def hello_world():
-  print("Hello, world!")
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="java" label="Java">
-```
-
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-</BrowserWindow>
-```
+- **localOnly** - boolean, default false
+    - Pass true to this option to turn on Local Mode for the SDK, which will stop the SDK from issuing any network requests and make it only operate with only local overrides and cache.

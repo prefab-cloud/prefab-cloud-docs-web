@@ -1,6 +1,7 @@
 ---
 title: How Client SDKs Work
 sidebar_label: Client SDKs
+sidebar_position: 7
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -16,112 +17,10 @@ This helps prevent potentially sensitive data from leaking out of your system.
 
 [See server SDKs to compare](/docs/explanations/server-sdks.md)
 
+## Client Side Reliability
 
-<Tabs>
-<TabItem value="js" label="JavaScript">
+Each user that needs flags evaluated is a different request to Prefab. So what happens if prefab goes down? 
 
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
+All active users will be unaffected, because they will have cached values in the CDN.
 
-</TabItem>
-<TabItem value="py" label="Python">
-
-```py
-def hello_world():
-  print("Hello, world!")
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
-
-</TabItem>
-</Tabs>
-
-
-
-<Tabs>
-<TabItem value="js" label="JavaScript">
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
-
-</TabItem>
-<TabItem value="py" label="Python">
-
-```py
-def hello_world():
-  print("Hello, world!")
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
-
-</TabItem>
-</Tabs>
-
-
-
-And you will get the following:
-
-```mdx-code-block
-<BrowserWindow>
-<Tabs>
-<TabItem value="js" label="JavaScript">
-```
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="py" label="Python">
-```
-
-```py
-def hello_world():
-  print("Hello, world!")
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="java" label="Java">
-```
-
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-</BrowserWindow>
-```
+After a configurable timeout, all new users will receive default values.

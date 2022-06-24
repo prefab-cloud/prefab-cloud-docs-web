@@ -7,18 +7,16 @@ sidebar_position: 3
 ## A Config.yaml file
 
 ```yaml
-configs:
-  http.timeout: 30
-  log_level.app.controllers.my_controller: info
-flags: 
-  experiment33: false
+http.timeout: 30
+log_level.app.controllers.my_controller: info
+featureflag.experiment33: false
 ```
 
 
-## Startup
+## Config Load Order
 On startup, config clients load config in the following order, with each level taking precedence over the previous:
 
-1. Classpath Config Files matching `.prefab*config.yaml`
+1. Classpath Config Files matching `.prefab*config.yaml` in alphanumeric order.
 2. Most current values from PrefabCloud APIs & CDNs as described in [resiliency](resiliency.md)
 4. Local Override Files matching `.prefab*config.yaml`
 5. Emergency Override URL if configured in SDK initialization

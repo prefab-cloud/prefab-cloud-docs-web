@@ -3,44 +3,42 @@ title: Testing
 sidebar_label: Testing
 sidebar_position: 5
 ---
-
-
-
-
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## This is how you feature flag
+
+
+## Testing
+
+To test Prefab.Cloud we recommend liberal use of your mocking library of choice.
 
 
 
 <Tabs>
-<TabItem value="js" label="JavaScript">
+<TabItem value="ruby" label="Ruby">
 
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
+```ruby
+def setup
 
-</TabItem>
-<TabItem value="py" label="Python">
+end
 
-```py
-def hello_world():
-  print("Hello, world!")
+def test_feature
+  
+end
 ```
 
 </TabItem>
 <TabItem value="java" label="Java">
 
 ```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
+@Before
+public setup(){
+  
 }
+@Test
+public testFeature(){
+  
+    }
 ```
 
 </TabItem>
@@ -48,78 +46,34 @@ class HelloWorld {
 
 
 
+### No connections to server
+
+Many developers would like their tests to be able to run without connection to the internet.
+
+
+
+
+
 <Tabs>
-<TabItem value="js" label="JavaScript">
+<TabItem value="ruby" label="Ruby">
 
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
+```ruby
+options = Prefab::Options.new(
+  data_sources: LOCAL_ONLY
+)
 
-</TabItem>
-<TabItem value="py" label="Python">
-
-```py
-def hello_world():
-  print("Hello, world!")
+Prefab::Client.initialize(options)
 ```
 
 </TabItem>
 <TabItem value="java" label="Java">
 
 ```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
+PrefabOptions options = new PrefabOptions.Builder();
+options.setDatasources(LOCAL_ONLY); //default is ALL
+Prefab.initialize(options.build());
 ```
 
 </TabItem>
 </Tabs>
 
-
-
-And you will get the following:
-
-```mdx-code-block
-<BrowserWindow>
-<Tabs>
-<TabItem value="js" label="JavaScript">
-```
-
-```js
-function helloWorld() {
-  console.log('Hello, world!');
-}
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="py" label="Python">
-```
-
-```py
-def hello_world():
-  print("Hello, world!")
-```
-
-```mdx-code-block
-</TabItem>
-<TabItem value="java" label="Java">
-```
-
-```java
-class HelloWorld {
-  public static void main(String args[]) {
-    System.out.println("Hello, World");
-  }
-}
-```
-
-```mdx-code-block
-</TabItem>
-</Tabs>
-</BrowserWindow>
-```

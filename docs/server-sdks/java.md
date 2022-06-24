@@ -66,13 +66,14 @@ LiveConfig config = LiveConfig.builder()
 ```java
 PrefabOptions options = new PrefabOptions.Builder();
 
-//Defaaults
+//Defaults
 options.setApiKey(System.getenv("PREFAB_API_KEY"));
 options.setNamespace(""); // "my.namespace"
 options.setOnInitFailue(RAISE); // | UNLOCK_AND_CONTINUE | LOCK_AND_KEEP_TRYING
 options.setInitializationTimeout(Duration.ofSeconds(30));
 options.setNewConfigCallback(()->{});
 options.setLiveOverrideUrl("");
+options.setDatasoruces(ALL);
 
 Prefab.initialize(options.build());
 ```
