@@ -96,3 +96,120 @@ public Prefab getClient(){
 
 </TabItem>
 </Tabs>
+
+
+Goal: as normal and no pfab rl
+
+Step 1: connect to our Prefab project
+
+Development: .envrc   1-1234-development
+Staging: we use pfab
+
+
+Step 2: Disable Prefab in certain env
+Plane: Add PREFAB_DATASOURCES: LOCAL_ONLY to Figaro or envrc
+Test: PREFAB_DATASOURCES: LOCAL_ONLY  in Figaro
+AssetCompile: PREFAB_DATASOURCES: LOCAL_ONLY in dockerfile
+
+
+pfab application.yaml
+development: NOTHING - nobody else uses pfab.  
+
+staging:
+ PREFAB_API_KEY: staging-SDK - everybody will have a way to set env var in staging/prod
+
+
+Step 3: We want per env values.
+If connecting to server. Easy! use prefab.  
+But we want it even in LOCAL_ONLY.  
+
+Solution: env specific sections to config files
+
+
+Step 4: Defaults for feature flags
+
+
+
+# LoadOrder
+1. defaults
+1. env defaults
+1. api
+1. overrides
+1. overrides env defaults
+
+```yaml
+#.prefab.defaults.config.yaml
+prefab.internal.grpc.url: grpc.staging-prefab.cloud
+envs:
+- test:
+  prefab.internal.grpc.url: localhost:5050
+```
+
+```yaml
+#.prefab.overrides.config.yaml
+prefab.internal.grpc.url: 0.0.0.0:8084  #i'm a java dev and want my local
+prefab.internal.use.https: false
+envs:
+  - test:
+  - prefab.internal.grpc.url: localhost:5050 #but i need to re-override for test
+```
+
+```ruby
+#application.rb
+# $prefab = Prefab.init(defaults: [".prefab.defaults.config.yaml"])
+# $prefab = Prefab.init(env_defaults: [".prefab.#{Rail.env}.config.yaml"])
+
+$prefab = Prefab.init(Prefab::Options.new(defaults_env: Rails.env)
+))
+```
+
+#production.rb
+```ruby
+$prefab.get("")
+````
+
+# prefab client.rb
+```ruby
+class PrefabClient
+  def initalize
+    if api_key.nil? && !local_mode
+      raise
+    end
+  end
+end
+
+
+
+#don't like this anymore
+class ConfigClient
+  def initialize
+    @config_loader = ConfigLoader.new
+    
+    if @config_loader.calc_config["prefab.local_mode"].present?
+     
+    end
+    local_mode = false
+    local_mode = true if options[:local_mode]
+    local_mode = true if @config_loader.calc_config["prefab.local_mode"]
+    if options[:api_key].blank?
+     puts "blank API key, running local only"
+     local_mode = true
+    end
+    
+    if local_mode
+     project_id = 
+    else
+     project_id =
+    end
+  end
+end
+```
+
+```ruby
+#grpc_client.rb
+prefab_internal_api_key = $prefab.get("prefab.internal.api.key")
+```
+
+```docker
+RUN RAILS_ENV=production ASSET_PRECOMPILE=true rails asset:precompile
+```
