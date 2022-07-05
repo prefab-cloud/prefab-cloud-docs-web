@@ -1,6 +1,7 @@
 ---
-title: Ruby sidebar_label: Ruby
+title: Ruby
 ---
+
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
 ## Getting Started With the Ruby SDK
@@ -12,7 +13,7 @@ import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 ## Initialize Client
 
 ```ruby
-Prefab::Client.initialize # reads PREFAB_API_KEY env var
+$prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
 ```
 
 ### Client Initialization Options
@@ -21,7 +22,7 @@ Prefab::Client.initialize # reads PREFAB_API_KEY env var
 options = Prefab::Options.new(
   api_key: ENV['PREFAB_API_KEY'],
   namespace: "",
-  defaults_env: "",
+  defaults_env: "", # Set to something like Rails.env to use env specific local overrides
   logdev: $stdout,
   log_formatter: DEFAULT_LOG_FORMATTER,
   stats: NoopStats.new, # receives increment("prefab.limitcheck", {:tags=>["policy_group:page_view", "pass:true"]})
@@ -37,7 +38,7 @@ options = Prefab::Options.new(
   prefab_api_url: ENV["PREFAB_API_URL"] || 'https://api.prefab.cloud',
   prefab_grpc_url: ENV["PREFAB_GRPC_URL"] || 'grpc.prefab.cloud:443',
 )
-Prefab::Client.initialize(options)
+$prefab = Prefab::Client.new(options)
 ```
 
 ### Rails Applications
@@ -45,9 +46,22 @@ Prefab::Client.initialize(options)
 If your application is using Rails put your initializer in `config/initializers/prefab.rb`. For many popular forking
 webserver, read on.
 
+If you are going to use dynamic configuration in files like `staging.rb` that are loaded before initializers, you can initialize Prefab in `application.rb`
+```ruby
+#application.rb
+module MyApplication
+  class Application < Rails::Application
+    #...
+    $prefab = Prefab::Client.new()
+  end 
+end
+```
+
+
+
 ### Special Considerations with Unicorn & Puma when using workers
 
-Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork.
+Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork. You do not need to do this if you are only using threads and not workers.
 
 If using workers in Unicorn, you can initialize inside an after_fork hook in your unicorn.rb config file:
 
@@ -93,10 +107,10 @@ my-first-ff: false
 
 ```ruby
 config_key = "my-first-int-config"
-puts "#{config_key} is: #{Prefab::Configs.getInt(config_key)}"
+puts "#{config_key} is: #{$prefab.get_int(config_key)}"
 
 flag_name = "my-first-ff"
-puts "#{flag_name} is: #{Prefab::Features.feature_is_on? flag_name}"
+puts "#{flag_name} is: #{$prefab.feature_is_on? flag_name}"
 ```
 
 Run these and you should see the following:
@@ -152,7 +166,7 @@ Attributes come into play when using the `Property Is One Of` and similar rule c
 in just the same way as attributes, but they will never be sent to the Prefab API.
 
 ```ruby
-result = Prefab::Features.feature_is_on? "my-first-ff", identity
+result = $prefab.feature_is_on? "my-first-ff", identity
 
 puts "my-first-ff is: #{result} for #{identity}"
 ```
@@ -161,16 +175,16 @@ puts "my-first-ff is: #{result} for #{identity}"
 
 How you choose the `tracking_id` for your user is up to you, but we have some suggestions and we would generally
 discourage
-`user.id` unless you are positive you don't have anonyous users. See the section on Tracking IDs for our suggestion.
+`user.id` unless you are positive you don't have anonymous users. See the section on Tracking IDs for our suggestion.
 
 :::
 
 Feature flags don't have to return just true or false. If you have a string variants of feature flags, use:
 
 ```ruby
-Prefab::Feaures.get_string("ff-with-string")
-Prefab::Feaures.get_int("ff-with-int")
-Prefab::Feaures.get_double("ff-with-double")
+$prefab.get_string("ff-with-string")
+$prefab.get_int("ff-with-int")
+$prefab.get_double("ff-with-double")
 ```
 
 ## Namespaces
@@ -213,8 +227,8 @@ options = Prefab::Options.new(
   logdev: $stdout
 )
 
-Prefab::Client.initialize(options)
-Rails.logger = Prefab::Client.log
+$prefab = Prefab::Client.new(options)
+Rails.logger = $prefab.log
 ```
 
 You can now control logging at any level of your stack. To test it out, edit your `.prefab.config.defaults.yaml`
@@ -256,12 +270,12 @@ this, add a file in your home directory or classpath called `.prefab.overrides.c
 
 ```yaml
 #.prefab.config.defaults.yaml
-test-value: default-file
+mycorp.auth.api.url: "auth.staging.mycorp.com"
 ```
 
 ```yaml
 #~.prefab.overrides.config.yaml
-test-value: my-local-override
+mycorp.auth.api.url: "localhost:9090"
 ```
 
 Prefab will first load the defaults. Then merge the API values over the top. Finally it will apply the overrides file on
@@ -318,7 +332,7 @@ only two real difference between a feature flag and an experiment.
 2. We will eventually analyze the results, looking at user behavior and segmenting by how the user was exposed.
 
 ```ruby
-  variant = Prefab::Experiments.get_string_variant("my-experiment", @tracking_id)
+  variant = $prefab.experiments.get_string_variant("my-experiment", @tracking_id)
 ```
 
 This will record an exposure for `@tracking_id` and store it in the Prefab.Cloud. Prefab.Cloud has a singer tap that
@@ -328,7 +342,7 @@ There are instances were you may want to know what variant a user is in, but not
 instances you can just use the feature flag client.
 
 ```ruby
-  variant = Prefab::Features.get_string("my-experiment", @tracking_id)
+  variant = $prefab.features.get_string("my-experiment", @tracking_id)
 ````
 
 ## Debugging
