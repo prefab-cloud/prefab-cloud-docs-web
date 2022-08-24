@@ -18,21 +18,32 @@ $prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
 
 ### Client Initialization Options
 
+You can intialize your client with options. Here are the defaults with explanations.
+
 ```ruby
 options = Prefab::Options.new(
   api_key: ENV['PREFAB_API_KEY'],
   namespace: "",
-  defaults_env: "", # Set to something like Rails.env to use env specific local overrides
+  # Set to something like Rails.env to use env specific local overrides
+  defaults_env: "",
   logdev: $stdout,
-  log_formatter: DEFAULT_LOG_FORMATTER,
-  stats: NoopStats.new, # receives increment("prefab.limitcheck", {:tags=>["policy_group:page_view", "pass:true"]})
-  shared_cache: NoopCache.new, # Something that quacks like Rails.cache ideally memcached
-  on_no_default: ON_NO_DEFAULT::RAISE, # options :raise, :warn_and_return_nil,
-  initialization_timeout_sec: 10, # how long to wait before on_init_failure
-  on_init_failure: ON_INITIALIZATION_FAILURE::RAISE, #options :unlock_and_continue, :lock_and_keep_trying, :raise
-  # new_config_callback: nil, #callback method
-  # live_override_url: nil,
-  prefab_datasources: ENV['PREFAB_DATASOURCES'] == "LOCAL_ONLY" ? DATASOURCES::LOCAL_ONLY : DATASOURCES::ALL,
+  log_formatter: Prefab::Options::DEFAULT_LOG_FORMATTER,
+   # This object receives (e.g.)
+   #   `increment("prefab.limitcheck", {:tags=>["policy_group:page_view", "pass:true"]})
+  stats: NoopStats.new,
+  # Something that quacks like Rails.cache (ideally memcached)
+  shared_cache: NoopCache.new,
+  # one of
+  # - Prefab::Options::ON_NO_DEFAULT::RAISE -- raise an exception when no value or default is available
+  # - Prefab::Options::ON_NO_DEFAULT::RETURN_NIL -- return nil if no value or default is available
+  on_no_default: Prefab::Options::ON_NO_DEFAULT::RAISE,
+  # how long to wait before on_init_failure
+  initialization_timeout_sec: 10,
+  # one of
+  # - Prefab::Options::ON_INITIALIZATION_FAILURE::RAISE -- raise an error if no connection can be made
+  # - Prefab::Options::ON_INITIALIZATION_FAILURE::RETURN -- continue without error using failover config
+  on_init_failure: Prefab::Options::ON_INITIALIZATION_FAILURE::RAISE,
+  prefab_datasources: ENV['PREFAB_DATASOURCES'] == "LOCAL_ONLY" ? Prefab::Options::DATASOURCES::LOCAL_ONLY : Prefab::Options::DATASOURCES::ALL,
   prefab_config_override_dir: Dir.home,
   prefab_config_classpath_dir: ".",
   prefab_api_url: ENV["PREFAB_API_URL"] || 'https://api.prefab.cloud',
@@ -44,7 +55,7 @@ $prefab = Prefab::Client.new(options)
 ### Rails Applications
 
 If your application is using Rails put your initializer in `config/initializers/prefab.rb`. For many popular forking
-webserver, read on.
+webservers, read on.
 
 If you are going to use dynamic configuration in files like `staging.rb` that are loaded before initializers, you can initialize Prefab in `application.rb`
 ```ruby
@@ -53,7 +64,7 @@ module MyApplication
   class Application < Rails::Application
     #...
     $prefab = Prefab::Client.new()
-  end 
+  end
 end
 ```
 
@@ -84,23 +95,35 @@ end
 ### Defaults
 
 It is a best practice to specify a default value for all configuration. This reduces the likelihood of exceptions due to
-nil values. Prefab encourages this practice by reading a shared defaults file and raising an error if you try to
-reference a value that is unset.
+nil values. Prefab encourages this practice by raising an error if you try to reference a value that is unset.
+
+Here we ask for the value of a config named `max-jobs-per-second`, and we specify `10` as a default value if no value is available.
+
+```ruby
+$prefab.get("max-jobs-per-second", 10) # => returns `10` if no value is available
+```
+
+If we don't provide a default and no value is available, a `Prefab::Errors::MissingDefaultError` error will be raised.
+
+```ruby
+$prefab.get("max-jobs-per-second") # => raises if no value is available
+```
+
 :::note
 
-You can modify this behavior with the config option `on_no_default` or by
-using `Prefab::Client.config_client.get_int_or_nil('key')`
+You can modify this behavior by setting the config option `on_no_default` to `Prefab::Options::ON_NO_DEFAULT::RETURN_NIL`
 
 :::
 
-Create a file `.prefab.config.defaults.yaml`
+You can specify defaults for your application by creating a file `.prefab.default.config.yaml`
+
 Add the following:
 
 ```yaml
-#.prefab.config.defaults.yaml
+# .prefab.default.config.yaml
 log_level.prefab: info
 my-first-int-config: 30
-my-first-ff: false
+my-first-feature-flag: false
 ```
 
 ### Getting Started
@@ -109,30 +132,30 @@ my-first-ff: false
 config_key = "my-first-int-config"
 puts "#{config_key} is: #{$prefab.get_int(config_key)}"
 
-flag_name = "my-first-ff"
-puts "#{flag_name} is: #{$prefab.feature_is_on? flag_name}"
+flag_name = "my-first-feature-flag"
+puts "#{flag_name} is: #{$prefab.enabled? flag_name}"
 ```
 
 Run these and you should see the following:
 
 ```bash
 my-first-int-config is: 30
-my-first-ff is: false
+my-first-feature-flag is: false
 ```
 
 Now create a config named `my-first-int-config` in the Prefab UI. Set a default value to 50 and sync your change to the
 API.
 
-Add a feature flag named `my-first-ff` in the Prefab UI. Add boolean variants of `true` and `false`
+Add a feature flag named `my-first-feature-flag` in the Prefab UI. Add boolean variants of `true` and `false`
 Set the inactive variant to `false`, make the flag active and add a rule of type `ALWAYS_TRUE` with the variant to serve
 as `true`
-Remember to sync you change to the API.
+Remember to sync your change to the API.
 
 Run your command again and you should see:
 
 ```bash
 my-first-int-config is: 50
-my-first-ff is: true
+my-first-feature-flag is: true
 ```
 
 Congrats! You're ready to rock!
@@ -166,9 +189,9 @@ Attributes come into play when using the `Property Is One Of` and similar rule c
 in just the same way as attributes, but they will never be sent to the Prefab API.
 
 ```ruby
-result = $prefab.feature_is_on? "my-first-ff", identity
+result = $prefab.enabled? "my-first-feature-flag", identity
 
-puts "my-first-ff is: #{result} for #{identity}"
+puts "my-first-feature-flag is: #{result} for #{identity}"
 ```
 
 :::tip
@@ -179,12 +202,11 @@ discourage
 
 :::
 
-Feature flags don't have to return just true or false. If you have a string variants of feature flags, use:
+Feature flags don't have to return just true or false. You can get other data types using `get`:
 
 ```ruby
-$prefab.get_string("ff-with-string")
-$prefab.get_int("ff-with-int")
-$prefab.get_double("ff-with-double")
+$prefab.get("ff-with-string", default_string_value)
+$prefab.get("ff-with-int", default_int_value)
 ```
 
 ## Namespaces
@@ -231,10 +253,10 @@ $prefab = Prefab::Client.new(options)
 Rails.logger = $prefab.log
 ```
 
-You can now control logging at any level of your stack. To test it out, edit your `.prefab.config.defaults.yaml`
+You can now control logging at any level of your stack. To test it out, edit your `.prefab.default.config.yaml`
 
 ```yaml
-#.prefab.config.defaults.yaml
+# .prefab.default.config.yaml
 log_level.app.controllers.my_controller: info
 log_level.app.controllers.my_controller.index: warn
 log_level.app.controllers.my_controller.show: debug
@@ -269,7 +291,7 @@ It can be very useful to modify your defaults locally without changing the defau
 this, add a file in your home directory or classpath called `.prefab.overrides.config.yaml`
 
 ```yaml
-#.prefab.config.defaults.yaml
+# .prefab.default.config.yaml
 mycorp.auth.api.url: "auth.staging.mycorp.com"
 ```
 
@@ -320,7 +342,7 @@ want, but if you'd like the rollout to keep server, requests, users in the new p
 flag.
 
 ```ruby
-@feature_flags.feature_is_on? "new-feature", any_consistent_id
+$prefab.enabled? "new-feature", any_consistent_id
 ```
 
 ## Experimentation
@@ -335,8 +357,8 @@ only two real difference between a feature flag and an experiment.
   variant = $prefab.experiments.get_string_variant("my-experiment", @tracking_id)
 ```
 
-This will record an exposure for `@tracking_id` and store it in the Prefab.Cloud. Prefab.Cloud has a singer tap that
-Multano or other tools can use to bring the raw exposure data into your data warehouse.
+This will record an exposure for `@tracking_id` and store it in the Prefab.Cloud. Prefab.Cloud has a [Singer] tap that
+[Meltano] or other tools can use to bring the raw exposure data into your data warehouse.
 
 There are instances were you may want to know what variant a user is in, but not necessarily expose them. In these
 instances you can just use the feature flag client.
@@ -353,3 +375,6 @@ case that you are trying to debug issues that occur before this config file has 
 ```bash
 PREFAB_LOG_CLIENT_BOOTSTRAP_LOG_LEVEL = debug
 ```
+
+[Meltano]: https://meltano.com/
+[Singer]: https://www.singer.io/
