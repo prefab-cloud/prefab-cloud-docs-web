@@ -7,7 +7,7 @@ sidebar_position: 3
 ## A Config.yaml file
 
 ```yaml
-#.prefab.config.defaults.yaml
+# .prefab.default.config.yaml
 log_level.prefab: info
 
 http.timeout: 30
