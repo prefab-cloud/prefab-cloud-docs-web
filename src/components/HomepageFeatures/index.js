@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 const FeatureList = [
   {
     title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: require('@site/static/img/easy.svg').default,
     description: (
       <>
         Prefab.Cloud will have you up and runnng with DynamicConfig and FeatureFlags in 5 minutes.
@@ -14,7 +14,7 @@ const FeatureList = [
   },
   {
     title: 'Reliable',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    Svg: require('@site/static/img/reliable.svg').default,
     description: (
       <>
         FeatureFlags and Config simply have to work. We go to extraordinary lengths to be reliable.
@@ -23,7 +23,7 @@ const FeatureList = [
   },
   {
     title: 'Powerful',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    Svg: require('@site/static/img/powerful.svg').default,
     description: (
       <>
         All batteries are included, with Prefab you have all of the powerful segmentation you need.
