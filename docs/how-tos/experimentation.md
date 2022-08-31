@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="js" label="JavaScript">
 
 ```js
@@ -42,7 +42,7 @@ class HelloWorld {
 
 
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="js" label="JavaScript">
 
 ```js
@@ -79,7 +79,7 @@ And you will get the following:
 
 ```mdx-code-block
 <BrowserWindow>
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="js" label="JavaScript">
 ```
 

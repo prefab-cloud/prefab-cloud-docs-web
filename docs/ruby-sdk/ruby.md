@@ -31,8 +31,6 @@ options = Prefab::Options.new(
    # This object receives (e.g.)
    #   `increment("prefab.limitcheck", {:tags=>["policy_group:page_view", "pass:true"]})
   stats: NoopStats.new,
-  # Something that quacks like Rails.cache (ideally memcached)
-  shared_cache: NoopCache.new,
   # one of
   # - Prefab::Options::ON_NO_DEFAULT::RAISE -- raise an exception when no value or default is available
   # - Prefab::Options::ON_NO_DEFAULT::RETURN_NIL -- return nil if no value or default is available
@@ -198,7 +196,7 @@ puts "my-first-feature-flag is: #{result} for #{identity}"
 
 How you choose the `tracking_id` for your user is up to you, but we have some suggestions and we would generally
 discourage
-`user.id` unless you are positive you don't have anonymous users. See the section on Tracking IDs for our suggestion.
+`user.id` unless you are positive you don't have anonymous users. See the section on [Tracking IDs](tracking-ids) for our suggestion.
 
 :::
 

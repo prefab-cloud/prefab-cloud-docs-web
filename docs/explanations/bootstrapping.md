@@ -77,7 +77,7 @@ if we are unable to get live data.
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
 
 ```ruby

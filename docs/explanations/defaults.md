@@ -8,7 +8,7 @@ sidebar_position: 3
 
 Let's look at a basic example:
 ```ruby
-Prefab.get_int("my-int")
+$prefab.get("my-int")
 ```
 
 If we've created a value for the key of `my-int`, the behavior here is obvious. But what should happen if you request a key that 
@@ -20,7 +20,7 @@ Broadly, we've got two options. We can:
 
 Neither of those sound great, so an alternative path is to make our users specify a default value inline every time they ask for a results. For example:
 ```ruby
-Prefab.get_int("my-int", 30)
+$prefab.get("my-int", 30)
 ```
 
 This works, but can lead to messy redundancy if we are accessing the same configuration from many locations. 
@@ -33,7 +33,7 @@ my-int: 30
 ```
 With our default file on the classpath, we can now simply write:
 ```ruby
-Prefab.get_int("my-int")
+$prefab.get("my-int")
 ```
 and be sure that if the key isn't available we will still have a value.
 
@@ -49,12 +49,12 @@ If this behavior isn't what you want, you can change this and have Prefab happil
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
 
 ```ruby
 options = Prefab::Options.new(
-  onNoDefault: Prefab::Options::OnNoDefault::RETURN_NIL,
+  on_no_default: Prefab::Options::ON_NO_DEFAULT::RETURN_NIL ,
 )
 $prefab = Prefab.initialize(options)
 ```
@@ -75,5 +75,5 @@ public Prefab getClient(){
 
 ## Deleting Values
 The Prefab clients will sometimes return nil even in the default mode. This situation occurs if you have deleted the keys in the Prefab UI. 
-A deleted key value is sent down to the clients as a tombstone and this tombstone takes precendence over default values as indicated in the 
+A deleted key value is sent down to the clients as a tombstone and this tombstone takes precedence over default values as indicated in the 
 [config load order](bootstrapping.md) doc.

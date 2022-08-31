@@ -2,66 +2,72 @@
 title: JavaScript
 sidebar_label: JavaScript
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
-To install the Javascript SDK, you can use jsdelivr, npm or yarn:
+import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
-<Tabs>
+## Getting Started With the JavaScript SDK
 
-  <TabItem value="JSDelivr">
+Use your favorite package manager to install `@prefab-cloud/prefab-cloud-js` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-js) | [github](https://github.com/prefab-cloud/prefab-cloud-js)
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/prefab-cloud/build/prefab-cloud-javascript-client.min.js"></script>
+`npm install @prefab-cloud/prefab-cloud-js` or `yarn add @prefab-cloud/prefab-cloud-js`
+
+TypeScript types are included with the package.
+
+If you're using React, consider using our [React SDK] instead.
+
+## Initialize client
+
+Initialize prefab with your api key and an `Identity` for the current user/visitor:
+
+```javascript
+import prefab, { Identity } from '@prefab-cloud/prefab-cloud-js'
+
+const options = { apiKey: 'YOUR_CLIENT_API_KEY', identity: new Identity('user-1234', { device: 'desktop' }) };
+await prefab.init(options);
 ```
 
-  </TabItem>
-  <TabItem value="NPM">
+`Identity` accepts a lookup key unique to the current visitor/user and attributes that you can use to [segment] your users.
 
-```shell
-npm install prefab-cloud-javascript-client
+`prefab.init` will request the calculated config and feature flags for the provided `Identity` as a single HTTPS request.
+
+## Usage
+
+Now you can use `prefab`'s config and feature flag evaluation, e.g.
+
+
+```javascript
+if (prefab.isEnabled('cool-feature') {
+  // ... this code only evaluates if `cool-feature` is enabled for the current Identity
+}
+
+setTimeout(ping, prefab.get('ping-delay'));
 ```
 
-  </TabItem>
-  <TabItem value="yarn">
+### `prefab` Properties
 
-```shell
-yarn add prefab-cloud-javascript-client
+| property    | example                        | purpose                                                                                            |
+|-------------|--------------------------------|----------------------------------------------------------------------------------------------------|
+| `isEnabled` | `prefab.isEnabled("new-logo")` | returns a boolean (default `false`) if a feature is enabled based on the currently identified user |
+| `get`       | `prefab.get('retry-count')`    | returns the value of a flag or config evaluated in the context of the currently identified user    |
+| `loaded`    | `if (prefab.loaded) { ... }`   | a boolean indicating whether prefab content has loaded                                             |
+
+## Usage in your test suite
+
+In your test suite, you probably want to skip `prefab.init` altogether and instead use `prefab.setConfig` to set up your test state.
+
+```javascript
+it('shows the turbo button when the feature is enabled', () => {
+  prefab.setConfig({
+    turbo: true,
+    defaultMediaCount: 3,
+  });
+
+  const rendered = new MyComponent().render();
+
+  expect(rendered).toMatch(/Enable Turbo/);
+  expect(rendered).toMatch(/Media Count: 3/);
+});
 ```
 
-  </TabItem>
-</Tabs>
-
-
-## Initialization
-
-```jsx
-// Include this if using prefab-c via npm
-// import prefab from 'prefab-cloud-javascript-client';
-const user = {
-  lookupKey: 'abda123'
-};
-await prefab.initialize(
-    'YOUR_CLIENT_SDK_KEY',
-    user,
-);
-```
-
-
-## Basic Usage
-
-```jsx
-configKey = "my-first-int-config"
-const config = prefab.getInt(configKey);
-
-
-flagName = "my-first-ff"
-const flag = prefab.feature_is_on?(flagName);
-```
-
-
-## Options
-`prefab.initialize()` 3rd parameter is `options`. It takes:
-
-- **localOnly** - boolean, default false
-    - Pass true to this option to turn on Local Mode for the SDK, which will stop the SDK from issuing any network requests and make it only operate with only local overrides and cache.
+[segment]: /docs/explanations/rules-and-segmentation
+[React SDK]: /docs/client-sdks/react
