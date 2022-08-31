@@ -4,10 +4,6 @@ sidebar_label: Namespaces
 sidebar_position: 4
 ---
 
-
-
-
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -20,7 +16,7 @@ All of our apps should initialize their config store in a namespace. For instanc
 
 Let's imagine that the UserService starts to go down because too many requests are timing out to a 3rd party service. We can quickly reduce the http.connection.timeout for our userservice namespace and solve the issue without pushing code or restarting.
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
 
 ```ruby
@@ -65,11 +61,18 @@ configClient.get("http.connection.timeout") // returns 10
 </TabItem>
 <TabItem value="js" label="JavaScript">
 
-```js
-var prefab = new PrefabCloudClient({namespace: "userservice");
+```javascript
+import prefab, { Identity } from '@prefab-cloud/prefab-cloud-js'
+
+const options = { apiKey: 'YOUR_CLIENT_API_KEY', namespace: "userservice", identity: new Identity('user-1234', { device: 'desktop' }) };
+await prefab.init(options);
+
 prefab.get("http.connection.timeout"); //returns 10
 
-var prefab = new PrefabCloudClient({namespace: "paymentservice");
+// Changing namespaces requires you to `init` again.
+options.namespace = 'paymentservice';
+await prefab.init(options);
+
 prefab.get("http.connection.timeout"); //returns 30
 ```
 

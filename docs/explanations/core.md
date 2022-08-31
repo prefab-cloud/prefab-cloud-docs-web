@@ -103,10 +103,10 @@ latest `id` that they see for each key.
 ## What would you do with the Fastest DB in the World?
 
 Prefab's config system can look a lot like a key/value store, with one big big difference.
-Much like something like Consul, the KV store is actually distributed to every client. Which means no API calls when you want a value.
+Much like something like Consul, the KV store is actually distributed to every client. Which means no API calls when you want a value — everything is in-memory.
 
 Because it's so blazing fast, it really changes what you can do with it. It's totally appropriate to query it many times on every request.
-You would never query the database 40 different times while processing a request just to get your app configuration, but if that is essentially 
+You would never query the database 40 different times while processing a request just to get your app configuration, but when it is essentially
 free it means you're now able to make almost every element of your application dynamically configurable.
 
 Let's carry on in [resiliency](resiliency) because if we're really going to run our application on top of something like this

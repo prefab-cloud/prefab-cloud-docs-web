@@ -14,7 +14,7 @@ To test Prefab.Cloud we recommend liberal use of your mocking library of choice.
 
 
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
 
 ```ruby
@@ -54,13 +54,11 @@ Many developers would like their tests to be able to run without connection to t
 
 
 
-<Tabs>
+<Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
 
 ```ruby
-options = Prefab::Options.new(
-  data_sources: LOCAL_ONLY
-)
+options = Prefab::Options.new(data_sources: LOCAL_ONLY)
 
 Prefab::Client.initialize(options)
 ```
