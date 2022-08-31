@@ -39,13 +39,7 @@ const config = {
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-        },
+        blog: false,
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
@@ -97,10 +91,6 @@ const config = {
                 href: 'https://stackoverflow.com/questions/tagged/prefab-cloud',
               },
               {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
                 label: 'Twitter',
                 href: 'https://twitter.com/prefabcloud',
               },
@@ -110,12 +100,8 @@ const config = {
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
                 label: 'GitHub',
-                href: 'https://github.com/prefabcloud/prefab-cloud',
+                href: 'https://github.com/prefab-cloud',
               },
             ],
           },
