@@ -130,7 +130,7 @@ my-first-feature-flag: false
 
 ```ruby
 config_key = "my-first-int-config"
-puts "#{config_key} is: #{$prefab.get_int(config_key)}"
+puts "#{config_key} is: #{$prefab.get(config_key)}"
 
 flag_name = "my-first-feature-flag"
 puts "#{flag_name} is: #{$prefab.enabled? flag_name}"
