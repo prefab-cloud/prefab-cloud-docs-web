@@ -1,10 +1,10 @@
 ---
-title: React
+title: React Client
 ---
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
-## Getting Started With the React SDK
+## Getting Started With the React Client
 
 Use your favorite package manager to install `@prefab-cloud/prefab-cloud-react` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-react) | [github](https://github.com/prefab-cloud/prefab-cloud-react)
 
@@ -14,11 +14,11 @@ TypeScript types are included with the package.
 
 ## Usage in your app
 
-This SDK includes a `<PrefabProvider>` and `usePrefab` hook.
+This client includes a `<PrefabProvider>` and `usePrefab` hook.
 
 First, wrap your component tree in the `PrefabProvider`, e.g.
 
-```javascript
+```jsx
 import PrefabProvider from '@prefab-cloud/prefab-cloud-react';
 
 const WrappedApp = () => {
@@ -46,7 +46,7 @@ const WrappedApp = () => {
 
 Now use the `usePrefab` hook to fetch flags and config values
 
-```javascript
+```jsx
 const Logo = () => {
   const { isEnabled } = usePrefab();
 
@@ -66,7 +66,7 @@ const Logo = () => {
 ### `usePrefab` properties
 
 
-```javascript
+```jsx
 const { isEnabled, get, loading, lookupKey, identityAttributes } = usePrefab();
 ```
 
@@ -80,13 +80,13 @@ Here's an explanation of each property
 | `lookupKey`          | N/A                     | this is the key you passed when setting up the provider                                            |
 | `identityAttributes` | N/A                     | this is the identity attributes object you passed when setting up the provider                     |
 
-## Usage in your test suite
+## Testing
 
 Wrap the component under test in a `PrefabTestProvider` and provide a config object to set up your test state.
 
 e.g. if you wanted to test the following trivial component
 
-```javascript
+```jsx
 function MyComponent() {
   const { get, isEnabled, loading } = usePrefab();
   const greeting = get('greeting') || 'Greetings';
@@ -106,7 +106,7 @@ function MyComponent() {
 
 You could do the following in [jest]/[rtl]
 
-```javascript
+```jsx
 import { PrefabTestProvider } from './index';
 
 const renderInTestProvider = (config: {[key: string]: any}) => {
