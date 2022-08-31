@@ -59,7 +59,7 @@ In other languages, we should initialize prefab as early as possible in our appl
 a singleton.
 ```ruby
 $prefab = Prefab.new # kicks off initialization
-$prefab.get_int('my.key') # uses a singleton
+$prefab.get('my.key') # uses a singleton
 ```
 
 
@@ -82,8 +82,8 @@ import TabItem from '@theme/TabItem';
 
 ```ruby
 options = Prefab::Options.new(
-  onInitFailure: Prefab::Options::OnInitFailure::Raise,
-  initializationTimeout: 30
+  on_init_failure: Prefab::Options::ON_INITIALIZATION_FAILURE::RAISE,
+  initialization_timeout_sec: 30
 )
 $prefab = Prefab.initialize(options)
 ```
