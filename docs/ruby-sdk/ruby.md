@@ -18,7 +18,7 @@ $prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
 
 ### Client Initialization Options
 
-You can intialize your client with options. Here are the defaults with explanations.
+You can initialize your client with options. Here are the defaults with explanations.
 
 ```ruby
 options = Prefab::Options.new(
@@ -61,7 +61,7 @@ If you are going to use dynamic configuration in files like `staging.rb` that ar
 module MyApplication
   class Application < Rails::Application
     #...
-    $prefab = Prefab::Client.new()
+    $prefab = Prefab::Client.new
   end
 end
 ```
@@ -162,34 +162,27 @@ Congrats! You're ready to rock!
 
 Feature flags become more powerful when we give the flag evaluation rules more information to work with.
 
-We do this by passing the feature flag client a `Prefab::Identity`.
-
-```ruby
-identity = Prefab::Identity.new(tracking_id,
-                                { #attributes
-                                  team_id: 432,
-                                  user_id: 123,
-                                  subscription_level: 'pro'
-                                },
-                                { #private_attributes
-                                  email: "alice@example.com",
-                                  sensitive_info: "sensitive"
-                                }
-)
-```
+We do this by providing a lookup key and identity attributes.
 
 The lookup key serves two purposes. First, it will be the unique key that helps us target a specific user
 using `Lookup Key In` when evaluating a flag.
 
 Second, this key is used to make sure that percent rollout evaluations are consistently applied.
 
-Attributes come into play when using the `Property Is One Of` and similar rule criteria. Private attributes can be used
-in just the same way as attributes, but they will never be sent to the Prefab API.
+Attributes come into play when using the `Property Is One Of` and similar rule criteria.
 
 ```ruby
-result = $prefab.enabled? "my-first-feature-flag", identity
+lookup_key = "user-1234"
+identity_attributes = {
+                        team_id: 432,
+                        user_id: 123,
+                        subscription_level: 'pro'
+                        email: "alice@example.com",
+                        sensitive_info: "sensitive"
+                      }
+result = $prefab.enabled? "my-first-feature-flag", lookup_key, identity_attributes
 
-puts "my-first-feature-flag is: #{result} for #{identity}"
+puts "my-first-feature-flag is: #{result} for #{lookup_key}"
 ```
 
 :::tip
