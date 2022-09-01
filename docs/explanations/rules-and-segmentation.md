@@ -8,7 +8,9 @@ Prefab provides powerful rules that can you can compose to target exactly the us
 
 Segments are reusable sets of rules that you can use across multiple feature flags.
 
-Rules are evaluated in order (you can drag and drop to rearrange them) and the first matching rule determines which variant is served.
+:::tip
+Rules are evaluated in order. You can drag and drop rules to rearrange them. The first matching rule determines which variant is served.
+:::
 
 When a rule matches, you can either:
 

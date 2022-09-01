@@ -49,6 +49,10 @@ A feature flag check will always return false until it is fully enabled or a rul
 
 ## Rules
 
+:::tip
+Rules are evaluated in order. You can drag and drop rules to rearrange them. The first matching rule determines which variant is served. [Read more](/docs/explanations/rules-and-segmentation).
+:::
+
 To model the example rollout above in Prefab.Cloud, we'll create a "Simple Flag".
 
 We'll modify the default `Always True` rule to return `false` so we can safely enable our flag while still returning `false` for everyone for now.
@@ -57,7 +61,9 @@ Toggle the flag to active. Sync the changes to the API.
 
 ### The people who worked on the feature
 
-Use a `Lookup Key In` rule to target specific users and return the `true` variant if the user matches. Lookup keys are delimited by commas, so you might target `user-1234,user-29,user-456` etc. When it matches, we'll serve variant `true`.
+Use a `Lookup Key In` rule to target specific users and return the `true` variant if the user matches. Lookup keys are delimited by commas, so you might target `developer-1234,designer-29,developer-456` etc. When it matches, we'll serve variant `true`.
+
+![lookup key screenshot](/img/docs/example-beta-release-rules/lookup-key-in.jpg)
 
 Click "Create Rule" and then move this rule up above our `Always True` rule and sync changes to the API.
 
@@ -71,9 +77,13 @@ Click "Create Rule" and then move this rule up above our `Always True` rule and 
 
 Time passes while the org tests the feature. Once we're confident that we're ready for customers to see this, we add our final rule.
 
+![your org](/img/docs/example-beta-release-rules/lookup-key-in.jpg)
+
 ### A growing percentage of users
 
 We'll modify our `Always True` rule to do a `Percentage rollout`. We'll start small -- maybe `5%` for the `true` variant and `95%` for the false variant.
+
+![percentage screenshot](/img/docs/example-beta-release-rules/percentage-rollout.jpg)
 
 Sync your changes.
 
@@ -91,6 +101,8 @@ No problem. Using what we learned with our "Your entire org" rule, we can create
 
 Use a `Property Ends With One Of` rule to target the `email` property and set the criteria values to `@CUSTOMER_DOMAIN.com`. When it matches, we'll serve variant `false`.
 
+![exception](/img/docs/example-beta-release-rules/exception.jpg)
+
 Click "Create Rule" and then move this rule up above our `Always True` rule and sync changes to the API.
 
 Because rule evaluation happens in order, when we see that the user matches `@CUSTOMER_DOMAIN.com` we'll return `false` for the flag check and they won't see the new feature.
@@ -101,4 +113,4 @@ Once you've ramped the percentage up to `100%` for the `Always True` rule and yo
 
 Here's all the rules above and the exception as seen in the UI
 
-![example screenshot](/img/docs/example-beta-release-rules.png)
+![example screenshot](/img/docs/example-beta-release-rules/all-rules.jpg)
