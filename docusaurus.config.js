@@ -9,7 +9,7 @@ const config = {
   title: 'Prefab.Cloud Documentation',
   tagline: 'API Docs for Prefab.Cloud',
   url: 'https://docs.prefab.cloud',
-  baseUrl: '/',
+  baseUrl: '/prefab-cloud-docs-web/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
@@ -18,6 +18,8 @@ const config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'prefab-cloud', // Usually your GitHub org/user name.
   projectName: 'prefab-cloud-docs-web', // Usually your repo name.
+
+  trailingSlash: false,
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
