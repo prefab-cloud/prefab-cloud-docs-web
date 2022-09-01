@@ -1,11 +1,10 @@
 ---
-title: JavaScript
-sidebar_label: JavaScript
+title: JavaScript Client
 ---
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
-## Getting Started With the JavaScript SDK
+## Getting Started With the JavaScript Client
 
 Use your favorite package manager to install `@prefab-cloud/prefab-cloud-js` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-js) | [github](https://github.com/prefab-cloud/prefab-cloud-js)
 
@@ -13,7 +12,7 @@ Use your favorite package manager to install `@prefab-cloud/prefab-cloud-js` [np
 
 TypeScript types are included with the package.
 
-If you're using React, consider using our [React SDK] instead.
+If you're using React, consider using our [React Client] instead.
 
 ## Initialize client
 
@@ -51,9 +50,9 @@ setTimeout(ping, prefab.get('ping-delay'));
 | `get`       | `prefab.get('retry-count')`    | returns the value of a flag or config evaluated in the context of the currently identified user    |
 | `loaded`    | `if (prefab.loaded) { ... }`   | a boolean indicating whether prefab content has loaded                                             |
 
-## Usage in your test suite
+## Testing
 
-In your test suite, you probably want to skip `prefab.init` altogether and instead use `prefab.setConfig` to set up your test state.
+In your test suite, you should skip `prefab.init` altogether and instead use `prefab.setConfig` to set up your test state.
 
 ```javascript
 it('shows the turbo button when the feature is enabled', () => {
@@ -70,4 +69,4 @@ it('shows the turbo button when the feature is enabled', () => {
 ```
 
 [segment]: /docs/explanations/rules-and-segmentation
-[React SDK]: /docs/client-sdks/react
+[React Client]: /docs/react

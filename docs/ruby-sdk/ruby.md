@@ -367,5 +367,45 @@ case that you are trying to debug issues that occur before this config file has 
 PREFAB_LOG_CLIENT_BOOTSTRAP_LOG_LEVEL = debug
 ```
 
+## Testing
+
+Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/bootstrapping).
+
+```ruby
+options = Prefab::Options.new(data_sources: LOCAL_ONLY)
+
+$prefab = Prefab::Client.initialize(options)
+```
+
+If you need to test multiple scenarios that depend on a single config or feature key, you can use a mock or stub to change the Prefab value.
+
+Example:
+
+Imagine we want to test a `batches` method on our `Job` class. `batches` depends on `job.batch.size` and the value for `job.batch.size` in our default config file is `3`.
+
+We can test how `batches` performs with different values for `job.batch.size` by mocking the return value of `$prefab.get`.
+
+```ruby
+class Job < Array
+  def batches
+    slice_size = $prefab.get('job.batch.size')
+    each_slice(slice_size)
+  end
+end
+
+RSpec.describe Job do
+  describe '#batches' do
+    it 'returns batches of jobs' do
+      jobs = Job.new([1, 2, 3, 4, 5])
+
+      expect(jobs.batches.map(&:size)).to eq([3, 2])
+
+      allow($prefab).to receive(:get).with('job.batch.size').and_return(2)
+      expect(jobs.batches.map(&:size)).to eq([2, 2, 1])
+    end
+  end
+end
+```
+
 [Meltano]: https://meltano.com/
 [Singer]: https://www.singer.io/
