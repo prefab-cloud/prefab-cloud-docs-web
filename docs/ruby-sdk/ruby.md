@@ -18,19 +18,14 @@ $prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
 
 ### Client Initialization Options
 
-You can initialize your client with options. Here are the defaults with explanations.
+You can initialize your client with options if you want more control. Here are the defaults with explanations.
 
 ```ruby
 options = Prefab::Options.new(
   api_key: ENV['PREFAB_API_KEY'],
   namespace: "",
-  # Set to something like Rails.env to use env specific local overrides
-  defaults_env: "",
   logdev: $stdout,
   log_formatter: Prefab::Options::DEFAULT_LOG_FORMATTER,
-   # This object receives (e.g.)
-   #   `increment("prefab.limitcheck", {:tags=>["policy_group:page_view", "pass:true"]})
-  stats: NoopStats.new,
   # one of
   # - Prefab::Options::ON_NO_DEFAULT::RAISE -- raise an exception when no value or default is available
   # - Prefab::Options::ON_NO_DEFAULT::RETURN_NIL -- return nil if no value or default is available
@@ -176,9 +171,8 @@ lookup_key = "user-1234"
 identity_attributes = {
                         team_id: 432,
                         user_id: 123,
-                        subscription_level: 'pro'
-                        email: "alice@example.com",
-                        sensitive_info: "sensitive"
+                        subscription_level: 'pro',
+                        email: "alice@example.com"
                       }
 result = $prefab.enabled? "my-first-feature-flag", lookup_key, identity_attributes
 
@@ -335,28 +329,6 @@ flag.
 ```ruby
 $prefab.enabled? "new-feature", any_consistent_id
 ```
-
-## Experimentation
-
-Much like feature flags are built on configuration, experimentation is built upon features flags. In fact, there are
-only two real difference between a feature flag and an experiment.
-
-1. With an experiment, we need to record the fact that we exposed a user
-2. We will eventually analyze the results, looking at user behavior and segmenting by how the user was exposed.
-
-```ruby
-  variant = $prefab.experiments.get_string_variant("my-experiment", @tracking_id)
-```
-
-This will record an exposure for `@tracking_id` and store it in the Prefab.Cloud. Prefab.Cloud has a [Singer] tap that
-[Meltano] or other tools can use to bring the raw exposure data into your data warehouse.
-
-There are instances were you may want to know what variant a user is in, but not necessarily expose them. In these
-instances you can just use the feature flag client.
-
-```ruby
-  variant = $prefab.features.get_string("my-experiment", @tracking_id)
-````
 
 ## Debugging
 
