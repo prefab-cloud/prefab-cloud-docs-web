@@ -59,11 +59,13 @@ Select Flags from the navigation and then choose "Add Simple Flag"
 You can always use the advanced UI for a feature flag. They are the same thing under the covers
 :::
 
-Let's name our flag `features.example-flag`. Prefab suggests that you name things all in lowercase, with `.` as a logical separator and `-` between words. 
+Let's name our flag `features.example-flag`. 
+
+Prefab suggests that you name things all in lowercase, with `.` as a logical separator and `-` between words.
 
 ![image](/img/docs/getting-started/add-flag-details.png)
 
-Now we can take a look at our new feature flag. 
+Click create and now we can take a look at our new feature flag. There are 4 elements to call your attention to.
 
 ![image](/img/docs/getting-started/new-feature-flag-variants.png)
 
