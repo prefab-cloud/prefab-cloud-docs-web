@@ -7,9 +7,9 @@ sidebar_position: 2
 ## What if Prefab.cloud goes down?
 
 Uptime is incredibly important to us at Prefab.Cloud but configuration is critical infrastructure so it's important to have a belt & suspenders approach. 
-A couple sets of suspenders actualy.
+A couple sets of suspenders actually.
 
-### 1. Clients run on LocalStorage
+### 1. Server SDK Clients run on local copies of data
 LocalPrefab.Cloud clients store all config locally so they are robust to network blips or outages. 
 
 If a connection is lost for any reason, your services continue to work as is because they keep config locally, 
