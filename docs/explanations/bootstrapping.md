@@ -24,10 +24,11 @@ test:
 ## Config Load Order
 On startup, config clients load config in the following order, with each level taking precedence over the previous:
 
-1. Classpath Config Files matching `.prefab*config.yaml` in alphanumeric order.
-2. Most current values from PrefabCloud APIs & CDNs as described in [resiliency](resiliency.md)
-4. Local Override Files matching `.prefab*config.yaml`
-5. Emergency Override URL if configured in SDK initialization
+1. Config File `.prefab.default.config.yaml` on the classpath
+2. Prefab Env files such as `.prefab.staging.config.yaml`, `.prefab.test.config.yaml` or `.prefab.k8s.config.yaml` Prefab Env defined in client initialization on the classpath.
+3. Most current values from PrefabCloud APIs & CDNs as described in [resiliency](resiliency.md)
+4. Local Override File `.prefab.overrides.config.yaml` in the override directory (defaults to $HOME)
+4. Local Override Prefab Env Files `.prefab.test.config.yaml` in the override directory (defaults to $HOME)
 
 ### Reconfiguring Config File Locations
 The classpath config file location can be changed with the env var `PREFAB_CONFIG_CLASSPATH_DIR`

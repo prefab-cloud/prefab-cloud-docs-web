@@ -1,6 +1,6 @@
 ---
-title: Resiliency
-sidebar_label: Resiliency
+title: SDK Reliability
+sidebar_label: SDK Reliability
 sidebar_position: 2
 ---
 
@@ -25,21 +25,8 @@ and we can aggressively cache this in CDNs. As long as your services can still c
 Here's how the load order works:
 1. First, the SDKs make a request to the Prefab HTTP APIs, cached by [Fast.ly](https://Fast.ly). This cache is soft purged when you make configuration updates.
 2. If this fails, the SDKs will make a request to the Prefab GRPC APIs, which are running on the same Prefab infrastructure, but are a separate service. 
-3. If that fails, the SDKs  will hit [GoogleCloudStorage](https://cloud.google.com/storage). Your configuration is pushed here as you make updates and Google claims 99.999999999% of object durability here. Again, we front this with a Fast.ly CDN. This cache is soft purged when you make configuration updates. 
-4. Finally, in the case of Fast.ly outage, we switch again try the to a secondary CDN ([Cloudflare](https://www.cloudflare.com/)) fronting the same GCS. This cache has a 10 min TTL.
+3. If this fails, the SDKs will make a request to the Prefab JSON APIs. This would help in the event of a Fast.ly outage.
 
-That's a lot of redundancy. 
-
-### 3. Emergency Override Updates
-The 4 separate load strategies and many layers give us every level of confidence that the SDKs will be able to boot and pull the latest config without issue even if Prefab were to have a major outage.
-
-If Prefab  were to suffer a major outage however, you would be left without a way to make any new updates to configuration until the outage was resolved. 
-With this in mind, we've developed an emergency update solution.
-
-On SDK initialization you can specify a URL of your own from which the SDKs should pull. This URL can your own S3 or GCS storage location. 
-You can place a config bootstrap file in this bucket and it will have the highest precedence in the SDKs. 
-
-This allows you to make emergency override updates without relying on any Prefab architecture at all.
-
+That's a lot of redundancy and we've got more coming soon.
 
 Let's continue the discussion of these bootstrapping files in [bootstrapping](bootstrapping.md)
