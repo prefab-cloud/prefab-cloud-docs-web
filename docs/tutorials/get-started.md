@@ -2,6 +2,8 @@
 title: Get Started
 sidebar_label: Get Started
 ---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Tutorial Intro
 
@@ -116,3 +118,42 @@ You can drag the rules to re-order them.
 :::tip
 For something like a beta group it's often useful to use a re-usable Segment. You can create a segment as a dynamic config.
 :::
+
+
+## Use in Code
+
+To use the flag, all we need to do is initialize a client with the SDK key we created and 
+
+<Tabs groupId="lang">
+<TabItem value="ruby" label="Ruby">
+
+```ruby
+$prefab = Prefab::Client.new(api_key: "SDK-KEY, or set ENV var PREFAB_API_KEY")
+puts $prefab.enabled?("features.example-flag", "123") #true for 5% of the users
+puts $prefab.enabled?("features.example-flag", "456", { "customer-group": "beta" }) #true
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+PrefabCloudClient client = new PrefabCloudClient(new PrefabCloudClient.Options()
+  .setApikey("SDK-KEY, or set ENV var PREFAB_API_KEY"));
+FeatureFlagClient featureFlagClient = client.featureFlagClient();
+
+// true for 5 % of the users
+featureFlagClient
+  .featureIsOnFor("features.example-flag", "123");
+
+// true because of the beta group rule
+featureFlagClient
+  .featureIsOnFor("features.example-flag",
+  "123", 
+  Map.of("customer-group", "beta"); 
+```
+
+</TabItem>
+</Tabs>
+
+
+And that's it! A nice feature flag with a complex rule and a partial rollout in 5 minutes. 
