@@ -4,28 +4,11 @@ sidebar_label: Bootstrapping
 sidebar_position: 3
 ---
 
-## A Config.yaml file
-
-```yaml
-# .prefab.default.config.yaml
-log_level.prefab: info
-
-http.timeout: 30
-log_level.app.controllers.my_controller: info
-featureflag.experiment33: false
-
-java.api.url: "staging-api.example.com"
-
-test:
-  java.api.url: "localmockserver:8080"  # Prefab.new(Prefab::Options.new(default_env: 'test')
-```
-
-
 ## Config Load Order
 On startup, config clients load config in the following order, with each level taking precedence over the previous:
 
-1. Config File `.prefab.default.config.yaml` on the classpath
-2. Prefab Env files such as `.prefab.staging.config.yaml`, `.prefab.test.config.yaml` or `.prefab.k8s.config.yaml` Prefab Env defined in client initialization on the classpath.
+1. [Config File](/docs/explanations/defaults) `.prefab.default.config.yaml` on the classpath
+2. [Prefab Env](/docs/explanations/defaults#prefab-environments) files such as `.prefab.staging.config.yaml`, `.prefab.test.config.yaml` or `.prefab.k8s.config.yaml`
 3. Most current values from PrefabCloud APIs & CDNs as described in [resiliency](resiliency.md)
 4. Local Override File `.prefab.overrides.config.yaml` in the override directory (defaults to $HOME)
 4. Local Override Prefab Env Files `.prefab.test.config.yaml` in the override directory (defaults to $HOME)

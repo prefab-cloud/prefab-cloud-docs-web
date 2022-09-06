@@ -1,77 +1,120 @@
 ---
-title: Defaults
-sidebar_label: Defaults
+title: Default YAML Files
+sidebar_label: Default Files
 sidebar_position: 3
 ---
 
-## The Question Of Defaults
+## Default System
+Prefab has a powerful system of environment defaults that allows you to get started quickly. Let's look.
 
-Let's look at a basic example:
-```ruby
-$prefab.get("my-int")
-```
-
-If we've created a value for the key of `my-int`, the behavior here is obvious. But what should happen if you request a key that 
-doesn't exist?
-
-Broadly, we've got two options. We can:
-1. Return nil
-2. Throw an error
-
-Neither of those sound great, so an alternative path is to make our users specify a default value inline every time they ask for a results. For example:
-```ruby
-$prefab.get("my-int", 30)
-```
-
-This works, but can lead to messy redundancy if we are accessing the same configuration from many locations. 
-
-Prefab's preferred approach is to use a defaults file to share these default values. 
-
+The first file is `.prefab.default.config.yaml`. Prefab will always look for and load a file with this name.
 ```yaml
-#.prefab.default.config.yaml
-my-int: 30
+# .prefab.default.config.yaml
+log_level:
+  _: info
+  myapp.controllers:
+    _: debug
+    chatty_controller: warn
+  google.apis.core.http_command: info
+
+features:
+  api-usage: { "feature_flag": "true", value: true }
+
+redis.url: "redis://localhost:6379"
+
+google:
+  gcp:
+    _: my-staging-project # share the staging project in development
+    big-query:
+      dataset-name: development-dataset # but use a development dataset
 ```
-With our default file on the classpath, we can now simply write:
-```ruby
-$prefab.get("my-int")
-```
-and be sure that if the key isn't available we will still have a value.
 
-## Setting OnNoDefault Behavior
+There are a number of things to note in this example. 
 
-In order to encourage defaults to be set for all configuration values, if a default is not found, Prefab defaults to throwing a
-`NoDefaultValue` error, even if there is a live value. The benefits of this are twofold. First, your code is very unlikely to make 
-it to production in a state where there may be undefined behavior. The second benefit is that you now have an easy to read file 
-with all of your configuration keys in one place.
+### Nesting
+In order to reduce redundant keys, Prefab default files support nesting. In the example above you would access the GCP 
+dataset name with the key `google.gcp.big-query.dataset-name`.
 
-If this behavior isn't what you want, you can change this and have Prefab happily return nils by setting `onNoDefault` in your initializer.
+The `_` key is special and lets us specify a value with a key that has nested attributes. The GCP project `my-staging-project`
+in this example is accessible by the key `google.gcp`.
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+### Feature Flags
+A handy shorthand for feature flags is available to set a default value.
+
+## Prefab Environments
+
+You can optionally add a list of environments to load additional default files. Let's see how to load the files `.prefab.staging.config.yaml`
+and `.prefab.cloud.config.yaml` in that order. 
 
 <Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
 
 ```ruby
-options = Prefab::Options.new(
-  on_no_default: Prefab::Options::ON_NO_DEFAULT::RETURN_NIL ,
-)
-$prefab = Prefab.initialize(options)
+options = Prefab::Options.new(prefab_envs: Rails.env)
+options = Prefab::Options.new(prefab_envs: ["staging", "cloud"])
 ```
+
 </TabItem>
 <TabItem value="java" label="Java">
 
 ```java
-@Singleton
-@Provides
-public Prefab getClient(){
-    PrefabOptions options=new PrefabOptions.Builder();
-    options.setOnNoDefault(PrefabOptions.OnNoDefault.RETURN_NIL);
-    return new Prefab(options.build());
-}
+Options options = new Options()
+  .setPrefabEnvs(List.of("staging", "cloud"))
 ```
+
+</TabItem>
+<TabItem value="shell" label="Shell">
+
+```bash
+PREFAB_ENVS=staging,cloud myapp
+```
+
 </TabItem>
 </Tabs>
+
+To continue our example from above. Let's look at how we might continue the logging and google configuration.
+
+
+In staging, we no longer want the debug level of logging on our controllers. Let's turn that off. 
+We do want to change the big query dataset as well.
+
+```yaml
+# .prefab.staging.config.yaml
+log_level:
+  myapp.controllers:
+    _: info # we will inherit levels from the default file unless overridden
+    
+redis.url: "redis://1.2.3.4:6379"
+
+google:
+  gcp:
+    big-query:
+      dataset-name: staging-dataset
+```
+
+In production, let's change all logging to warn and set both the google configurations to production values. 
+```yaml
+# .prefab.production.config.yaml
+log_level:
+  _: warn
+  myapp.controllers:
+    _: warn
+
+redis.url: "redis://7.8.9.10:6379"
+
+google:
+  gcp:
+    _: my-production-project # use the production project
+    big-query:
+      dataset-name: production-dataset
+```
+
+:::tip
+It's fine to use Prefab for configuration even if you don't think it will ever change. 
+Having it in Prefab means that you always retain the ability to update it on the fly.
+:::
+
+
 
 ## Deleting Values
 The Prefab clients will sometimes return nil even in the default mode. This situation occurs if you have deleted the keys in the Prefab UI. 

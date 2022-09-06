@@ -1,6 +1,7 @@
 ---
 title: Get Started
 sidebar_label: Get Started
+sidebar_position: 1
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -45,8 +46,7 @@ Let's create an SDK Key for now.
 
 ![image](/img/docs/getting-started/add-project-api-key.png)
 
-
-Ok! We're all set, copy this API Key and we'll use it in the next step. We only show you the API key once and only store a 
+Ok! We're all set, copy this API Key down we'll use it in the next step. We only show you the API key once and only store a 
 secure hash on our end. Don't worry if you lose it, you can easily create as many as you like, which makes key rotation a snap.
 
 ![image](/img/docs/getting-started/api-key-created.png)
@@ -149,7 +149,7 @@ featureFlagClient
 featureFlagClient
   .featureIsOnFor("features.example-flag",
   "123", 
-  Map.of("customer-group", "beta"); 
+  Map.of("customer-group", "beta")); 
 ```
 
 </TabItem>
@@ -157,3 +157,5 @@ featureFlagClient
 
 
 And that's it! A nice feature flag with a complex rule and a partial rollout in 5 minutes. 
+
+Read on in [Getting Started on The Client Side](/docs/tutorials/get-started-client) to learn how to use this same flag from the web.

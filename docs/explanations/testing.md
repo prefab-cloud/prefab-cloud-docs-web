@@ -35,7 +35,7 @@ PrefabOptions options = new PrefabOptions.Builder();
 options.setDatasources(LOCAL_ONLY); // default is ALL
 Prefab.initialize(options.build());
 ```
-[Read the full Java testing docs.](/docs/java-sdk/java#testing)
+[Read the full Java testing docs.](/docs/java#testing)
 
 </TabItem>
 </Tabs>
