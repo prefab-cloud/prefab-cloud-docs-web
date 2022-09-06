@@ -5,13 +5,19 @@ sidebar_label: Tracking IDs
 
 ## Tracking IDs
 
-If you are only concerned with logged in users, your `user.id` will work just fine.
+If you are only concerned with logged-in users, your `user.id` will work just fine as the `lookup_key` for feature flags.
 
-If you are working with users as they transistion from anonymous to logged in users however, we need a value that will persist across this transition.
+If you are working with users as they transition from anonymous to logged-in users however, we need a value that will persist across this transition.
 If we don't keep this value consistent, we will run into situations where a new user lands on our site and gets the "Control" variant of an experiment, 
 then logs in and is thrown into a different variant.
 
-Prefab's recommendation is that you create a separate tracking ID to help. This can look like the following:
+:::tip
+Prefab's recommendation is that you create a separate tracking ID the moment you see a request, save it in a cookie and then persist it
+to the user record upon creation.
+:::
+
+
+## Adding a tracking ID to a Rails application
 
 Migration to add a column and initialize it.
 ```ruby

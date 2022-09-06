@@ -1,7 +1,7 @@
 ---
-title: SDK Reliability
-sidebar_label: SDK Reliability
-sidebar_position: 2
+title: Reliability
+sidebar_label: Reliability
+sidebar_position: 3
 ---
 
 ## What if Prefab.cloud goes down?
