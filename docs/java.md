@@ -9,28 +9,43 @@ sidebar_label: Java SDK
 <dependency>
     <groupId>cloud.prefab</groupId>
     <artifactId>prefab-cloud-java</artifactId>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
 </dependency>
 ```
 
 ## Initialize Client
 ```java
-PrefabCloudClient.Options builder = new PrefabCloudClient.Options();
-final PrefabCloudClient prefabCloudClient = new PrefabCloudClient(builder);
+final PrefabCloudClient prefabCloudClient = new PrefabCloudClient(new Options());
 ```
 
 ### Options
 ```java
-PrefabCloudClient.Options options = new PrefabCloudClient.Options()
+Options options = new Options()
   .setNamespace("billing-service.jobs.dunning-job")
   .setConfigOverrideDir(System.getProperty("user.home"))
-  .setApikey(System.getenv("PREFAB_API_KEY"));
+  .setApikey(System.getenv("PREFAB_API_KEY"))
+  .setPrefabDatasource(Options.Datasources.ALL) // Option: Datasources.LOCAL_ONLY
+  .setOnInitializationFailure(Options.OnInitializationFailure.) // Option Options.OnInitializationFailure.UNLOCK
+  .setInitializationTimeoutSec(10);
+```
+
+## Get FeatureFlag
+```java
+  FeatureFlagClient featureFlagClient = prefabCloudClient.featureFlagClient();
+
+  featureFlagClient.featureIsOnFor(
+    "features.example-flag",
+    "123",
+    Map.of("customer-group", "beta")
+  );
 ```
 
 ## Get Config
 ```java
-
-Optional<Prefab.ConfigValue> value = con
+final Optional<Prefab.ConfigValue> configValue = prefabCloudClient.configClient().get("the.key");
+if(configValue.isPresent()){
+  System.out.println(configValue.get().getString());
+}
 ```
 
 
@@ -71,16 +86,4 @@ public class MyClass {
 }
 
 ```
-
-
-```java
-final FeatureFlagClient featureFlagClient = prefabCloudClient.featureFlagClient();
-
-String flagName = "MyFeature";
-print(String.format("%s is %b", flagName, featureFlagClient.featureIsOn(flagName));
-```
-
-Now create a flag named MyFeature in the UI. Drag the slider to 100% and run the program again and run your program again.
-
-
 
