@@ -87,3 +87,5 @@ public class MyClass {
 
 ```
 
+## Testing
+Prefab suggests testing with generous usage of Mockito.

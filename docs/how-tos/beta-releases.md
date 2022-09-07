@@ -31,7 +31,7 @@ A feature flag check will always return false until it is fully enabled or a rul
 <TabItem value="ruby" label="Ruby">
 
 ```ruby
-  if $prefab.enabled?("my-feature-name", current_user.lookup_key, { email: current_user.email })
+  if $prefab.enabled?("my-feature-name", current_user.lookup_key, { email: current_user.email_domain })
     # serve the new feature
   else
     # serve the old version of the page
@@ -42,6 +42,15 @@ A feature flag check will always return false until it is fully enabled or a rul
 <TabItem value="java" label="Java">
 
 ```java
+  if(featureFlagClient.featureIsOnFor(
+      "my-feature-name",
+      user.getLookupKey(),
+      Map.of("email", user.getEmailDomain())
+    )){
+    // serve the new feature
+  } else {
+    // serve the old version of the page
+  }
 ```
 
 </TabItem>
