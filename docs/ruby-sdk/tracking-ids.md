@@ -3,7 +3,7 @@ title: Tracking IDs
 sidebar_label: Tracking IDs
 ---
 
-## Tracking IDs
+## An Opinionated Guide to Identifying Users
 
 If you are only concerned with logged-in users, your `user.id` will work just fine as the `lookup_key` for feature flags.
 
