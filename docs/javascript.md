@@ -29,6 +29,14 @@ await prefab.init(options);
 
 `prefab.init` will request the calculated config and feature flags for the provided `Identity` as a single HTTPS request.
 
+You aren't required to `await` the `init` -- it is a promise, so you can use `.then`, `.finally`, `.catch`, etc. instead if you prefer.
+
+:::tip
+
+While `prefab` is loading, `isEnabled` will return `false` and `get` will return `undefined`.
+
+:::
+
 ## Usage
 
 Now you can use `prefab`'s config and feature flag evaluation, e.g.
