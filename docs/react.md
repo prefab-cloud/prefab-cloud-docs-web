@@ -80,6 +80,12 @@ Here's an explanation of each property
 | `lookupKey`          | N/A                     | this is the key you passed when setting up the provider                                            |
 | `identityAttributes` | N/A                     | this is the identity attributes object you passed when setting up the provider                     |
 
+:::tip
+
+While `loading` is true, `isEnabled` will return `false` and `get` will return `undefined`.
+
+:::
+
 ## Testing
 
 Wrap the component under test in a `PrefabTestProvider` and provide a config object to set up your test state.
