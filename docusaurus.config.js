@@ -57,6 +57,7 @@ const config = {
         logo: {
           alt: 'Prefab Cloud Logo',
           src: 'img/logo.png',
+          href: 'https://www.prefab.cloud/',
         },
         items: [
           {
