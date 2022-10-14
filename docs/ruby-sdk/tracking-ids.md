@@ -19,9 +19,13 @@ to the user record upon creation.
 
 ## Adding a tracking ID to a Rails application
 
+```shell
+rails g migration AddTrackingId
+```
+
 Migration to add a column and initialize it.
 ```ruby
-class AddTrackingId < ActiveRecord::Migration[4.2]
+class AddTrackingId < ActiveRecord::Migration[7.0]
   def change
     add_column :users, :tracking_id, :string
     execute "update users set tracking_id = id" # initialize pre-existing users to have a tracking_id == their user_id
