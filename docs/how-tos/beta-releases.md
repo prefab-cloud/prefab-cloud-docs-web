@@ -64,7 +64,7 @@ Rules are evaluated in order. You can drag and drop rules to rearrange them. The
 
 To model the example rollout above in Prefab.Cloud, we'll create a "Simple Flag".
 
-We'll modify the default `Always True` rule to return `false` so we can safely enable our flag while still returning `false` for everyone for now.
+We'll modify the default `When Active` rule to return `false` so we can safely ship and activate our flag while still returning `false` for everyone for now.
 
 Toggle the flag to active. Sync the changes to the API.
 
@@ -82,7 +82,7 @@ Once time has passed and we're ready to open this up further, we'll add our next
 
 Use a `Property Ends With One Of` rule to target the `email` property and set the criteria values to `@YOUR_DOMAIN.com`. When it matches, we'll serve variant `true`.
 
-Click "Create Rule" and then move this rule up above our `Always True` rule and sync changes to the API.
+Click "Create Rule" and sync changes to the API.
 
 Time passes while the org tests the feature. Once we're confident that we're ready for customers to see this, we add our final rule.
 
@@ -90,9 +90,9 @@ Time passes while the org tests the feature. Once we're confident that we're rea
 
 ### A growing percentage of users
 
-We'll modify our `Always True` rule to do a `Percentage rollout`. We'll start small -- maybe `5%` for the `true` variant and `95%` for the false variant.
+We'll modify our `When Active` allocation to do a `Percentage rollout`. We'll start small -- maybe `5%` for the `true` variant and `95%` for the false variant.
 
-![percentage screenshot](/img/docs/example-beta-release-rules/percentage-rollout.jpg)
+![percentage screenshot](/img/docs/example-beta-release-rules/percentage-rollout.png)
 
 Sync your changes.
 
@@ -122,4 +122,4 @@ Once you've ramped the percentage up to `100%` for the `Always True` rule and yo
 
 Here's all the rules above and the exception as seen in the UI
 
-![example screenshot](/img/docs/example-beta-release-rules/all-rules.jpg)
+![example screenshot](/img/docs/example-beta-release-rules/all-rules.png)

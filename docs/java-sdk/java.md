@@ -1,19 +1,22 @@
 ---
 title: Java SDK
 sidebar_label: Java SDK
+sidebar_position: 1
 ---
+[Github](https://github.com/prefab-cloud/prefab-cloud-java) | [Maven Repository](https://mvnrepository.com/artifact/cloud.prefab/prefab-cloud-java)
 
 ## Getting Started With the Java SDK
 
+## Install the latest version
 ```xml
 <dependency>
     <groupId>cloud.prefab</groupId>
     <artifactId>prefab-cloud-java</artifactId>
-    <version>0.1.6</version>
+    <version>0.1.7</version>
 </dependency>
 ```
 
-## Initialize Client
+## Initialize the client
 ```java
 final PrefabCloudClient prefabCloudClient = new PrefabCloudClient(new Options());
 ```
@@ -50,6 +53,8 @@ if(configValue.isPresent()){
 
 
 ## Typical Usage 
+We recommend using the PrefabCloudClient as a singleton in your application. This is the most common way to use the SDK.
+
 ```java
 // Micronaut Factory
 @Factory
@@ -87,5 +92,56 @@ public class MyClass {
 
 ```
 
+
+## Live Values
+
+Live values are a convenient and clear way to use configuration throughout your system. Inject a prefab client and get live values for the configuration keys you need.
+
+In code, `.get()` will return the value. These values will update automatically when the configuration is updated in Prefab Cloud.
+
+### Get a live value
+```yaml
+# .prefab.config.default.yaml
+sample:
+  long: 123
+  string: "hello"
+```
+
+```java
+import java.util.function.Supplier;
+
+class MyClass {
+
+  private Supplier<String> sampleString;
+  private Supplier<Long> sampleLong;
+  
+  @Inject
+  public MyClass(ConfigClient configClient) {
+    this.sampleString = configClient.liveString("sample.string");
+    this.sampleLong = configClient.liveLong("sample.long");
+  }
+  
+  public String test(){
+    return "I got %s and %d from Prefab Cloud.".formatted(sampleString.get(), sampleLong.get());
+  }
+}
+```
+
+
+
 ## Testing
-Prefab suggests testing with generous usage of Mockito.
+Prefab suggests testing with generous usage of Mockito. We also provide a useful `FixedValue` for testing Live Values.
+
+```java
+  @Test
+  void testPrefab(){
+    ConfigClient mockConfigClient = mock(ConfigClient.class);
+    when(mockConfigClient.liveString("sample.string")).thenReturn(FixedValue.of("test value"));
+    when(mockConfigClient.liveLong("sample.long")).thenReturn(FixedValue.of(123L));
+
+    MyClass myClass = new MyClass(mock(ConfigClient.class));
+
+    // test business logic
+
+  }
+```
