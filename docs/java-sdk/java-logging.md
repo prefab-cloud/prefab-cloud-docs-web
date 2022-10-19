@@ -8,7 +8,8 @@ sidebar_position: 2
 
 Setting up a dynamic logger with Prefab is easy. 
 
-We need to tell give our `ConfigClient` a LoggingListener. 
+We need to give our `ConfigClient` a LoggingListener when we create it. This listener will be called whenever the config changes, 
+it will detect LogLevel changes, find the appropriate logger based on the config key, and map the LogLevel to the appropriate Logger specific level.
 
 Prefab comes with support out of the box for most common logging platforms:
 
@@ -45,3 +46,9 @@ public class PrefabFactory {
   }
 }
 ```
+
+## Profit
+
+Now we can set our log levels dynamically in the UI and they will update immediately.
+
+![example screenshot](/img/docs/server-sdks/log-levels-java.png)
