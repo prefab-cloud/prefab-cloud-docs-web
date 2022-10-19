@@ -35,7 +35,7 @@ client = Prefab::Client.initialize(options)
 Options options = new Options()
   .setPrefabDatasource(Options.Datasources.LOCAL_ONLY)
 ```
-[Read the full Java testing docs.](/docs/java#testing)
+[Read the full Java testing docs.](/docs/java-sdk/java#testing)
 
 </TabItem>
 </Tabs>
