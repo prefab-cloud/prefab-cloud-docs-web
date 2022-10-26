@@ -115,7 +115,7 @@ Add the following:
 
 ```yaml
 # .prefab.default.config.yaml
-log_level.prefab: info
+log-level.prefab: info
 my-first-int-config: 30
 my-first-feature-flag: false
 ```
@@ -243,9 +243,9 @@ You can now control logging at any level of your stack. To test it out, edit you
 
 ```yaml
 # .prefab.default.config.yaml
-log_level.app.controllers.my_controller: info
-log_level.app.controllers.my_controller.index: warn
-log_level.app.controllers.my_controller.show: debug
+log-level.app.controllers.my_controller: info
+log-level.app.controllers.my_controller.index: warn
+log-level.app.controllers.my_controller.show: debug
 ```
 
 ```ruby
@@ -333,7 +333,7 @@ $prefab.enabled? "new-feature", any_consistent_id
 
 ## Debugging
 
-You can control the Prefab client's log level by changing the configuration value of `log_level.prefab`. In the rare
+You can control the Prefab client's log level by changing the configuration value of `log-level.prefab`. In the rare
 case that you are trying to debug issues that occur before this config file has been read, set env var
 
 ```bash

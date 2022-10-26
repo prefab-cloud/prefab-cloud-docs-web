@@ -10,7 +10,7 @@ Prefab has a powerful system of environment defaults that allows you to get star
 The first file is `.prefab.default.config.yaml`. Prefab will always look for and load a file with this name.
 ```yaml
 # .prefab.default.config.yaml
-log_level:
+log-level:
   _: info
   myapp.controllers:
     _: debug
@@ -80,7 +80,7 @@ We do want to change the big query dataset as well.
 
 ```yaml
 # .prefab.staging.config.yaml
-log_level:
+log-level:
   myapp.controllers:
     _: info # we will inherit levels from the default file unless overridden
     
@@ -95,7 +95,7 @@ google:
 In production, let's change all logging to warn and set both the google configurations to production values. 
 ```yaml
 # .prefab.production.config.yaml
-log_level:
+log-level:
   _: warn
   myapp.controllers:
     _: warn
