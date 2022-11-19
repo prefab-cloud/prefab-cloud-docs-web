@@ -36,7 +36,7 @@ with some combination of [Prefab Envs](/docs/explanations/defaults#prefab-enviro
 ## Helpful Logging
 
 Understanding which config your app is using can take some getting used to. To help Prefab has quite a lot of logging. 
-You can turn it all on with `log-level.prefab: debug` in your `.prefab.default.config.yaml`.
+You can turn it all on with `log-level.cloud.prefab: debug` in your `.prefab.default.config.yaml`.
 
 Here you can see the: key, value, type, match and source for each config value.
 The source tells us whether we are using a value from a config file or an API value. 
@@ -57,7 +57,7 @@ log-level                                          | debug                      
 log-level.app                                      | info                                | String  | Match: default                 | Source: remote_cdn_api
 log-level.app.controllers.documentation_controller | debug                               | String  | Match: default                 | Source: /Users/user/.prefab.overrides.config.yaml
 log-level.google.apis.core.http_command            | info                                | String  | Match: default                 | Source: ./.prefab.default.config.yaml
-log-level.prefab                                   | debug                               | String  | Match: default                 | Source: /Users/user/.prefab.overrides.config.yaml
+log-level.cloud.prefab                             | debug                               | String  | Match: default                 | Source: /Users/user/.prefab.overrides.config.yaml
 redis.url                                          | redis://localhost:6379              | String  | Match: env:Y                   | Source: remote_cdn_api
 ```
 
