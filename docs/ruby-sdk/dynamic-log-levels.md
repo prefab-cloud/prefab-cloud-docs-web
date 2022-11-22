@@ -32,12 +32,12 @@ Finally we can start adjusting log levels.
 ```yaml
 #.prefab.default.config.yaml
 log-level:
-  _: debug
-  prefab: debug
+  _: debug  
+  cloud.prefab: debug  
   app.controllers.prefab_controller: debug
 ```
 
-Our results speak for themselves. You can see that we've enabled debug logging for the prefab internals, rails internals and our application code.
+Our results speak for themselves. You can see that we've enabled debug for the prefab internals, rails internals and our application code.
 
 ```shell
 DEBUG 2022-09-06 13:01:54 -0400: prefab.config.sse:  Received event: #<struct SSE::StreamEvent type=:message, id=nil, last_event_id=nil>
@@ -56,7 +56,7 @@ If we set our levels to `info`, we see much less logging.
 #.prefab.default.config.yaml
 log-level:
   _: info
-  prefab: info
+  cloud.prefab: info
   app.controllers.prefab_controller: info
 ```
 
