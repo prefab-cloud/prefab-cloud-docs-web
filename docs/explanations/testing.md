@@ -38,6 +38,16 @@ Options options = new Options()
 [Read the full Java testing docs.](/docs/java-sdk/java#testing)
 
 </TabItem>
+<TabItem value="elixir" label="Elixir">
+
+```elixir
+options = Prefab.Options.new(prefab_datasources: :local_only)
+
+client = Prefab.Client.new(options)
+```
+[Read the full Elixir testing docs.](/docs/elixir-sdk/elixir#testing)
+
+</TabItem>
 </Tabs>
 
 ### Client-side Libraries

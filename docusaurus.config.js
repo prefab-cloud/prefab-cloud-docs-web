@@ -114,7 +114,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ['java', 'ruby'],
+        additionalLanguages: ['java', 'ruby', 'elixir'],
       },
     }),
 };

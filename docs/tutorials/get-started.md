@@ -46,7 +46,7 @@ Let's create an SDK Key for now.
 
 ![image](/img/docs/getting-started/add-project-api-key.png)
 
-Ok! We're all set, copy this API Key down we'll use it in the next step. We only show you the API key once and only store a 
+Ok! We're all set, copy this API Key down we'll use it in the next step. We only show you the API key once and only store a
 secure hash on our end. Don't worry if you lose it, you can easily create as many as you like, which makes key rotation a snap.
 
 ![image](/img/docs/getting-started/api-key-created.png)
@@ -62,7 +62,7 @@ Now that we have an API key, we're ready to go. Select Flags from the navigation
 You can always use the advanced UI for a feature flag even if you start simple. They are the same thing under the covers
 :::
 
-Let's name our flag `features.example-flag`. 
+Let's name our flag `features.example-flag`.
 
 Prefab suggests that you name things all in lowercase, with `.` as a logical separator and `-` between words.
 
@@ -75,16 +75,16 @@ Click create and now we can take a look at our new feature flag. There are 4 ele
 There are 4 areas to note:
 
 1. The 'Simple Flag' has automatically created two boolean variants for us. Feature flags can return strings or numbers as well, but booleans are most common.
-2. Our status box says 'Sync to API' this tells us that we have pending changes that are not in the API. 
-3. The environment we created is here. This is where we will turn the flag on. 
+2. Our status box says 'Sync to API' this tells us that we have pending changes that are not in the API.
+3. The environment we created is here. This is where we will turn the flag on.
 4. Code snippets live here, making it easy to copy out the correct code into your application.
 
 
 ## Configuring our Feature Flag
 
-Time for some fun. Let's set up a feature flag that will show us a bit of the power of Prefab. 
-For this example, let's say that we have a new thing we're ready to ship. We want to get ship to everyone in our Beta group. 
-Additionally, since the beta group might not reflect our whole user base, so we also want to rollout to 5% of all traffic. 
+Time for some fun. Let's set up a feature flag that will show us a bit of the power of Prefab.
+For this example, let's say that we have a new thing we're ready to ship. We want to get ship to everyone in our Beta group.
+Additionally, since the beta group might not reflect our whole user base, so we also want to rollout to 5% of all traffic.
 
 ![image](/img/docs/getting-started/ff-active.png)
 There are 3 areas to note:
@@ -122,7 +122,7 @@ For something like a beta group it's often useful to use a re-usable Segment. Yo
 
 ## Use in Code
 
-To use the flag, all we need to do is initialize a client with the SDK key we created and 
+To use the flag, all we need to do is initialize a client with the SDK key we created and
 
 <Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
@@ -148,14 +148,33 @@ featureFlagClient
 // true because of the beta group rule
 featureFlagClient
   .featureIsOnFor("features.example-flag",
-  "123", 
-  Map.of("customer-group", "beta")); 
+  "123",
+  Map.of("customer-group", "beta"));
+```
+
+</TabItem>
+<TabItem value="elixir" label="Elixir">
+
+```elixir
+options = Prefab.Options.new(api_key: "SDK-KEY, or set ENV var PREFAB_API_KEY")
+client = Prefab.Client.new(options)
+
+# true for 5% of the users
+Prefab.Client.enabled?(client, "features.example-flag", lookup_key: "123")
+
+# true because of the beta group rule
+Prefab.Client.enabled?(
+  client,
+  "features.example-flag",
+  lookup_key: "456",
+  attributes: %{"customer-group" => "beta"}
+)
 ```
 
 </TabItem>
 </Tabs>
 
 
-And that's it! A nice feature flag with a complex rule and a partial rollout in 5 minutes. 
+And that's it! A nice feature flag with a complex rule and a partial rollout in 5 minutes.
 
 Read on in [Getting Started on The Client Side](/docs/tutorials/get-started-client) to learn how to use this same flag from the web.

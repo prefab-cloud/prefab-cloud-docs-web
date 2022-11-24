@@ -142,9 +142,9 @@ my-first-feature-flag is: false
 Now create a config named `my-first-int-config` in the Prefab UI. Set a default value to 50 and sync your change to the
 API.
 
-Add a feature flag named `my-first-feature-flag` in the Prefab UI. Add boolean variants of `true` and `false`
+Add a feature flag named `my-first-feature-flag` in the Prefab UI. Add boolean variants of `true` and `false`.
 Set the inactive variant to `false`, make the flag active and add a rule of type `ALWAYS_TRUE` with the variant to serve
-as `true`
+as `true`.
 Remember to sync your change to the API.
 
 Run your command again and you should see:
@@ -199,13 +199,13 @@ $prefab.get("ff-with-int", default_int_value)
 
 ## Namespaces
 
-Namespaces allow you to share config amongst many applications while still allowing you to override when necessary.
+Namespaces allow you to share config between many applications while still allowing you to override when necessary.
 
 For instance, let's assume that all our code shares an HTTP library. We can configure the HTTP library to get its retry
 count & timeout duration from our config store. We'll set `http.connection.retries` and `http.connection.timeout` in the
 default namespace.
 
-All of our apps should initialize their config store in a namespace. For instance our User MicroService can initialize
+All of our apps should initialize their config store in a namespace. For instance our User service can initialize
 with:
 
 ```ruby
@@ -221,13 +221,13 @@ If our service namespace is `services.user-service.web` it will match overrides 
 , `services.user-service`
 and `services.user-service.web`, but not `services.user-service.cron` or `services.user-service.web.tools`.
 
-Let's imagine that the UserService starts to go down because too many requests are timing out to a 3rd party service. We
+Let's imagine that the `UserService` starts to go down because too many requests are timing out to a 3rd party service. We
 can quickly reduce the `http.connection.timeout` for our `services.user-service` namespace and solve the issue without
 pushing code or restarting.
 
 ## Logging
 
-Prefab's Ruby Client comes with a powerful upgrade to you Rails logging stack.
+Prefab's Ruby Client comes with a powerful upgrade to your Rails logging stack.
 
 To use it, set your Rails logger to `Prefab::Client.log`
 
@@ -320,7 +320,7 @@ do that with Prefab.
 One approach is to simply use dynamic config. We can use a floating point number to specify the percent of traffic we
 want to rollout to and then evaluate that against a random number to determine whether to run the new code.
 
-```ruby 
+```ruby
 if rand() < @config.get_float("percent-to-rollout")
   do_new_pipeline
 ```
