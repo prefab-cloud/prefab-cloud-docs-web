@@ -37,7 +37,7 @@ log-level:
   app.controllers.prefab_controller: debug
 ```
 
-Our results speak for themselves. You can see that we've enabled debug logging for the prefab internals, rails internals and our application code.
+Our results speak for themselves. You can see that we've enabled debug for the prefab internals, rails internals and our application code.
 
 ```shell
 DEBUG 2022-09-06 13:01:54 -0400: cloud.prefab.client.sse:  Received event: #<struct SSE::StreamEvent type=:message, id=nil, last_event_id=nil>
