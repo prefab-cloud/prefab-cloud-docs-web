@@ -48,7 +48,7 @@ INFO  2022-09-06 09:23:53 -0400: prefab:  Load /Users/user/.prefab.overrides.con
 DEBUG 2022-09-06 09:23:53 -0400: prefab:  Initialize ConfigClient: AcquiredWriteLock
 INFO  2022-09-06 09:23:55 -0400: prefab:  Found new checkpoint with highwater id 16621306673926944 from remote_cdn_api in project X environment: Y and namespace: 'myapp.web'
 INFO  2022-09-06 09:23:55 -0400: prefab:  Unlocked Config via remote_cdn_api
-INFO  2022-09-06 09:23:55 -0400: prefab:  
+INFO  2022-09-06 09:23:55 -0400: prefab:
 accounting.api-uage.error-on-unknown-project       | false                               | FalseCl | Match: default                 | Source: ./.prefab.default.config.yaml
 features.api-usage                                 | <Prefab::FeatureFlag: active: true, | Prefab: | Match: env:Y                   | Source: remote_cdn_api
 google.gcp.big-query.dataset_name                  | development_dataset                 | String  | Match: default                 | Source: ./.prefab.default.config.yaml
@@ -57,7 +57,7 @@ log-level                                          | debug                      
 log-level.app                                      | info                                | String  | Match: default                 | Source: remote_cdn_api
 log-level.app.controllers.documentation_controller | debug                               | String  | Match: default                 | Source: /Users/user/.prefab.overrides.config.yaml
 log-level.google.apis.core.http_command            | info                                | String  | Match: default                 | Source: ./.prefab.default.config.yaml
-log-level.cloud.prefab                             | debug                               | String  | Match: default                 | Source: /Users/user/.prefab.overrides.config.yaml
+log-level.cloud.prefab                             | debug                               | String  | Match: default                 | Source: ./.prefab.default.config.yaml
 redis.url                                          | redis://localhost:6379              | String  | Match: env:Y                   | Source: remote_cdn_api
 ```
 
