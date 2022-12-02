@@ -27,6 +27,8 @@ options = Prefab::Options.new(
   namespace: "",
   logdev: $stdout,
   log_formatter: Prefab::Options::DEFAULT_LOG_FORMATTER,
+  # Optional. `log_prefix` can prefix your log lines. `app.controllers.my_controller.index` would be `com.yourapp.app.controllers.my_controller.index`
+  log_prefix: "com.yourapp",
   # one of
   # - Prefab::Options::ON_NO_DEFAULT::RAISE -- raise an exception when no value or default is available
   # - Prefab::Options::ON_NO_DEFAULT::RETURN_NIL -- return nil if no value or default is available
@@ -115,7 +117,7 @@ Add the following:
 
 ```yaml
 # .prefab.default.config.yaml
-log-level.prefab: info
+log-level.cloud.prefab: info
 my-first-int-config: 30
 my-first-feature-flag: false
 ```
@@ -333,7 +335,7 @@ $prefab.enabled? "new-feature", any_consistent_id
 
 ## Debugging
 
-You can control the Prefab client's log level by changing the configuration value of `log-level.prefab`. In the rare
+You can control the Prefab client's log level by changing the configuration value of `log-level.cloud.prefab`. In the rare
 case that you are trying to debug issues that occur before this config file has been read, set env var
 
 ```bash
