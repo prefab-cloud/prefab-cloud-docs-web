@@ -19,16 +19,16 @@ $prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
 
 ### Client Initialization Options
 
-You can initialize your client with options if you want more control. Here are the defaults with explanations.
+For more control, you can initialize your client with options. Here are the defaults with explanations.
 
 ```ruby
 options = Prefab::Options.new(
   api_key: ENV['PREFAB_API_KEY'],
   namespace: "",
   logdev: $stdout,
-  log_formatter: Prefab::Options::DEFAULT_LOG_FORMATTER,
   # Optional. `log_prefix` can prefix your log lines. `app.controllers.my_controller.index` would be `com.yourapp.app.controllers.my_controller.index`
   log_prefix: "com.yourapp",
+  log_formatter: Prefab::Options::DEFAULT_LOG_FORMATTER,
   # one of
   # - Prefab::Options::ON_NO_DEFAULT::RAISE -- raise an exception when no value or default is available
   # - Prefab::Options::ON_NO_DEFAULT::RETURN_NIL -- return nil if no value or default is available
@@ -50,8 +50,7 @@ $prefab = Prefab::Client.new(options)
 
 ### Rails Applications
 
-If your application is using Rails put your initializer in `config/initializers/prefab.rb`. For many popular forking
-webservers, read on.
+For Rails applications, put your initialization code in `config/initializers/prefab.rb`. For many popular forking webservers, read on.
 
 If you are going to use dynamic configuration in files like `staging.rb` that are loaded before initializers, you can initialize Prefab in `application.rb`
 ```ruby
@@ -59,7 +58,7 @@ If you are going to use dynamic configuration in files like `staging.rb` that ar
 module MyApplication
   class Application < Rails::Application
     #...
-    $prefab = Prefab::Client.new
+    $prefab = Prefab::Client.new(options)
   end
 end
 ```
@@ -74,7 +73,7 @@ If using workers in Unicorn, you can initialize inside an after_fork hook in you
 
 ```ruby
 after_fork do |server, worker|
-  $prefab = Prefab::Client.new
+  $prefab = Prefab::Client.new(options)
 end
 ```
 
@@ -82,7 +81,7 @@ If using workers in Puma, you can initialize inside an on_worker_boot hook in yo
 
 ```ruby
 on_worker_boot do
-  $prefab = Prefab::Client.new
+  $prefab = Prefab::Client.new(options)
 end
 ```
 
