@@ -57,7 +57,7 @@ log-level:
 ```
 
 :::tip
-If the values are in your `.prefab.default.config.yaml` you'll need to restart the server to see new values. If you change these values on the server, they will update automatically.
+If the values are in your `.prefab.default.config.yaml` you'll need to restart the server to see new values ([learn more about defaults](/docs/explanations/defaults)). If you change these values on the server, they will update automatically.
 :::
 
 Now we are free to adjust our log levels, down to the controller or method level in realtime. Invaluable for debugging!

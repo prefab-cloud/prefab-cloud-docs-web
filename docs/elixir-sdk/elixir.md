@@ -110,6 +110,8 @@ my-first-int-config: 30
 my-first-feature-flag: false
 ```
 
+[Learn more about defaults](/docs/explanations/defaults).
+
 ### Getting Started
 
 ```elixir
@@ -235,7 +237,8 @@ Prefab.Client.error(client, message)
 Prefab.Client.critical(client, message)
 ```
 
-You can now control logging at any level of your stack. To test it out, edit your `.prefab.default.config.yaml`
+You can now control logging at any level of your stack. For convenience, we'll set these as local defaults in `.prefab.default.config.yaml` ([learn more](/docs/explanations/defaults)) but you can set and tweak these on-the-fly in the Prefab web app.
+
 
 ```yaml
 # .prefab.default.config.yaml

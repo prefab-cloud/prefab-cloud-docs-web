@@ -121,6 +121,8 @@ my-first-int-config: 30
 my-first-feature-flag: false
 ```
 
+[Learn more about defaults](/docs/explanations/defaults).
+
 ### Getting Started
 
 ```ruby
