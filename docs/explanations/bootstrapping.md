@@ -10,7 +10,7 @@ On startup, config clients load config in the following order, with each level t
 1. Default [Config File](/docs/explanations/defaults) `.prefab.default.config.yaml` on the classpath
 2. [Prefab Env](/docs/explanations/defaults#prefab-environments) config files such as `.prefab.staging.config.yaml`, `.prefab.test.config.yaml` or `.prefab.k8s.config.yaml`
 3. Most current values from PrefabCloud APIs & CDNs as described in [how the server SDK works](server-sdks.md)
-4. Local Override File `.prefab.overrides.config.yaml` in the override directory (defaults to $HOME)
+4. Local Override File `.prefab.default.config.yaml` in the override directory (defaults to $HOME)
 4. Local Override Prefab Env Files `.prefab.test.config.yaml` in the override directory (defaults to $HOME)
 
 ### Reconfiguring Config File Locations
@@ -24,7 +24,7 @@ The local override config file location can be changed with env var `PREFAB_CONF
 All API values will take precedence over the values that come from your default files. 
 
 For local development, in can be helpful to have your own settings that are not checked into source control. This is the time for an
-override file. Name your file `.prefab.overrides.config.yaml` and put it in your home directory. These values will have a higher precedence
+override file. Name your file `.prefab.default.config.yaml` and put it in your home directory. These values will have a higher precedence
 than values from the API.
 
 :::note
@@ -44,7 +44,7 @@ The match tells us whether there is a value defined for the environment or names
 ```bash
 DEBUG 2022-09-06 09:23:53 -0400: prefab:  Initialize ConfigClient
 INFO  2022-09-06 09:23:53 -0400: prefab:  Load ./.prefab.default.config.yaml
-INFO  2022-09-06 09:23:53 -0400: prefab:  Load /Users/user/.prefab.overrides.config.yaml
+INFO  2022-09-06 09:23:53 -0400: prefab:  Load /Users/user/.prefab.default.config.yaml
 DEBUG 2022-09-06 09:23:53 -0400: prefab:  Initialize ConfigClient: AcquiredWriteLock
 INFO  2022-09-06 09:23:55 -0400: prefab:  Found new checkpoint with highwater id 16621306673926944 from remote_cdn_api in project X environment: Y and namespace: 'myapp.web'
 INFO  2022-09-06 09:23:55 -0400: prefab:  Unlocked Config via remote_cdn_api
@@ -53,9 +53,9 @@ accounting.api-uage.error-on-unknown-project       | false                      
 features.api-usage                                 | <Prefab::FeatureFlag: active: true, | Prefab: | Match: env:Y                   | Source: remote_cdn_api
 google.gcp.big-query.dataset_name                  | development_dataset                 | String  | Match: default                 | Source: ./.prefab.default.config.yaml
 google.gcp.project-id                              | gcp-prod                            | String  | Match: default                 | Source: ./.prefab.default.config.yaml
-log-level                                          | debug                               | String  | Match: default                 | Source: /Users/user/.prefab.overrides.config.yaml
+log-level                                          | debug                               | String  | Match: default                 | Source: /Users/user/.prefab.default.config.yaml
 log-level.app                                      | info                                | String  | Match: default                 | Source: remote_cdn_api
-log-level.app.controllers.documentation_controller | debug                               | String  | Match: default                 | Source: /Users/user/.prefab.overrides.config.yaml
+log-level.app.controllers.documentation_controller | debug                               | String  | Match: default                 | Source: /Users/user/.prefab.default.config.yaml
 log-level.google.apis.core.http_command            | info                                | String  | Match: default                 | Source: ./.prefab.default.config.yaml
 log-level.cloud.prefab                             | debug                               | String  | Match: default                 | Source: ./.prefab.default.config.yaml
 redis.url                                          | redis://localhost:6379              | String  | Match: env:Y                   | Source: remote_cdn_api

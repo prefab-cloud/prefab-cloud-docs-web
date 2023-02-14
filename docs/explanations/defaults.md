@@ -17,8 +17,7 @@ log-level:
     chatty_controller: warn
   google.apis.core.http_command: info
 
-features:
-  api-usage: { "feature_flag": "true", value: true }
+api-usage: { "feature_flag": "true", value: true }
 
 redis.url: "redis://localhost:6379"
 
@@ -39,6 +38,7 @@ The `_` key is special and lets us specify a value with a key that has nested at
 in this example is accessible by the key `google.gcp`.
 
 ### Feature Flags
+
 A handy shorthand for feature flags is available to set a default value.
 
 ## Prefab Environments

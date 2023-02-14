@@ -27,7 +27,7 @@ $prefab = Prefab::Client.new(options)
 Rails.logger = $prefab.log
 ```
 
-Finally we can start adjusting log levels. 
+Finally we can start adjusting log levels. For convenience, we'll set these in our local defaults ([learn more](/docs/explanations/defaults)) but you can set and tweak these on-the-fly in the Prefab web app.
 
 ```yaml
 #.prefab.default.config.yaml
