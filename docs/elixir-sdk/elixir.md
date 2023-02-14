@@ -291,7 +291,7 @@ fatal  => :critical
 ## Local Overrides
 
 It can be very useful to modify your defaults locally without changing the defaults file or values in the API. To do
-this, add a file in your home directory or classpath called `.prefab.overrides.config.yaml`
+this, add a file in your home directory or classpath called `.prefab.default.config.yaml`
 
 ```yaml
 # .prefab.default.config.yaml
@@ -299,7 +299,7 @@ mycorp.auth.api.url: "auth.staging.mycorp.com"
 ```
 
 ```yaml
-#~.prefab.overrides.config.yaml
+#~/.prefab.default.config.yaml
 mycorp.auth.api.url: "localhost:9090"
 ```
 
