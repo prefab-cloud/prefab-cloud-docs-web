@@ -13,6 +13,8 @@ import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
 ## Initialize Client
 
+If you set `PREFAB_API_KEY` as an environment variable, initializing the client is as easy as
+
 ```ruby
 $prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
 ```
@@ -50,33 +52,26 @@ $prefab = Prefab::Client.new(options)
 
 ### Rails Applications
 
-For Rails applications, put your initialization code in `config/initializers/prefab.rb`. For many popular forking webservers, read on.
+Initializing Prefab in your `application.rb` will allow you to reference dynamic configuration in your environment (e.g. `staging.rb`) and initializers. This is useful for setting environment-specific config like your redis connection URL.
 
-If you are going to use dynamic configuration in files like `staging.rb` that are loaded before initializers, you can initialize Prefab in `application.rb`
 ```ruby
 #application.rb
 module MyApplication
   class Application < Rails::Application
     #...
+
     $prefab = Prefab::Client.new(options)
   end
 end
 ```
 
 
-
-### Special Considerations with Unicorn & Puma when using workers
+#### Special Considerations with Unicorn & Puma when using workers
 
 Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork. You do not need to do this if you are only using threads and not workers.
 
-If using workers in Unicorn, you can initialize inside an after_fork hook in your unicorn.rb config file:
-
-```ruby
-after_fork do |server, worker|
-  $prefab = Prefab::Client.new(options)
-end
-```
-
+<Tabs groupId="lang">
+<TabItem value="puma" label="Puma">
 If using workers in Puma, you can initialize inside an on_worker_boot hook in your puma.rb config file:
 
 ```ruby
@@ -84,6 +79,18 @@ on_worker_boot do
   $prefab = Prefab::Client.new(options)
 end
 ```
+</TabItem>
+
+<TabItem value="unicorn" label="Unicorn">
+If using workers in Unicorn, you can initialize inside an after_fork hook in your unicorn.rb config file:
+
+```ruby
+after_fork do |server, worker|
+  $prefab = Prefab::Client.new(options)
+end
+```
+</TabItem>
+</Tabs>
 
 ## Basic Usage
 
@@ -171,13 +178,13 @@ Second, this key is used to make sure that percent rollout evaluations are consi
 Attributes come into play when using the `Property Is One Of` and similar rule criteria.
 
 ```ruby
-lookup_key = "user-1234"
+lookup_key = "user-123"
 identity_attributes = {
-                        team_id: 432,
-                        user_id: 123,
-                        subscription_level: 'pro',
-                        email: "alice@example.com"
-                      }
+  team_id: 432,
+  user_id: 123,
+  subscription_level: 'pro',
+  email: "alice@example.com"
+}
 result = $prefab.enabled? "my-first-feature-flag", lookup_key, identity_attributes
 
 puts "my-first-feature-flag is: #{result} for #{lookup_key}"
@@ -302,7 +309,7 @@ Prefab is designed to be extremely resilient. The client will try to pull live v
 4. Prefab Streaming APIs
 
 This strategy ensures the utmost reliability for your clients being able to pull live values, even in the case of a
-major outtage of the Prefab APIs.
+major outage of the Prefab APIs.
 
 But wait, there's more.
 
@@ -324,11 +331,11 @@ want to rollout to and then evaluate that against a random number to determine w
 ```ruby
 if rand() < @config.get_float("percent-to-rollout")
   do_new_pipeline
+end
 ```
 
 This approach works fine, but each evaluation of `rand()` will get you a different result. Sometimes this is what you
-want, but if you'd like the rollout to keep server, requests, users in the new pipeline you may want to use a feature
-flag.
+want, but if you'd like the rollout to be sticky and keep server, requests, users in the new pipeline you may want to use a feature flag.
 
 ```ruby
 $prefab.enabled? "new-feature", any_consistent_id
@@ -355,7 +362,7 @@ $prefab = Prefab::Client.initialize(options)
 
 If you need to test multiple scenarios that depend on a single config or feature key, you can use a mock or stub to change the Prefab value.
 
-Example:
+### Example Test
 
 Imagine we want to test a `batches` method on our `Job` class. `batches` depends on `job.batch.size` and the value for `job.batch.size` in our default config file is `3`.
 

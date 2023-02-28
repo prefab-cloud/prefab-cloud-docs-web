@@ -18,7 +18,7 @@ If you're using React, consider using our [React Client](/docs/react) instead.
 
 ## Initialize client
 
-Initialize prefab with your api key and an `Identity` for the current user/visitor:
+Initialize prefab with your Client API key and an `Identity` for the current user/visitor:
 
 ```javascript
 import prefab, { Identity } from '@prefab-cloud/prefab-cloud-js'

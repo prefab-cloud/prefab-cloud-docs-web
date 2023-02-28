@@ -8,7 +8,7 @@ sidebar_position: 1
 
 The Prefab server side SDK are all built with the 3 goals in mind: 
 1. Very fast lookups that do not require any remote calls. 
-2. Being highly resilient in the case of outtages
+2. Being highly resilient in the case of outages
 3. Near instant updates when changes are made
 
 The architecture to do this looks like this:
