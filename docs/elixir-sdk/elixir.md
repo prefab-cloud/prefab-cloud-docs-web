@@ -316,7 +316,7 @@ Prefab is designed to be extremely resilient. The client will try to pull live v
 4. Prefab Streaming APIs
 
 This strategy ensures the utmost reliability for your clients being able to pull live values, even in the case of a
-major outtage of the Prefab APIs.
+major outage of the Prefab APIs.
 
 But wait, there's more.
 
