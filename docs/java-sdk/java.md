@@ -11,8 +11,8 @@ sidebar_position: 1
 ```xml
 <dependency>
     <groupId>cloud.prefab</groupId>
-    <artifactId>prefab-cloud-java</artifactId>
-    <version>0.1.8</version>
+    <artifactId>client</artifactId>
+    <version>0.3.0</version>
 </dependency>
 ```
 
