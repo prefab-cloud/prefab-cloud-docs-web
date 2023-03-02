@@ -16,6 +16,43 @@ sidebar_position: 1
 </dependency>
 ```
 
+## Install a GRPC provider
+
+We don't provide a transitive dependency so you need to add **one** of the options below.
+_The version number is up to you, these are the current versions at this time._
+
+### Netty Shaded
+
+```xml
+ <dependency>
+    <groupId>io.grpc</groupId>
+    <artifactId>grpc-netty-shaded</artifactId>
+    <version>1.53.0</version>
+</dependency>
+```
+
+### Netty Regular
+
+```xml
+ <dependency>
+    <groupId>io.grpc</groupId>
+    <artifactId>grpc-netty</artifactId>
+    <version>1.53.0</version>
+</dependency>
+```
+
+### OK Http
+
+Smaller, often used on Android
+
+```xml
+ <dependency>
+    <groupId>io.grpc</groupId>
+    <artifactId>ok-http</artifactId>
+    <version>1.53.0</version>
+</dependency>
+```
+
 ## Initialize the client
 ```java
 final PrefabCloudClient prefabCloudClient = new PrefabCloudClient(new Options());
