@@ -46,9 +46,9 @@ _The version number is up to you, these are the current versions at this time._
 Smaller, often used on Android
 
 ```xml
- <dependency>
+<dependency>
     <groupId>io.grpc</groupId>
-    <artifactId>ok-http</artifactId>
+    <artifactId>grpc-okhttp</artifactId>
     <version>1.53.0</version>
 </dependency>
 ```
