@@ -45,7 +45,7 @@ public class PrefabFactory {
 
   @Context
   public ConfigClient configClient(PrefabCloudClient prefabCloudClient) {
-    return new ConfigClient(prefabCloudClient, LogbackConfigListener.getInstance());
+    return new ConfigClientImpl(prefabCloudClient, LogbackConfigListener.getInstance());
   }
 }
 ```
