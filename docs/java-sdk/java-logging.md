@@ -24,11 +24,12 @@ Other Logging Platforms are provided in separate maven dependencies:
 
 ## Set Up Dynamic Logging With LogBack
 
-To set up dynamic logging with LogBack, we need to just add the `LogbackConfigListener` to our `ConfigClient`.
+To set up dynamic logging with LogBack, we need to just add the `LogbackConfigListener` to our `ConfigClient` as seen in the configClient() method below.
 
 You may want to make sure your bean initializes on `@Context` so it is available immediately.
 
 ```java
+// this is a Micronaut example 
 @Factory
 public class PrefabFactory {
   
@@ -43,9 +44,12 @@ public class PrefabFactory {
     return prefabCloudClient.featureFlagClient();
   }
 
+  // in Micronaut @Context is basically eager-singleton
   @Context
   public ConfigClient configClient(PrefabCloudClient prefabCloudClient) {
-    return new ConfigClientImpl(prefabCloudClient, LogbackConfigListener.getInstance());
+    ConfigClient client = prefabCloudClient.getClient();
+    client.addConfigChangeListener(LogbackConfigListener.getInstance());
+    return client;
   }
 }
 ```
