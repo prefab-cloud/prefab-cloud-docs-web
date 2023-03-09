@@ -1,23 +1,34 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Prefab.Cloud Documentation',
-  tagline: 'API Docs for Prefab.Cloud',
-  url: 'https://docs.prefab.cloud',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.png',
+  title: "Prefab.Cloud Documentation",
+  tagline: "API Docs for Prefab.Cloud",
+  url: "https://docs.prefab.cloud",
+  baseUrl: "/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/favicon.png",
+  plugins: [
+    [
+      "posthog-docusaurus",
+      {
+        apiKey: "phc_zbGOXnt4C5OR1aKcUFyH5DgA4N0h5wOsWIsPeAuu24B",
+        appUrl: "https://app.posthog.com", // optional
+        enableInDevelopment: false, // optional
+        // other options are passed to posthog-js init as is
+      },
+    ],
+  ],
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'prefab-cloud', // Usually your GitHub org/user name.
-  projectName: 'prefab-cloud-docs-web', // Usually your repo name.
+  organizationName: "prefab-cloud", // Usually your GitHub org/user name.
+  projectName: "prefab-cloud-docs-web", // Usually your repo name.
 
   trailingSlash: false,
 
@@ -25,25 +36,25 @@ const config = {
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en"],
   },
 
   presets: [
     [
-      'classic',
+      "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/prefab-cloud/prefab-cloud-docs-web/tree/main/',
+            "https://github.com/prefab-cloud/prefab-cloud-docs-web/tree/main/",
         },
         blog: false,
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       }),
     ],
@@ -53,18 +64,18 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Prefab.Cloud',
+        title: "Prefab.Cloud",
         logo: {
-          alt: 'Prefab Cloud Logo',
-          src: 'img/logo.png',
-          href: 'https://www.prefab.cloud/',
+          alt: "Prefab Cloud Logo",
+          src: "img/logo.png",
+          href: "https://www.prefab.cloud/",
         },
         items: [
           {
-            type: 'doc',
-            docId: 'tutorials/get-started',
-            position: 'left',
-            label: 'Docs',
+            type: "doc",
+            docId: "tutorials/get-started",
+            position: "left",
+            label: "Docs",
           },
           // {to: '/blog', label: 'Blog', position: 'left'},
           // {
@@ -75,36 +86,36 @@ const config = {
         ],
       },
       footer: {
-        style: 'dark',
+        style: "dark",
         links: [
           {
-            title: 'Docs',
+            title: "Docs",
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/tutorials/get-started/',
+                label: "Tutorial",
+                to: "/docs/tutorials/get-started/",
               },
             ],
           },
           {
-            title: 'Community',
+            title: "Community",
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/prefab-cloud',
+                label: "Stack Overflow",
+                href: "https://stackoverflow.com/questions/tagged/prefab-cloud",
               },
               {
-                label: 'Twitter',
-                href: 'https://twitter.com/prefabcloud',
+                label: "Twitter",
+                href: "https://twitter.com/prefabcloud",
               },
             ],
           },
           {
-            title: 'More',
+            title: "More",
             items: [
               {
-                label: 'GitHub',
-                href: 'https://github.com/prefab-cloud',
+                label: "GitHub",
+                href: "https://github.com/prefab-cloud",
               },
             ],
           },
@@ -114,7 +125,7 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ['java', 'ruby', 'elixir'],
+        additionalLanguages: ["java", "ruby", "elixir"],
       },
     }),
 };
