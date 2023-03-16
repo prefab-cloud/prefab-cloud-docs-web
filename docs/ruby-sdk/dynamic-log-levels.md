@@ -15,6 +15,8 @@ class PrefabController < ApplicationController
     Rails.logger.warn "warn level logging"
     Rails.logger.info "info level logging"
     Rails.logger.debug "debug level logging"
+
+    render plain: "Loaded. Check your logs."
   end
 end
 ```
@@ -74,11 +76,11 @@ Now we are free to adjust our log levels, down to the controller or method level
 ### Trace IDs
 
 A final trick to share is adding in the concept of `trace-ids`. This isn't a new feature per-se, it's really just a cool
-way to use regular Prefab config. To do it, we can just create a new string config called trace-ids. Put in a comma delimitted list of user ids. 
+way to use regular Prefab config. To do it, we can just create a new string config called trace-ids. Put in a comma delimited list of user ids.
 Then look for this value and only log if our current user is in the list.
 
 ```ruby
-$prefab.log.debug "very detailed logging"  if $base_prefab.get("trace-ids").split(",").include? user_id.to_s
+$prefab.log.debug("very detailed logging") if $prefab.get("trace-ids").split(",").include?(user_id.to_s)
 ```
 
 <div style={{position: 'relative', 'padding-bottom': '41.86046511627907%', height: 0}}>

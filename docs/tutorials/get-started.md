@@ -106,8 +106,10 @@ To use the flag, all we need to do is initialize a client with the SDK key we cr
 
 ```ruby
 $prefab = Prefab::Client.new(api_key: "SDK-KEY, or set ENV var PREFAB_API_KEY")
-puts $prefab.enabled?("features.example-flag", "123") #true for 5% of the users
-puts $prefab.enabled?("features.example-flag", "456", { "customer-group": "beta" }) #true
+# Users in the beta group will always return true
+puts $prefab.enabled?("features.example-flag", beta_user.lookup_key, { "customer-group": "beta" })
+# 5% of other users will return true
+puts $prefab.enabled?("features.example-flag", other_user.lookup_key)
 ```
 
 </TabItem>
