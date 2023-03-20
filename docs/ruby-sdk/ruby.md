@@ -46,6 +46,9 @@ options = Prefab::Options.new(
   prefab_config_classpath_dir: ".",
   prefab_api_url: ENV["PREFAB_API_URL"] || 'https://api.prefab.cloud',
   prefab_grpc_url: ENV["PREFAB_GRPC_URL"] || 'grpc.prefab.cloud:443',
+  # You can specify an array of one ore more items here OR set PREFAB_ENVS to
+  # be split on commas into an array
+  prefab_envs: ENV['PREFAB_ENVS'].nil? ? [] : ENV['PREFAB_ENVS'].split(','),
 )
 $prefab = Prefab::Client.new(options)
 ```
