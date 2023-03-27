@@ -64,22 +64,32 @@ module MyApplication
     #...
 
     $prefab = Prefab::Client.new(options)
+    Rails.logger = $prefab.log
   end
 end
 ```
 
 
-#### Special Considerations with Unicorn & Puma when using workers
+#### Special Considerations with Forking servers like Puma & Unicorn that use workers
 
-Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork. You do not need to do this if you are only using threads and not workers.
+Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork. You do not need to do this if you are only using threads and not workers. 
+We also need to set the reset the logger for ActionView and friends because those get set pre-fork.
 
 <Tabs groupId="lang">
 <TabItem value="puma" label="Puma">
-If using workers in Puma, you can initialize inside an on_worker_boot hook in your puma.rb config file:
+If using workers in Puma, you can initialize inside an on_worker_boot hook in your puma.rb config file.
 
 ```ruby
+# puma.rb
 on_worker_boot do
   $prefab = Prefab::Client.new(options)
+  
+  Rails.logger = $prefab.log
+  ActionView::Base.logger = $prefab.log
+  ActionController::Base.logger = $prefab.log
+  ActiveJob::Base.logger = $prefab.log
+  ActiveRecord::Base.logger = $prefab.log
+  ActiveStorage.logger = $prefab.log
 end
 ```
 </TabItem>
@@ -88,8 +98,16 @@ end
 If using workers in Unicorn, you can initialize inside an after_fork hook in your unicorn.rb config file:
 
 ```ruby
+# unicorn.rb
 after_fork do |server, worker|
   $prefab = Prefab::Client.new(options)
+  
+  Rails.logger = $prefab.log
+  ActionView::Base.logger = $prefab.log
+  ActionController::Base.logger = $prefab.log
+  ActiveJob::Base.logger = $prefab.log
+  ActiveRecord::Base.logger = $prefab.log
+  ActiveStorage.logger = $prefab.log
 end
 ```
 </TabItem>

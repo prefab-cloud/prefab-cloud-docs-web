@@ -28,6 +28,9 @@ Next, we'll set the Rails logger to use our logger
 $prefab = Prefab::Client.new(options)
 Rails.logger = $prefab.log
 ```
+:::info
+Please read the [Puma/Unicorn](/docs/ruby-sdk/ruby#special-considerations-with-forking-servers-like-puma--unicorn-that-use-workers) notes for special considerations with forking servers.
+:::
 
 Finally we can start adjusting log levels. For convenience, we'll set these in our local defaults ([learn more](/docs/explanations/defaults)) but you can set and tweak these on-the-fly in the Prefab web app.
 
