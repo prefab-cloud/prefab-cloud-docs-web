@@ -64,7 +64,7 @@ module MyApplication
     #...
 
     $prefab = Prefab::Client.new(options)
-    Rails.logger = $prefab.log
+    $prefab.set_rails_loggers
   end
 end
 ```
@@ -83,13 +83,7 @@ If using workers in Puma, you can initialize inside an on_worker_boot hook in yo
 # puma.rb
 on_worker_boot do
   $prefab = Prefab::Client.new(options)
-  
-  Rails.logger = $prefab.log
-  ActionView::Base.logger = $prefab.log
-  ActionController::Base.logger = $prefab.log
-  ActiveJob::Base.logger = $prefab.log
-  ActiveRecord::Base.logger = $prefab.log
-  ActiveStorage.logger = $prefab.log
+  $prefab.set_rails_loggers
 end
 ```
 </TabItem>
@@ -101,13 +95,7 @@ If using workers in Unicorn, you can initialize inside an after_fork hook in you
 # unicorn.rb
 after_fork do |server, worker|
   $prefab = Prefab::Client.new(options)
-  
-  Rails.logger = $prefab.log
-  ActionView::Base.logger = $prefab.log
-  ActionController::Base.logger = $prefab.log
-  ActiveJob::Base.logger = $prefab.log
-  ActiveRecord::Base.logger = $prefab.log
-  ActiveStorage.logger = $prefab.log
+  $prefab.set_rails_loggers
 end
 ```
 </TabItem>

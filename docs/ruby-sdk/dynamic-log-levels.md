@@ -26,7 +26,7 @@ Next, we'll set the Rails logger to use our logger
 ```ruby
 #application.rb
 $prefab = Prefab::Client.new(options)
-Rails.logger = $prefab.log
+$prefab.set_rails_loggers
 ```
 :::info
 Please read the [Puma/Unicorn](/docs/ruby-sdk/ruby#special-considerations-with-forking-servers-like-puma--unicorn-that-use-workers) notes for special considerations with forking servers.
