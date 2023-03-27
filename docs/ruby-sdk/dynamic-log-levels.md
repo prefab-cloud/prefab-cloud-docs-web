@@ -25,7 +25,7 @@ Next, we'll set the Rails logger to use our logger
 
 ```ruby
 #application.rb
-$prefab = Prefab::Client.new(options)
+$prefab = Prefab::Client.new
 $prefab.set_rails_loggers
 ```
 :::info
@@ -76,18 +76,5 @@ If the values are in your `.prefab.default.config.yaml` you'll need to restart t
 
 Now we are free to adjust our log levels, down to the controller or method level in realtime. Invaluable for debugging!
 
-### Trace IDs
-
-A final trick to share is adding in the concept of `trace-ids`. This isn't a new feature per-se, it's really just a cool
-way to use regular Prefab config. To do it, we can just create a new string config called trace-ids. Put in a comma delimited list of user ids.
-Then look for this value and only log if our current user is in the list.
-
-```ruby
-$prefab.log.debug("very detailed logging") if $prefab.get("trace-ids").split(",").include?(user_id.to_s)
-```
-
-<div style={{position: 'relative', 'padding-bottom': '41.86046511627907%', height: 0}}>
-<iframe src="https://www.loom.com/embed/f78a0ca6328d4d8994d0f5bb4adfdf02" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style={{position:'absolute', top: '0', left: '0', width: '100%', height: '100%'}}>
-</iframe></div>
 
 Enjoy!  

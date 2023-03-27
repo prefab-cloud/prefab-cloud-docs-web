@@ -63,7 +63,7 @@ module MyApplication
   class Application < Rails::Application
     #...
 
-    $prefab = Prefab::Client.new(options)
+    $prefab = Prefab::Client.new
     $prefab.set_rails_loggers
   end
 end
@@ -241,54 +241,6 @@ and `services.user-service.web`, but not `services.user-service.cron` or `servic
 Let's imagine that the `UserService` starts to go down because too many requests are timing out to a 3rd party service. We
 can quickly reduce the `http.connection.timeout` for our `services.user-service` namespace and solve the issue without
 pushing code or restarting.
-
-## Logging
-
-Prefab's Ruby Client comes with a powerful upgrade to your Rails logging stack.
-
-To use it, set your Rails logger to `Prefab::Client.log`
-
-```ruby
-#config/initializers/prefab.rb
-options = Prefab::Options.new(
-  logdev: $stdout
-)
-
-$prefab = Prefab::Client.new(options)
-Rails.logger = $prefab.log
-```
-
-You can now control logging at any level of your stack. To test it out, edit your `.prefab.default.config.yaml`
-
-```yaml
-# .prefab.default.config.yaml
-log-level.app.controllers.my_controller: info
-log-level.app.controllers.my_controller.index: warn
-log-level.app.controllers.my_controller.show: debug
-```
-
-```ruby
-
-class MyController < ApplicationController
-  def index
-    Rails.logger.warn "shown"
-    Rails.logger.info "disabled"
-    Rails.logger.debug "disabled"
-  end
-
-  def show
-    Rails.logger.warn "shown"
-    Rails.logger.info "shown"
-    Rails.logger.debug "shown"
-  end
-
-  def edit
-    Rails.logger.warn "shown"
-    Rails.logger.info "showm"
-    Rails.logger.debug "disabled"
-  end
-end
-```
 
 ## Local Overrides
 
