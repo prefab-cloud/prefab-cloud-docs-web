@@ -63,23 +63,27 @@ module MyApplication
   class Application < Rails::Application
     #...
 
-    $prefab = Prefab::Client.new(options)
+    $prefab = Prefab::Client.new
+    $prefab.set_rails_loggers
   end
 end
 ```
 
 
-#### Special Considerations with Unicorn & Puma when using workers
+#### Special Considerations with Forking servers like Puma & Unicorn that use workers
 
-Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork. You do not need to do this if you are only using threads and not workers.
+Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork. You do not need to do this if you are only using threads and not workers. 
+We also need to set the reset the logger for ActionView and friends because those get set pre-fork.
 
 <Tabs groupId="lang">
 <TabItem value="puma" label="Puma">
-If using workers in Puma, you can initialize inside an on_worker_boot hook in your puma.rb config file:
+If using workers in Puma, you can initialize inside an on_worker_boot hook in your puma.rb config file.
 
 ```ruby
+# puma.rb
 on_worker_boot do
   $prefab = Prefab::Client.new(options)
+  $prefab.set_rails_loggers
 end
 ```
 </TabItem>
@@ -88,8 +92,10 @@ end
 If using workers in Unicorn, you can initialize inside an after_fork hook in your unicorn.rb config file:
 
 ```ruby
+# unicorn.rb
 after_fork do |server, worker|
   $prefab = Prefab::Client.new(options)
+  $prefab.set_rails_loggers
 end
 ```
 </TabItem>
@@ -235,54 +241,6 @@ and `services.user-service.web`, but not `services.user-service.cron` or `servic
 Let's imagine that the `UserService` starts to go down because too many requests are timing out to a 3rd party service. We
 can quickly reduce the `http.connection.timeout` for our `services.user-service` namespace and solve the issue without
 pushing code or restarting.
-
-## Logging
-
-Prefab's Ruby Client comes with a powerful upgrade to your Rails logging stack.
-
-To use it, set your Rails logger to `Prefab::Client.log`
-
-```ruby
-#config/initializers/prefab.rb
-options = Prefab::Options.new(
-  logdev: $stdout
-)
-
-$prefab = Prefab::Client.new(options)
-Rails.logger = $prefab.log
-```
-
-You can now control logging at any level of your stack. To test it out, edit your `.prefab.default.config.yaml`
-
-```yaml
-# .prefab.default.config.yaml
-log-level.app.controllers.my_controller: info
-log-level.app.controllers.my_controller.index: warn
-log-level.app.controllers.my_controller.show: debug
-```
-
-```ruby
-
-class MyController < ApplicationController
-  def index
-    Rails.logger.warn "shown"
-    Rails.logger.info "disabled"
-    Rails.logger.debug "disabled"
-  end
-
-  def show
-    Rails.logger.warn "shown"
-    Rails.logger.info "shown"
-    Rails.logger.debug "shown"
-  end
-
-  def edit
-    Rails.logger.warn "shown"
-    Rails.logger.info "showm"
-    Rails.logger.debug "disabled"
-  end
-end
-```
 
 ## Local Overrides
 
