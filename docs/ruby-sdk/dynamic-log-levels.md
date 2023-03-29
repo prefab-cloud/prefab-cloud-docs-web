@@ -5,7 +5,7 @@ sidebar_label: Dynamic Log Levels
 
 ## Setting Dynamic Log Levels
 
-A simple example here is worth a million words. 
+An example here is worth a million words.
 
 First add a simple controller.
 
@@ -77,4 +77,4 @@ If the values are in your `.prefab.default.config.yaml` you'll need to restart t
 Now we are free to adjust our log levels, down to the controller or method level in realtime. Invaluable for debugging!
 
 
-Enjoy!  
+Enjoy!
