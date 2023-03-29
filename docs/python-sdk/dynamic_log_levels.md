@@ -7,21 +7,19 @@ sidebar_label: Dynamic Log Levels
 
 A simple example here is worth a million words.
 
-First add a module.
+First add a class.
 
-```elixir
-defmodule PrefabLogTest do
-  def run(client) do
-    Prefab.Client.warning(client, "warn level logging")
-    Prefab.Client.info(client, "info level logging")
-    Prefab.Client.debug(client, "debug level logging")
-  end
-end
+```python
+class PrefabLogTest:
+    def run(self, client):
+        client.logger().warning("warn level logging")
+        client.logger().info("info level logging")
+        client.logger().debug("debug level logging")
 ```
-By default, `Prefab`'s global log level is configured at `:warning`, so running `PrefabLogTest.run(client)` we would only see
+By default, `PrefabCloudPython`'s global log level is configured at `warn`, so running `PrefabLogTest().run(client)` we would only see
 
 ```shell
-12:01:16.808 [warning] prefab_log_test.warning: warning
+12:01:16.808 [warn ] warning        source="prefab_log_test.warning"
 ```
 
 But we can change the final output by adjusting log levels.
@@ -32,14 +30,12 @@ log-level:
   prefab_log_test: debug
 ```
 
-Our results speak for themselves. You can see that we've enabled debug for the prefab internals, rails internals and our application code.
+Our results speak for themselves. You can see that we've enabled debug for any logging done in an instance of the `PrefabLogTest` class
 
 ```shell
-12:01:16.807 [debug] prefab_log_test.debug: debug
-
-12:01:16.807 [info] prefab_log_test.info: info
-
-12:01:16.808 [warning] prefab_log_test.warning: warning
+12:01:16.807 [debug ] debug         source="prefab_log_test"
+12:01:16.807 [info  ] info          source="prefab_log_test"
+12:01:16.808 [warn  ] warn          source="prefab_log_test"
 ```
 
 We can also set the global `log-level` to reduce logging
@@ -51,9 +47,8 @@ log-level:
 ```
 
 ```shell
-12:01:16.807 [info] prefab_log_test.info: info
-
-12:01:16.808 [warning] prefab_log_test.warning: warning
+12:01:16.807 [info  ] info          source="prefab_log_test"
+12:01:16.808 [warn  ] warn          source="prefab_log_test"
 ```
 
 :::tip
@@ -68,14 +63,12 @@ A final trick to share is adding in the concept of `trace-ids`. This isn't a new
 way to use regular Prefab config. To do it, we can just create a new string config called trace-ids. Put in a comma delimitted list of user ids.
 Then look for this value and only log if our current user is in the list.
 
-```elixir
-trace_ids =
-  Prefab.Client.get(client, "trace-ids")
-  |> String.split(",", trim: true)
+```python
+trace_ids = client.get("trace-ids").split(",")
 
-if to_string(user_id) in trace_ids do
-  Prefab.Client.debug(client, "very detailed logging")
-end
+if to_string(user_id) in trace_ids:
+    client.logger().debug("very detailed logging")
 ```
 
 Enjoy!
+
