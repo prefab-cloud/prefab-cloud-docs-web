@@ -48,7 +48,7 @@ public class PrefabFactory {
   @Context
   public ConfigClient configClient(PrefabCloudClient prefabCloudClient) {
     ConfigClient client = prefabCloudClient.getClient();
-    client.addConfigChangeListener(LogbackConfigListener.getInstance());
+    PrefabMDCTurboFilter.install(client);
     return client;
   }
 }
