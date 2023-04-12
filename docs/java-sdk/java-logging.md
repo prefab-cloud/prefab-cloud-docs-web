@@ -24,7 +24,7 @@ Other Logging Platforms are provided in separate maven dependencies:
 
 ## Set Up Dynamic Logging With LogBack
 
-To set up dynamic logging with LogBack, we need to just add the `LogbackConfigListener` to our `ConfigClient` as seen in the configClient() method below.
+To set up dynamic logging with LogBack, we need to install the `PrefabMDCTurboFilter` as seen in the configClient() method below.
 
 You may want to make sure your bean initializes on `@Context` so it is available immediately.
 
