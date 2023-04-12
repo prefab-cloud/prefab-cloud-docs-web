@@ -6,8 +6,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Prefab.Cloud Documentation",
-  tagline: "API Docs for Prefab.Cloud",
+  title: "Prefab Documentation",
+  tagline: "API Docs for Prefab",
   url: "https://docs.prefab.cloud",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -64,9 +64,9 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: "Prefab.Cloud",
+        title: "Prefab",
         logo: {
-          alt: "Prefab Cloud Logo",
+          alt: "Prefab Logo",
           src: "img/logo.png",
           href: "https://www.prefab.cloud/",
         },
@@ -102,7 +102,7 @@ const config = {
             items: [
               {
                 label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/prefab-cloud",
+                href: "https://stackoverflow.com/questions/tagged/prefab",
               },
               {
                 label: "Twitter",
@@ -120,7 +120,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} PrefabCloud LLC. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Prefab Inc. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
