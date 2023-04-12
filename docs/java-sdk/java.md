@@ -12,46 +12,10 @@ sidebar_position: 1
 <dependency>
     <groupId>cloud.prefab</groupId>
     <artifactId>client</artifactId>
-    <version>0.3.5</version>
+    <version>0.3.7</version>
 </dependency>
 ```
 
-## Install a GRPC provider
-
-We don't provide a transitive dependency so you need to add **one** of the options below.
-_The version number is up to you, these are the current versions at this time._
-
-### Netty Shaded
-
-```xml
- <dependency>
-    <groupId>io.grpc</groupId>
-    <artifactId>grpc-netty-shaded</artifactId>
-    <version>1.53.0</version>
-</dependency>
-```
-
-### Netty Regular
-
-```xml
- <dependency>
-    <groupId>io.grpc</groupId>
-    <artifactId>grpc-netty</artifactId>
-    <version>1.53.0</version>
-</dependency>
-```
-
-### OK Http
-
-Smaller, often used on Android
-
-```xml
-<dependency>
-    <groupId>io.grpc</groupId>
-    <artifactId>grpc-okhttp</artifactId>
-    <version>1.53.0</version>
-</dependency>
-```
 
 ## Initialize the client
 ```java
@@ -91,6 +55,7 @@ if(configValue.isPresent()){
 
 ## Typical Usage 
 We recommend using the PrefabCloudClient as a singleton in your application. This is the most common way to use the SDK.
+Examples of usage in Dropwizard, Spring Boot and others are onthe way.
 
 ```java
 // Micronaut Factory
