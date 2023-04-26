@@ -69,6 +69,31 @@ module MyApplication
 end
 ```
 
+To make the best use of Prefab, we recommend setting context in an `around_action` in your `ApplicationController`. Setting this context for the life-cycle of the request means the Prefab logger can be aware of your user/etc. for targeted log levels and you won't have to explicitly pass context into your `.enabled?` and `.get` calls.
+
+e.g.
+
+```ruby
+around_action do |_, block|
+  $prefab.with_context(prefab_context, &block)
+end
+
+def prefab_context
+  {
+    device: {
+      mobile: mobile?
+      # ...
+    },
+
+    user: {
+      id: current_user&.id,
+      email: current_user&.email,
+      country: current_user&.country,
+      # ...
+    }
+  }
+end
+```
 
 #### Special Considerations with Forking servers like Puma & Unicorn that use workers
 
@@ -82,7 +107,7 @@ If using workers in Puma, you can initialize inside an on_worker_boot hook in yo
 ```ruby
 # puma.rb
 on_worker_boot do
-  $prefab = Prefab::Client.new(options)
+  $prefab = Prefab::Client.new
   $prefab.set_rails_loggers
 end
 ```
@@ -94,7 +119,7 @@ If using workers in Unicorn, you can initialize inside an after_fork hook in you
 ```ruby
 # unicorn.rb
 after_fork do |server, worker|
-  $prefab = Prefab::Client.new(options)
+  $prefab = Prefab::Client.new
   $prefab.set_rails_loggers
 end
 ```
@@ -122,7 +147,7 @@ $prefab.get("max-jobs-per-second") # => raises if no value is available
 
 :::note
 
-You can modify this behavior by setting the config option `on_no_default` to `Prefab::Options::ON_NO_DEFAULT::RETURN_NIL`
+You can modify this behavior by setting the option `on_no_default` to `Prefab::Options::ON_NO_DEFAULT::RETURN_NIL`
 
 :::
 
@@ -177,42 +202,37 @@ Congrats! You're ready to rock!
 
 Feature flags become more powerful when we give the flag evaluation rules more information to work with.
 
-We do this by providing a lookup key and identity attributes.
-
-The lookup key serves two purposes. First, it will be the unique key that helps us target a specific user
-using `Lookup Key In` when evaluating a flag.
-
-Second, this key is used to make sure that percent rollout evaluations are consistently applied.
-
-Attributes come into play when using the `Property Is One Of` and similar rule criteria.
+We do this by providing context of the current user (and/or team, request, etc.)
 
 ```ruby
-lookup_key = "user-123"
-identity_attributes = {
-  team_id: 432,
-  user_id: 123,
-  subscription_level: 'pro',
-  email: "alice@example.com"
+context = {
+  user: {
+    id: 123,
+    subscription_level: 'pro',
+    email: "alice@example.com"
+  },
+  team: {
+    id: 432,
+  },
+  device: {
+    mobile: true,
+  }
 }
-result = $prefab.enabled? "my-first-feature-flag", lookup_key, identity_attributes
+result = $prefab.enabled?("my-first-feature-flag", context)
 
-puts "my-first-feature-flag is: #{result} for #{lookup_key}"
+puts "my-first-feature-flag is: #{result} for #{context.inspect}"
+```
+
+Like config, feature flags don't have to return just true or false. You can get other data types using `get`:
+
+```ruby
+$prefab.get("ff-with-string", default_string_value, context)
+$prefab.get("ff-with-int", default_int_value, context)
 ```
 
 :::tip
-
-How you choose the `tracking_id` for your user is up to you, but we have some suggestions and we would generally
-discourage
-`user.id` unless you are positive you don't have anonymous users. See the section on [Tracking IDs](tracking-ids) for our suggestion.
-
+Rather than passing your context in for your `.enabled?` and `.get` calls, you can use an `around_action` in Rails (see above) or `$prefab.with_context` directly.
 :::
-
-Feature flags don't have to return just true or false. You can get other data types using `get`:
-
-```ruby
-$prefab.get("ff-with-string", default_string_value)
-$prefab.get("ff-with-int", default_int_value)
-```
 
 ## Namespaces
 
@@ -299,7 +319,7 @@ This approach works fine, but each evaluation of `rand()` will get you a differe
 want, but if you'd like the rollout to be sticky and keep server, requests, users in the new pipeline you may want to use a feature flag.
 
 ```ruby
-$prefab.enabled? "new-feature", any_consistent_id
+$prefab.enabled? "new-feature", { user: { tracking_id: user.tracking_id } }
 ```
 
 ## Debugging
