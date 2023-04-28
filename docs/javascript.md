@@ -16,18 +16,22 @@ If you're using React, consider using our [React Client] instead.
 
 ## Initialize client
 
-Initialize prefab with your api key and an `Identity` for the current user/visitor:
+Initialize prefab with your api key and a `Context` for the current user/visitor/device/request:
 
 ```javascript
-import prefab, { Identity } from '@prefab-cloud/prefab-cloud-js'
+import { prefab, Context } from '@prefab-cloud/prefab-cloud-js'
 
-const options = { apiKey: 'YOUR_CLIENT_API_KEY', identity: new Identity('user-1234', { device: 'desktop' }) };
+const options = {
+  apiKey: '1234',
+  context: new Context({user: { email: 'test@example.com' }, device: { mobile: true } })
+};
+
 await prefab.init(options);
 ```
 
-`Identity` accepts a lookup key unique to the current visitor/user and attributes that you can use to [segment] your users.
+`Context` accepts an object with keys that are context names and key value pairs with attributes describing the context. You can use this to e.g. [segment] your users.
 
-`prefab.init` will request the calculated config and feature flags for the provided `Identity` as a single HTTPS request.
+`prefab.init` will request the calculated config and feature flags for the provided context as a single HTTPS request.
 
 You aren't required to `await` the `init` -- it is a promise, so you can use `.then`, `.finally`, `.catch`, etc. instead if you prefer.
 
@@ -44,7 +48,7 @@ Now you can use `prefab`'s config and feature flag evaluation, e.g.
 
 ```javascript
 if (prefab.isEnabled('cool-feature') {
-  // ... this code only evaluates if `cool-feature` is enabled for the current Identity
+  // ... this code only evaluates if `cool-feature` is enabled for the current context
 }
 
 setTimeout(ping, prefab.get('ping-delay'));
@@ -52,11 +56,11 @@ setTimeout(ping, prefab.get('ping-delay'));
 
 ### `prefab` Properties
 
-| property    | example                        | purpose                                                                                            |
-|-------------|--------------------------------|----------------------------------------------------------------------------------------------------|
-| `isEnabled` | `prefab.isEnabled("new-logo")` | returns a boolean (default `false`) if a feature is enabled based on the currently identified user |
-| `get`       | `prefab.get('retry-count')`    | returns the value of a flag or config evaluated in the context of the currently identified user    |
-| `loaded`    | `if (prefab.loaded) { ... }`   | a boolean indicating whether prefab content has loaded                                             |
+| property    | example                        | purpose                                                                                  |
+|-------------|--------------------------------|------------------------------------------------------------------------------------------|
+| `isEnabled` | `prefab.isEnabled("new-logo")` | returns a boolean (default `false`) if a feature is enabled based on the current context |
+| `get`       | `prefab.get('retry-count')`    | returns the value of a flag or config evaluated in the current context                   |
+| `loaded`    | `if (prefab.loaded) { ... }`   | a boolean indicating whether prefab content has loaded                                   |
 
 ## Testing
 
