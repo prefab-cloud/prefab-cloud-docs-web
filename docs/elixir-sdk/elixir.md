@@ -184,7 +184,7 @@ IO.puts("my-first-feature-flag is: #{result} for #{lookup_key}")
 
 How you choose the `tracking_id` for your user is up to you, but we have some suggestions and we would generally
 discourage
-`user.id` unless you are positive you don't have anonymous users. See the section on [Tracking IDs](../ruby-sdk/tracking-ids) for our suggestion.
+`user.id` unless you are positive you don't have anonymous users. See the section on [Tracking IDs](../how-tos/tracking-ids) for our suggestion.
 
 :::
 
@@ -308,7 +308,7 @@ top of those values.
 
 ## Emergencies
 
-Prefab is designed to be extremely resilient. The client will try to pull live values from:
+Prefab is designed to be extremely [resilient](/docs/explanations/resiliency). The client will try to pull live values from:
 
 1. A Fastly CDN backed by the API
 2. A Cloudflare CDN backed by an S3 bucket

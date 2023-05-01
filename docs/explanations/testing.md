@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 Our SDKs and Clients have library and language-specific testing advice. We recommend you checkout the docs for the SDK or client you're using.
 
 To keep your tests speedy and consistent, we recommend avoiding connections to our server and to instead prefer relying on local data for test setup.
-Specifying a PrefabEnv of 'test' and putting data in `.prefab.test.config.yaml` is covered in [Default Files](defaults.md).
+Specifying your Prefab env as 'test' and putting data in `.prefab.test.config.yaml` is covered in [Default Files](defaults.md).
 
 ### Server-side SDKs
 

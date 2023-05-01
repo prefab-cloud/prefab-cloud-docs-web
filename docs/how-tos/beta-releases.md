@@ -23,9 +23,9 @@ This progression allows the people who are closest to the feature to dogfood it 
 
 ## Feature flag code
 
-You'll only need to set up the feature flag check once in your code and then you can modify the rules in the Prefab.Cloud app.
+You'll only need to set up the feature flag check once in your code and then you can modify the rules in the Prefab app.
 
-A feature flag check will always return false until it is fully enabled or a rule returns true. This means you can ship your code at any time before a feature flag is created on Prefab.Cloud and trust people are going down the `false` code path.
+A feature flag check will always return false until it is fully enabled or a rule returns true. This means you can ship your code at any time before a feature flag is created on Prefab and trust people are going down the `false` code path.
 
 <Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
@@ -79,7 +79,7 @@ A feature flag check will always return false until it is fully enabled or a rul
 Rules are evaluated in order. You can drag and drop rules to rearrange them. The first matching rule determines which variant is served. [Read more](/docs/explanations/rules-and-segmentation).
 :::
 
-To model the example rollout above in Prefab.Cloud, we'll create a "Simple Flag".
+To model the example rollout above in Prefab, we'll create a "Simple Flag".
 
 We'll modify the default `When Active` rule to return `false` so we can safely ship and activate our flag while still returning `false` for everyone for now.
 

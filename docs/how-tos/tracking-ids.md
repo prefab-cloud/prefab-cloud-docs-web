@@ -3,6 +3,8 @@ title: Tracking IDs
 sidebar_label: Tracking IDs
 ---
 
+import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
+
 ## An Opinionated Guide to Identifying Users
 
 If you are only concerned with logged-in users, your `user.id` will work just fine as the sticky property for roll-outs.
@@ -16,6 +18,9 @@ Prefab's recommendation is that you create a separate tracking ID the moment you
 to the user record upon creation.
 :::
 
+
+<Tabs groupId="lang">
+<TabItem value="Rails" label="Rails">
 
 ## Adding a tracking ID to a Rails application
 
@@ -95,3 +100,5 @@ class RegistrationsController < Devise::RegistrationsController
   end
 end
 ```
+</TabItem>
+</Tabs>

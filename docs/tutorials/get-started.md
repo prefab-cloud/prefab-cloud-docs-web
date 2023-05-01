@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # Tutorial Intro
 
-Let's discover **Prefab.Cloud in less than 5 minutes**.
+Let's discover **Prefab in less than 5 minutes**.
 
 Getting setup with prefab cloud should take you 5 minutes, but only if we start right now ;)
 

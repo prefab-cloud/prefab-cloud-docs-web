@@ -7,8 +7,8 @@ draft: true
 
 ## Core Functionality
 
-The core element of Prefab Config & FeatureFlags is a local key value store, powered by a distributed log. 
-What's that mean? Let's have an example. 
+The core element of Prefab Config & FeatureFlags is a local key value store, powered by a distributed log.
+What's that mean? Let's have an example.
 
 Here's a simplified version of the Prefab Config log. We have a single key with a basic integer value.
 ```json
@@ -21,13 +21,13 @@ Here's a simplified version of the Prefab Config log. We have a single key with 
 ]
 ```
 
-Our server clients can make an API call and store this in a concurrency safe local hash so that we can call `prefab.getInt('key1')` in our clients. 
-Tada! It's a local key value store. 
+Our server clients can make an API call and store this in a concurrency safe local hash so that we can call `prefab.getInt('key1')` in our clients.
+Tada! It's a local key value store.
 
-Now, what happens if we add another key/value? Well, we have two constituents to think about. First we have our existing clients. 
-They already know about the first key, so we can just send them a partial update. 
+Now, what happens if we add another key/value? Well, we have two constituents to think about. First we have our existing clients.
+They already know about the first key, so we can just send them a partial update.
 
-Prefab SDK clients use either [GRPC](https://grpc.io/) or [SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events) 
+Prefab SDK clients use either [GRPC](https://grpc.io/) or [SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)
 to send this partial update.
 
 ### StreamingUpdate
@@ -45,7 +45,7 @@ Our second constituent are things like new server instances booting up, it needs
 
 ### Full Payload
 ```json
-[  
+[
   {
   "id": 100,
   "key": "key1",
@@ -79,7 +79,7 @@ When a new server instance boots up, it needs to know everything, so it can requ
 
 ### Full Payload
 ```json
-[  
+[
   {
   "id": 100,
   "key": "key1",
@@ -100,7 +100,6 @@ When a new server instance boots up, it needs to know everything, so it can requ
 The full payload can have either the full history of configuration or just the latest values, it doesn't really matter. The clients will only use the
 latest `id` that they see for each key.
 
-
 ## What would you do with the Fastest DB in the World?
 
 Prefab's config system can look a lot like a key/value store, with one big big difference.
@@ -110,5 +109,5 @@ Because it's so blazing fast, it really changes what you can do with it. It's to
 You would never query the database 40 different times while processing a request just to get your app configuration, but when it is essentially
 free it means you're now able to make almost every element of your application dynamically configurable.
 
-Let's carry on in [resiliency](resiliency) because if we're really going to run our application on top of something like this
+Let's carry on in [Reliability](resiliency) because if we're really going to run our application on top of something like this
 it has absolutely got to work.
