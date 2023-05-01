@@ -19,40 +19,6 @@ If you set `PREFAB_API_KEY` as an environment variable, initializing the client 
 $prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
 ```
 
-### Client Initialization Options
-
-For more control, you can initialize your client with options. Here are the defaults with explanations.
-
-```ruby
-options = Prefab::Options.new(
-  api_key: ENV['PREFAB_API_KEY'],
-  namespace: "",
-  logdev: $stdout,
-  # Optional. `log_prefix` can prefix your log lines. `app.controllers.my_controller.index` would be `com.yourapp.app.controllers.my_controller.index`
-  log_prefix: "com.yourapp",
-  log_formatter: Prefab::Options::DEFAULT_LOG_FORMATTER,
-  # one of
-  # - Prefab::Options::ON_NO_DEFAULT::RAISE -- raise an exception when no value or default is available
-  # - Prefab::Options::ON_NO_DEFAULT::RETURN_NIL -- return nil if no value or default is available
-  on_no_default: Prefab::Options::ON_NO_DEFAULT::RAISE,
-  # how long to wait before on_init_failure
-  initialization_timeout_sec: 10,
-  # one of
-  # - Prefab::Options::ON_INITIALIZATION_FAILURE::RAISE -- raise an error if no connection can be made
-  # - Prefab::Options::ON_INITIALIZATION_FAILURE::RETURN -- continue without error using failover config
-  on_init_failure: Prefab::Options::ON_INITIALIZATION_FAILURE::RAISE,
-  prefab_datasources: ENV['PREFAB_DATASOURCES'] == "LOCAL_ONLY" ? Prefab::Options::DATASOURCES::LOCAL_ONLY : Prefab::Options::DATASOURCES::ALL,
-  prefab_config_override_dir: Dir.home,
-  prefab_config_classpath_dir: ".",
-  prefab_api_url: ENV["PREFAB_API_URL"] || 'https://api.prefab.cloud',
-  prefab_grpc_url: ENV["PREFAB_GRPC_URL"] || 'grpc.prefab.cloud:443',
-  # You can specify an array of one ore more items here OR set PREFAB_ENVS to
-  # be split on commas into an array
-  prefab_envs: ENV['PREFAB_ENVS'].nil? ? [] : ENV['PREFAB_ENVS'].split(','),
-)
-$prefab = Prefab::Client.new(options)
-```
-
 ### Rails Applications
 
 Initializing Prefab in your `application.rb` will allow you to reference dynamic configuration in your environment (e.g. `staging.rb`) and initializers. This is useful for setting environment-specific config like your redis connection URL.
@@ -370,6 +336,41 @@ RSpec.describe Job do
   end
 end
 ```
+
+### Client Initialization Options
+
+For more control, you can initialize your client with options. Here are the defaults with explanations.
+
+```ruby
+options = Prefab::Options.new(
+  api_key: ENV['PREFAB_API_KEY'],
+  namespace: "",
+  logdev: $stdout,
+  # Optional. `log_prefix` can prefix your log lines. `app.controllers.my_controller.index` would be `com.yourapp.app.controllers.my_controller.index`
+  log_prefix: "com.yourapp",
+  log_formatter: Prefab::Options::DEFAULT_LOG_FORMATTER,
+  # one of
+  # - Prefab::Options::ON_NO_DEFAULT::RAISE -- raise an exception when no value or default is available
+  # - Prefab::Options::ON_NO_DEFAULT::RETURN_NIL -- return nil if no value or default is available
+  on_no_default: Prefab::Options::ON_NO_DEFAULT::RAISE,
+  # how long to wait before on_init_failure
+  initialization_timeout_sec: 10,
+  # one of
+  # - Prefab::Options::ON_INITIALIZATION_FAILURE::RAISE -- raise an error if no connection can be made
+  # - Prefab::Options::ON_INITIALIZATION_FAILURE::RETURN -- continue without error using failover config
+  on_init_failure: Prefab::Options::ON_INITIALIZATION_FAILURE::RAISE,
+  prefab_datasources: ENV['PREFAB_DATASOURCES'] == "LOCAL_ONLY" ? Prefab::Options::DATASOURCES::LOCAL_ONLY : Prefab::Options::DATASOURCES::ALL,
+  prefab_config_override_dir: Dir.home,
+  prefab_config_classpath_dir: ".",
+  prefab_api_url: ENV["PREFAB_API_URL"] || 'https://api.prefab.cloud',
+  prefab_grpc_url: ENV["PREFAB_GRPC_URL"] || 'grpc.prefab.cloud:443',
+  # You can specify an array of one ore more items here OR set PREFAB_ENVS to
+  # be split on commas into an array
+  prefab_envs: ENV['PREFAB_ENVS'].nil? ? [] : ENV['PREFAB_ENVS'].split(','),
+)
+$prefab = Prefab::Client.new(options)
+```
+
 
 [Meltano]: https://meltano.com/
 [Singer]: https://www.singer.io/
