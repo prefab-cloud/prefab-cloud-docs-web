@@ -40,7 +40,6 @@ A feature flag check will always return false until it is fully enabled or a rul
 
 </TabItem>
 <TabItem value="java" label="Java">
-  TODO!
 
 ```java
   if(featureFlagClient.featureIsOn(
