@@ -42,7 +42,7 @@ const WrappedApp = () => {
 }
 ```
 
-- `contextAttributes` are attributes that you can use to [segment] your users.
+`contextAttributes` lets you provide [context](./explanations/context) that you can use to [segment] your users.
 
 Now use the `usePrefab` hook to fetch flags and config values
 

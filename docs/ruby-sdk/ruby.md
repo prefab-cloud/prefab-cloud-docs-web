@@ -19,6 +19,8 @@ If you set `PREFAB_API_KEY` as an environment variable, initializing the client 
 $prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
 ```
 
+You can use `$prefab.log.info` (and `error`, `warn`, etc.) to use [dynamic log levels](./dynamic-log-levels).
+
 ### Rails Applications
 
 Initializing Prefab in your `application.rb` will allow you to reference dynamic configuration in your environment (e.g. `staging.rb`) and initializers. This is useful for setting environment-specific config like your redis connection URL.
@@ -35,7 +37,9 @@ module MyApplication
 end
 ```
 
-To make the best use of Prefab, we recommend setting context in an `around_action` in your `ApplicationController`. Setting this context for the life-cycle of the request means the Prefab logger can be aware of your user/etc. for targeted log levels and you won't have to explicitly pass context into your `.enabled?` and `.get` calls.
+`$prefab.set_rails_loggers` wraps the Rails logger to allow using [dynamic log levels](./dynamic-log-levels) with your normal Rails logger calls.
+
+To make the best use of Prefab, we recommend setting [context](../explanations/context) in an `around_action` in your `ApplicationController`. Setting this context for the life-cycle of the request means the Prefab logger can be aware of your user/etc. for [targeted log levels](../explanations/targeted-log-levels) and you won't have to explicitly pass context into your `.enabled?` and `.get` calls.
 
 e.g.
 
@@ -168,7 +172,7 @@ Congrats! You're ready to rock!
 
 Feature flags become more powerful when we give the flag evaluation rules more information to work with.
 
-We do this by providing context of the current user (and/or team, request, etc.)
+We do this by providing [context](../explanations/context) of the current user (and/or team, request, etc.)
 
 ```ruby
 context = {

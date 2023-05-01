@@ -74,7 +74,8 @@ INFO  2022-09-06 13:05:17 -0400:  lograge.log_subscriber.process_action: method=
 If the values are in your `.prefab.default.config.yaml` you'll need to restart the server to see new values. If you change these values on the server, they will update automatically.
 :::
 
-Now we are free to adjust our log levels, down to the controller or method level in realtime. Invaluable for debugging!
+Now we are free to adjust our log levels, down to the controller or method level in real-time. Invaluable for debugging!
 
+### Targeted Log Levels
 
-Enjoy!
+You can use [Targeting](/docs/explanations/targeted-log-levels) to change your log levels based on the current user/request/device context using our [rules](/docs/explanations/rules) engine.

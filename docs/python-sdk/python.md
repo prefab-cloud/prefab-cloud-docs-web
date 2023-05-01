@@ -228,7 +228,7 @@ pushing code or restarting.
 
 ## Logging
 
-Prefab's Python Client comes with a powerful upgrade to the default Python `logging` by building on top of [`structlog`](https://www.structlog.org/en/stable/)
+Prefab's Python Client comes with a powerful upgrade to the default Python `logging` by building on top of [`structlog`](https://www.structlog.org/en/stable/) to provide dynamic log levels.
 
 To use it, use the logging functions included in the `Client` public API
 
@@ -268,6 +268,10 @@ class MyClass:
         client.logger().info("shown")
         client.logger().debug("never logs")
 ```
+
+### Targeted Log Levels
+
+You can use [Targeting](../explanations/targeted-log-levels) to change your log levels based on the current user/request/device [context](../explanations/context) using our [rules](/docs/explanations/rules) engine.
 
 ### Log levels
 
