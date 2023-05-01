@@ -187,7 +187,7 @@ print("my-first-feature-flag is", result, "for", lookup_key)
 
 How you choose the `tracking_id` for your user is up to you, but we have some suggestions and we would generally
 discourage
-`user.id` unless you are positive you don't have anonymous users. See the section on [Tracking IDs](../ruby-sdk/tracking-ids) for our suggestion.
+`user.id` unless you are positive you don't have anonymous users. See the section on [Tracking IDs](../how-tos/tracking-ids) for our suggestion.
 
 :::
 

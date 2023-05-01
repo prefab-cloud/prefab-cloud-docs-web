@@ -1,40 +1,43 @@
-import React from 'react';
-import clsx from 'clsx';
-import styles from './styles.module.css';
+import React from "react";
+import clsx from "clsx";
+import styles from "./styles.module.css";
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/easy.svg').default,
+    title: "Easy to Use",
+    Svg: require("@site/static/img/easy.svg").default,
     description: (
       <>
-        Prefab.Cloud will have you up and runnng with DynamicConfig and FeatureFlags in 5 minutes.
+        Prefab will have you up and runnng with DynamicConfig and FeatureFlags
+        in 5 minutes.
       </>
     ),
   },
   {
-    title: 'Reliable',
-    Svg: require('@site/static/img/reliable.svg').default,
+    title: "Reliable",
+    Svg: require("@site/static/img/reliable.svg").default,
     description: (
       <>
-        FeatureFlags and Config simply have to work. We go to extraordinary lengths to be reliable.
+        FeatureFlags and Config simply have to work. We go to extraordinary
+        lengths to be reliable.
       </>
     ),
   },
   {
-    title: 'Powerful',
-    Svg: require('@site/static/img/powerful.svg').default,
+    title: "Powerful",
+    Svg: require("@site/static/img/powerful.svg").default,
     description: (
       <>
-        All batteries are included, with Prefab you have all of the powerful segmentation you need.
+        All batteries are included, with Prefab you have all of the powerful
+        segmentation you need.
       </>
     ),
   },
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({ Svg, title, description }) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx("col col--4")}>
       <div className="text--center">
         <Svg className={styles.featureSvg} role="img" />
       </div>

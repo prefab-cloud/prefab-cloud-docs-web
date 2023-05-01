@@ -30,6 +30,7 @@ Let's imagine that the UserService starts to go down because too many requests a
 
 
 With the following values
+
 ![namespaces for http-retries](/img/docs/explanations/namespace-retries.png)
 
 <Tabs groupId="lang">

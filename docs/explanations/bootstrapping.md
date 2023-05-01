@@ -14,10 +14,10 @@ On startup, config clients load config in the following order, with each level t
 4. Local Override Prefab Env Files `.prefab.test.config.yaml` in the override directory (defaults to $HOME)
 
 ### Reconfiguring Config File Locations
+
 The classpath config file location can be changed with the env var `PREFAB_CONFIG_CLASSPATH_DIR`
 
 The local override config file location can be changed with env var `PREFAB_CONFIG_OVERRIDE_DIR`
-
 
 ## Override Files & Load Order
 
@@ -31,7 +31,6 @@ than values from the API.
 Using an Override file in a deployed environment is an anti-pattern. You should be able to achieve what you need to do 
 with some combination of [Prefab Envs](/docs/explanations/defaults#prefab-environments) and [namespaces](namespaces.md).
 :::
-
 
 ## Helpful Logging
 
