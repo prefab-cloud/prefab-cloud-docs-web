@@ -148,8 +148,7 @@ Congrats! You're ready to rock!
 
 ## Feature Flags
 
-Feature flags become more powerful when we give the flag evaluation rules more
-information to work with.
+Feature flags become more powerful when we give the flag evaluation [rules](/docs/explanations/rules-and-segmentation) more information to work with.
 
 We do this by providing a lookup key and identity attributes.
 
@@ -225,7 +224,7 @@ pushing code or restarting.
 
 ## Logging
 
-Prefab's Elixir Client comes with a powerful upgrade to the default Elixir `Logger`
+Prefab's Elixir Client comes with a powerful upgrade to the default Elixir `Logger` to provide dynamic log levels.
 
 To use it, use the logging functions included in the `Prefab.Client` public API
 
@@ -269,6 +268,10 @@ defmodule AppWeb.MyController do
   end
 end
 ```
+
+### Targeted Log Levels
+
+You can use [Targeting](/docs/explanations/targeted-log-levels) to change your log levels based on the current user/request/device context using our [rules](/docs/explanations/rules-and-segmentation) engine.
 
 ### Log levels
 

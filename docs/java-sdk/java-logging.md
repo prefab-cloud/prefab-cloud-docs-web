@@ -58,4 +58,9 @@ public class PrefabFactory {
 
 Now we can set our log levels dynamically in the UI and they will update immediately.
 
-![example screenshot](/img/docs/server-sdks/log-levels-java.png)
+![example screenshot](/img/docs/explanations/dynamic-levels.png)
+
+## Targeted Log Levels
+
+You can use [Targeting](../explanations/targeted-log-levels) to change your log levels based on the current user/request/device [context](../explanations/context) using our [rules](/docs/explanations/rules-and-segmentation) engine.
+
