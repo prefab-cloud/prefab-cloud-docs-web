@@ -43,10 +43,11 @@ A feature flag check will always return false until it is fully enabled or a rul
   TODO!
 
 ```java
-  if(featureFlagClient.featureIsOnFor(
+  if(featureFlagClient.featureIsOn(
       "my-feature-name",
-      user.getLookupKey(),
-      Map.of("email", user.getEmailDomain())
+      PrefabContextStore.newBuilder("user")
+        .put("email", user.getEmailDomain())
+        .build()
     )){
     // serve the new feature
   } else {
