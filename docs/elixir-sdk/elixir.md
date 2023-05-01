@@ -148,8 +148,7 @@ Congrats! You're ready to rock!
 
 ## Feature Flags
 
-Feature flags become more powerful when we give the flag evaluation rules more
-information to work with.
+Feature flags become more powerful when we give the flag evaluation [rules](/docs/explanations/rules-and-segmentation) more information to work with.
 
 We do this by providing a lookup key and identity attributes.
 
@@ -272,7 +271,7 @@ end
 
 ### Targeted Log Levels
 
-You can use [Targeting](/docs/explanations/targeted-log-levels) to change your log levels based on the current user/request/device context using our [rules](/docs/explanations/rules) engine.
+You can use [Targeting](/docs/explanations/targeted-log-levels) to change your log levels based on the current user/request/device context using our [rules](/docs/explanations/rules-and-segmentation) engine.
 
 ### Log levels
 

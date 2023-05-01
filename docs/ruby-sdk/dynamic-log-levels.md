@@ -78,4 +78,4 @@ Now we are free to adjust our log levels, down to the controller or method level
 
 ### Targeted Log Levels
 
-You can use [Targeting](/docs/explanations/targeted-log-levels) to change your log levels based on the current user/request/device context using our [rules](/docs/explanations/rules) engine.
+You can use [Targeting](/docs/explanations/targeted-log-levels) to change your log levels based on the current user/request/device context using our [rules](/docs/explanations/rules-and-segmentation) engine.
