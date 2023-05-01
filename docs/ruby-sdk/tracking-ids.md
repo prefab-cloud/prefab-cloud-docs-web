@@ -5,7 +5,7 @@ sidebar_label: Tracking IDs
 
 ## An Opinionated Guide to Identifying Users
 
-If you are only concerned with logged-in users, your `user.id` will work just fine as the `lookup_key` for feature flags.
+If you are only concerned with logged-in users, your `user.id` will work just fine as the sticky property for roll-outs.
 
 If you are working with users as they transition from anonymous to logged-in users however, we need a value that will persist across this transition.
 If we don't keep this value consistent, we will run into situations where a new user lands on our site and gets the "Control" variant of an experiment, 
