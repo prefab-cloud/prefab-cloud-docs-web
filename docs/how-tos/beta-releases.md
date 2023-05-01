@@ -40,6 +40,7 @@ A feature flag check will always return false until it is fully enabled or a rul
 
 </TabItem>
 <TabItem value="java" label="Java">
+  TODO!
 
 ```java
   if(featureFlagClient.featureIsOnFor(
@@ -87,11 +88,11 @@ Toggle the flag to active. Sync the changes to the API.
 
 ### The people who worked on the feature
 
-Use a `Lookup Key In` rule to target specific users and return the `true` variant if the user matches. Lookup keys are delimited by commas, so you might target `developer-1234,designer-29,developer-456` etc. When it matches, we'll serve variant `true`.
+Use a `Property is one of` rule to target specific users with the property `user.tracking_id`. Tracking ids are delimited by commas, so you might target `developer-1234,designer-29,developer-456` etc. When it matches, we'll serve variant `true`.
 
-![lookup key screenshot](/img/docs/example-beta-release-rules/lookup-key-in.jpg)
+![property is one of](/img/docs/example-beta-release-rules/property-is-one-of.png)
 
-Click "Create Rule" and then move this rule up above our `Always True` rule and sync changes to the API.
+Click "Create Rule" and then move this rule up above our final `true` rule and sync changes to the API.
 
 Once time has passed and we're ready to open this up further, we'll add our next rule.
 
@@ -103,7 +104,7 @@ Click "Create Rule" and sync changes to the API.
 
 Time passes while the org tests the feature. Once we're confident that we're ready for customers to see this, we add our final rule.
 
-![your org](/img/docs/example-beta-release-rules/lookup-key-in.jpg)
+![your org](/img/docs/example-beta-release-rules/your-org.png)
 
 ### A growing percentage of users
 
@@ -115,7 +116,7 @@ Sync your changes.
 
 This is the fun part where you talk to customer support and watch your error tracker.
 
-What if things are broken? You can edit the `Always True` rule to serve the `true` variant to `0%` of people while you fix bugs. Now your customers are using the old code path again immediately.
+What if things are broken? You can edit the `true` rule to serve the `true` variant to `0%` of people while you fix bugs. Now your customers are using the old code path again immediately.
 
 Once you've dealt with any issues, you can slowly ramp the `5%` up to `100%`, syncing to the API and watching for issues each time.
 
@@ -127,13 +128,13 @@ No problem. Using what we learned with our "Your entire org" rule, we can create
 
 Use a `Property Ends With One Of` rule to target the `email` property and set the criteria values to `@CUSTOMER_DOMAIN.com`. When it matches, we'll serve variant `false`.
 
-![exception](/img/docs/example-beta-release-rules/exception.jpg)
+![exception](/img/docs/example-beta-release-rules/exception.png)
 
-Click "Create Rule" and then move this rule up above our `Always True` rule and sync changes to the API.
+Click "Create Rule" and then move this rule up above our `true` rule and sync changes to the API.
 
 Because rule evaluation happens in order, when we see that the user matches `@CUSTOMER_DOMAIN.com` we'll return `false` for the flag check and they won't see the new feature.
 
-Once you've ramped the percentage up to `100%` for the `Always True` rule and you're ready for this customer to see the feature, you can delete this exception rule.
+Once you've ramped the percentage up to `100%` for the `true` rule and you're ready for this customer to see the feature, you can delete this exception rule.
 
 ## Example Screenshot
 
