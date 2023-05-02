@@ -81,3 +81,11 @@ export default function Home() {
     </Layout>
   );
 }
+function setGUIDCookie() {
+    if (document.cookie.indexOf('tid=') === -1) {
+        const guid = crypto.randomUUID();
+        const expirationDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toUTCString();
+        document.cookie = `tid=${guid}; expires=${expirationDate}; SameSite=Lax; path=/`;
+    }
+}
+setGUIDCookie();
