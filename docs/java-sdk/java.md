@@ -35,13 +35,14 @@ Options options = new Options()
 
 ## Get FeatureFlag
 ```java
-  FeatureFlagClient featureFlagClient = prefabCloudClient.featureFlagClient();
+FeatureFlagClient featureFlagClient = prefabCloudClient.featureFlagClient();
 
-  featureFlagClient.featureIsOnFor(
+featureFlagClient.featureIsOn(
     "features.example-flag",
-    "123",
-    Map.of("customer-group", "beta")
-  );
+    PrefabContextStore.newBuilder("customer")
+      .put("group", "beta")
+      .build()
+  )
 ```
 
 ## Get Config
