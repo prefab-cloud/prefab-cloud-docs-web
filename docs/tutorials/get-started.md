@@ -121,14 +121,20 @@ PrefabCloudClient client = new PrefabCloudClient(new PrefabCloudClient.Options()
 FeatureFlagClient featureFlagClient = client.featureFlagClient();
 
 // true for 5 % of the users
-featureFlagClient
-  .featureIsOnFor("features.example-flag", "123");
+featureFlagClient.featureIsOn(
+      "features.example-flag",
+      PrefabContext.newBuilder("user")
+        .put("trackingId", user.getTrackingId())
+        .build()
+    )
 
 // true because of the beta group rule
-featureFlagClient
-  .featureIsOnFor("features.example-flag",
-  "123",
-  Map.of("customer-group", "beta"));
+featureFlagClient.featureIsOn(
+      "features.example-flag",
+      PrefabContext.newBuilder("customer")
+        .put("group", "beta")
+        .build()
+    )
 ```
 
 </TabItem>
