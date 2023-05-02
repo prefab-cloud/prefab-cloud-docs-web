@@ -123,7 +123,7 @@ FeatureFlagClient featureFlagClient = client.featureFlagClient();
 // true for 5 % of the users
 featureFlagClient.featureIsOn(
       "features.example-flag",
-      PrefabContextStore.newBuilder("user")
+      PrefabContext.newBuilder("user")
         .put("trackingId", user.getTrackingId())
         .build()
     )
@@ -131,7 +131,7 @@ featureFlagClient.featureIsOn(
 // true because of the beta group rule
 featureFlagClient.featureIsOn(
       "features.example-flag",
-      PrefabContextStore.newBuilder("customer")
+      PrefabContext.newBuilder("customer")
         .put("group", "beta")
         .build()
     )

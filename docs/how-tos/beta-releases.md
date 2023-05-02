@@ -44,7 +44,7 @@ A feature flag check will always return false until it is fully enabled or a rul
 ```java
   if(featureFlagClient.featureIsOn(
       "my-feature-name",
-      PrefabContextStore.newBuilder("user")
+      PrefabContext.newBuilder("user")
         .put("email", user.getEmailDomain())
         .build()
     )){

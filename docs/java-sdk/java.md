@@ -39,7 +39,7 @@ FeatureFlagClient featureFlagClient = prefabCloudClient.featureFlagClient();
 
 featureFlagClient.featureIsOn(
     "features.example-flag",
-    PrefabContextStore.newBuilder("customer")
+    PrefabContext.newBuilder("customer")
       .put("group", "beta")
       .build()
   )
