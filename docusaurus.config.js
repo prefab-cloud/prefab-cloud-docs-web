@@ -138,11 +138,7 @@ const config = {
           theme: "base",
           themeVariables: {
             primaryColor: "#B9CBFB",
-            // primaryTextColor: "#fff",
-            // primaryBorderColor: "#7C0000",
             lineColor: "#2962F5",
-            // secondaryColor: "#006100",
-            // tertiaryColor: "#fff",
             tertiaryColor: "#E8EEFF",
           },
         },
