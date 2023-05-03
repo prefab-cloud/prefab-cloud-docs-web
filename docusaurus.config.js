@@ -24,6 +24,12 @@ const config = {
       },
     ],
   ],
+  themes: ["@docusaurus/theme-mermaid"],
+  // In order for Mermaid code blocks in Markdown to work,
+  // you also need to enable the Remark plugin with this option
+  markdown: {
+    mermaid: true,
+  },
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -57,7 +63,7 @@ const config = {
           customCss: require.resolve("./src/css/custom.css"),
         },
         gtag: {
-          trackingID: 'G-CB91P8FVG3',
+          trackingID: "G-CB91P8FVG3",
           anonymizeIP: true,
         },
       }),
@@ -125,6 +131,17 @@ const config = {
           },
         ],
         copyright: `Copyright © ${new Date().getFullYear()} Prefab Inc. Built with Docusaurus.`,
+      },
+      mermaid: {
+        theme: { light: "base", dark: "base" },
+        options: {
+          theme: "base",
+          themeVariables: {
+            primaryColor: "#B9CBFB",
+            lineColor: "#2962F5",
+            tertiaryColor: "#E8EEFF",
+          },
+        },
       },
       prism: {
         theme: lightCodeTheme,
