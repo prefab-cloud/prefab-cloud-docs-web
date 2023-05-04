@@ -4,6 +4,8 @@ sidebar_label: Default Files
 sidebar_position: 3
 ---
 
+import Tabs from '@theme/Tabs';
+
 ## Default System
 Prefab has a powerful system of environment defaults that allows you to get started quickly. Let's look.
 
