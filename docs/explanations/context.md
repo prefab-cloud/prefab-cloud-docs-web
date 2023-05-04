@@ -44,7 +44,6 @@ end
 </TabItem>
 <TabItem value="ror" label="Ruby on Rails">
 
-
 We can use an `around_action` to set our context for the life-cycle of the request.
 
 ```ruby
@@ -183,71 +182,68 @@ You can reference mobile as `device.mobile` and tracking_id as `user.tracking_id
 
 Contexts have keys. When you provide a key that conflicts with an existing context key, your new context values will clobber any previous values under that key.
 
-```ruby
-original_context = {
+Let's use this example as our initial context. It has two keys: "request" and "subscription"
+
+```
+{
   request: {
     mobile: true,
     country: "US"
-  }, 
+  },
   subscription: {
     allow_overages: false,
     plan: "Pro"
   }
 }
+```
 
-$prefab.with_context(original_context) do
-  # This is evaluated using the context specified above
-  $prefab.enabled?("my.flag.name")
+If we set the "request" context to `{ id: "f1e6461a" }` then we lose the `mobile` and `country` attributes of our "request" context. Our current context is now
 
-  # this replaces
-  Prefab::Context.current.set("request", { id: "f1e6461a" })
-
-  # the current context is now
-  # {
-  #   request: { id: "f1e6461a" },
-  #   subscription: { allow_overages: false, plan: "Pro" }
-  # }
-  #
-  # Note that the `mobile` and `country` are no longer in the `request` context
-
-  # This is evaluated using current context
-  $prefab.enabled?("my.flag.name")
-
-  jit_context = {
-    subscription: { allow_overages: true },
-    user: { admin: true }
+```
+{
+  request: {
+    id: "f1e6461a"
+  },
+  subscription: {
+    allow_overages: false,
+    plan: "Pro"
   }
-
-  # this is evaluated using
-  # {
-  #   request: { id: "f1e6461a" },
-  #   subscription: { allow_overages: true },
-  #   user: { admin: true }
-  # }
-  $prefab.enabled?("my.flag.name", jit_context)
-
-
-  # The JIT context no longer applies and this uses the current context
-  $prefab.enabled?("my.flag.name")
 }
-end
+```
+
+If we provide JIT context to a flag then the JIT keys clobber the current context keys only for the duration of the evaluation
+
+```ruby
+jit_context = {
+  subscription: { allow_overages: true },
+  user: { admin: true }
+}
+
+$prefab.enabled?("my.flag.name", jit_context)
+```
+
+That `enabled?` check uses this context
+
+```
+{
+  request: { id: "f1e6461a" },
+  subscription: { allow_overages: true },
+  user: { admin: true }
+}
+```
+
+But then the current context after that evaluation is still
+
+```
+{
+  request: {
+    id: "f1e6461a"
+  },
+  subscription: {
+    allow_overages: false,
+    plan: "Pro"
+  }
+}
 ```
 
 You can, of course, do your own merging before re-setting the context key.
-
-```ruby
-$prefab.with_context(original_context) do
-  # This is evaluated using the context specified above
-  $prefab.enabled?("my.flag.name")
-
-  merged = Prefab::Context.current.get("request").merge({ id: "f1e6461a" })
-
-  # this replaces
-  Prefab::Context.current.set("request", merged)
-
-  # but since we did a manual merge, our current context is now
-  # {
-  #   request: { mobile: true, country: "US", id: "f1e6461a" },
-  #   subscription: { allow_overages: false, plan: "Pro" }
-  # }
-```
