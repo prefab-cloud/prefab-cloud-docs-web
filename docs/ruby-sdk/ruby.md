@@ -255,9 +255,8 @@ top.
 Prefab is designed to be extremely resilient. The client will try to pull live values from:
 
 1. A Fastly CDN backed by the API
-2. A Cloudflare CDN backed by an S3 bucket
-3. The Prefab API
-4. Prefab Streaming APIs
+2. The Prefab API
+3. Prefab Streaming APIs
 
 This strategy ensures the utmost reliability for your clients being able to pull live values, even in the case of a
 major outage of the Prefab APIs.
