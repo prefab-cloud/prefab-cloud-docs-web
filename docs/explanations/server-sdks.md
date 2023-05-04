@@ -15,54 +15,56 @@ The Prefab server side SDK are all built with the 3 goals in mind:
 The architecture to do this looks like this:
 
 ```mermaid
-graph LR
-
+flowchart RL
     subgraph "Your Server"
         subgraph "Your Code"
-            code[feature_flag.isEnabled?<br> my-flag, identity]
+            code[feature_flag.isEnabled?<br> my-flag, context]
         end
+
         subgraph "Prefab SDK"
             Evaluation
             ConfigCache
         end
+
         code --> Evaluation
     end
 
-    CDN["CDN"]
-    Evaluation -->  ConfigCache
-    ConfigCache --> CDN
 
     subgraph "Prefab API"
         subgraph "API"
             BulkAPI["Bulk API"]
             StreamingAPI["Streaming API"]
         end
+
         subgraph "Datastores"
-            GoogleSpanner["Google Spanner"]
+            GoogleSpanner[("Google Spanner")]
         end
     end
 
-    ConfigCache --> BulkAPI
-    ConfigCache --> StreamingAPI
-
-    CDN --> BulkAPI
+    BulkAPI --> CDN
+    BulkAPI --> ConfigCache
+    StreamingAPI --> ConfigCache
+    Evaluation --> code
+    ConfigCache --> Evaluation
+    Evaluation -->  ConfigCache
+    CDN --> ConfigCache
 ```
 
-Your code will instantiate a singleton of a PrefabClient. This client starts will fetch the latest configuration, trying
+Your code will instantiate a singleton of a Prefab Client. This client starts will fetch the latest configuration, trying
 multiple sources in case of errors. Once it gets a connection it will unlock and be available for your code.
 
 The client will also start a streaming connection to the APIs to pull down new changes.
 
 Additionally, the SDK will poll for updates as a resiliency measure.
 
-Note that the evaluation is always happening in process in your application.
-Feature flags are stored in process so are lightning fast (no API calls when you access them).
+Note that the evaluation is always happening in-process in your application.
+Feature flags and config are stored in process so are lightning fast (no API calls when you access them).
 
 [See Client SDKs to compare](/docs/explanations/client-sdks.md)
 
 ## Implementation
 
-When your feature flag client boots, it creates a local thread safe hashmap which will hold the config.
+When your client boots, it creates a local thread safe hashmap which will hold the config.
 The general purpose Prefab config system will then push & pull changes down to your clients.
 The expected latency is < 100 ms.
 
