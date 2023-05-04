@@ -26,7 +26,7 @@ For usage examples, see your relevant SDK client documentation.
 
 To avoid deeply passing around awareness of the current user, request, etc., Prefab allows you to set Context globally. The mechanisms for doing so will vary by language and framework.
 
-When global context is set, log levels and feature flags will evaluate in that context.
+When global context is set, log levels and feature flags will evaluate in that context. If you provide just-in-time context to your FF evaluations, it will be merged with the global context. More on merging below.
 
 <Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
@@ -178,3 +178,76 @@ Given the context
 You can reference mobile as `device.mobile` and tracking_id as `user.tracking_id` in the property field in the UI.
 
 ![dot notation in UI](/img/docs/explanations/dot-notation.png)
+
+## Adding to and merging contexts
+
+Contexts have keys. When you provide a key that conflicts with an existing context key, your new context values will clobber any previous values under that key.
+
+```ruby
+original_context = {
+  request: {
+    mobile: true,
+    country: "US"
+  }, 
+  subscription: {
+    allow_overages: false,
+    plan: "Pro"
+  }
+}
+
+$prefab.with_context(original_context) do
+  # This is evaluated using the context specified above
+  $prefab.enabled?("my.flag.name")
+
+  # this replaces
+  Prefab::Context.current.set("request", { id: "f1e6461a" })
+
+  # the current context is now
+  # {
+  #   request: { id: "f1e6461a" },
+  #   subscription: { allow_overages: false, plan: "Pro" }
+  # }
+  #
+  # Note that the `mobile` and `country` are no longer in the `request` context
+
+  # This is evaluated using current context
+  $prefab.enabled?("my.flag.name")
+
+  jit_context = {
+    subscription: { allow_overages: true },
+    user: { admin: true }
+  }
+
+  # this is evaluated using
+  # {
+  #   request: { id: "f1e6461a" },
+  #   subscription: { allow_overages: true },
+  #   user: { admin: true }
+  # }
+  $prefab.enabled?("my.flag.name", jit_context)
+
+
+  # The JIT context no longer applies and this uses the current context
+  $prefab.enabled?("my.flag.name")
+}
+end
+```
+
+You can, of course, do your own merging before re-setting the context key.
+
+```ruby
+$prefab.with_context(original_context) do
+  # This is evaluated using the context specified above
+  $prefab.enabled?("my.flag.name")
+
+  merged = Prefab::Context.current.get("request").merge({ id: "f1e6461a" })
+
+  # this replaces
+  Prefab::Context.current.set("request", merged)
+
+  # but since we did a manual merge, our current context is now
+  # {
+  #   request: { mobile: true, country: "US", id: "f1e6461a" },
+  #   subscription: { allow_overages: false, plan: "Pro" }
+  # }
+```
