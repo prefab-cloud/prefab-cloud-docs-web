@@ -21,3 +21,11 @@
   align-items: center;
   justify-content: center;
 }
+
+.langlink {
+  width: 148px;
+  color: red;
+  text-align: center;
+  border: red 1px solid;
+  display: inline-block;
+}

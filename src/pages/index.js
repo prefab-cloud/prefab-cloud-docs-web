@@ -25,6 +25,41 @@ function HomepageHeader() {
     </header>
   );
 }
+function Langs() {
+  const {siteConfig} = useDocusaurusContext();
+  return (
+      <div>
+          <Link className={clsx('langlink'), styles.langlink} to="/docs/ruby-sdk/ruby">
+              Ruby
+              <img src="/img/langs/ruby.png" className="" alt="Ruby" />
+          </Link>
+          <Link className={clsx('langlink'), styles.langlink} to="/docs/java-sdk/java">
+              Java
+              <img src="/img/langs/java.png" className="" alt="Java" />
+          </Link>
+          <Link className={clsx('langlink'), styles.langlink} to="/docs/java-sdk/python">
+              Python
+              <img src="/img/langs/python.png" className="" alt="Python" />
+          </Link>
+          <Link className={clsx('langlink'), styles.langlink} to="/docs/java-sdk/elixir">
+              Elixir
+              <img src="/img/langs/elixir.png" className="" alt="Elixir" />
+          </Link>
+          <Link className={clsx('langlink'), styles.langlink} to="/docs/react">
+              React
+              <img src="/img/langs/react.png" className="" alt="React" />
+          </Link>
+          <Link className={clsx('langlink'), styles.langlink} to="/docs/javascript">
+              Javascript
+              <img src="/img/langs/js.png" className="" alt="JS" />
+          </Link>
+          <Link className={clsx('langlink'), styles.langlink} to="https://share.hsforms.com/1BKgbsgReSl2bP351bfdJDg9z48">
+              Request a language
+          </Link>
+      </div>
+
+  );
+}
 
 export default function Home() {
   const {siteConfig} = useDocusaurusContext();
@@ -33,6 +68,7 @@ export default function Home() {
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />">
       <HomepageHeader />
+      <Langs />
       <main>
         <HomepageFeatures />
       </main>
