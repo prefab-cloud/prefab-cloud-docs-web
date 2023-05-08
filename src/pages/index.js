@@ -39,11 +39,11 @@ function Langs() {
           <img src="/img/langs/java.png" className="" alt="Java" />
           <span>Java</span>
         </Link>
-        <Link className={styles.langlink} to="/docs/java-sdk/python">
+        <Link className={styles.langlink} to="/docs/python-sdk/python">
           <img src="/img/langs/python.png" className="" alt="Python" />
           <span>Python</span>
         </Link>
-        <Link className={styles.langlink} to="/docs/java-sdk/elixir">
+        <Link className={styles.langlink} to="/docs/elixir-sdk/elixir">
           <img src="/img/langs/elixir.png" className="" alt="Elixir" />
           <span>Elixir</span>
         </Link>
