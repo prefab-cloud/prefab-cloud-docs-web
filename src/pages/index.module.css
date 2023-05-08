@@ -25,6 +25,7 @@
 .languages {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   margin: 4rem 0;
 }
@@ -33,6 +34,16 @@
   width: 148px;
   text-align: center;
   display: inline-block;
+}
+
+@media screen and (max-width: 500px) {
+  .heroBanner h1 {
+    font-size: 2rem;
+  }
+
+  .langlink {
+    width: 30%;
+  }
 }
 
 .request {
