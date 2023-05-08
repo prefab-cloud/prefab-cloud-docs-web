@@ -150,7 +150,7 @@ public class PrefabContexClearingResponseFilter implements ContainerResponseFilt
 }
 ```
 
-Learn more with the [Prefab + Dropwizard example app](https://github.com/prefab-cloud/example-java-dropwizard)
+Learn more with the [Prefab + Dropwizard example app](https://github.com/prefab-cloud/example-dropwizard-app)
 
 </TabItem>
 </Tabs>
