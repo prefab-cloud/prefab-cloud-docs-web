@@ -5,6 +5,13 @@ sidebar_position: 1
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
+
+:::caution
+**Note: This library is under active development and not quite ready for production usage**
+
+[Sign up to be notified when this library releases](https://forms.gle/2qsjMFvjGnkTnA9T8)
+:::
+
 ## Getting Started with the Python SDK
 
 Add `prefab_cloud_python` to your package dependencies
