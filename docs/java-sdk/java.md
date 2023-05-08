@@ -56,7 +56,13 @@ if(configValue.isPresent()){
 
 ## Typical Usage 
 We recommend using the PrefabCloudClient as a singleton in your application. This is the most common way to use the SDK.
-Examples of usage in Dropwizard, Spring Boot and others are onthe way.
+
+We have runnable example apps walking through installation, configuration and usage for these containers:
+
+* [DropWizard](https://github.com/prefab-cloud/example-dropwizard-app/)
+* [Micronaut](https://github.com/prefab-cloud/example-micronaut-app/)
+
+An example of usage in Spring Boot is on the way. Let us know about any others you'd like to see
 
 ```java
 // Micronaut Factory
