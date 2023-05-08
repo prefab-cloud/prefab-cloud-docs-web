@@ -22,10 +22,19 @@
   justify-content: center;
 }
 
+.languages {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
 .langlink {
   width: 148px;
-  color: red;
   text-align: center;
-  border: red 1px solid;
   display: inline-block;
+}
+
+.request {
+  text-align: center;
 }
