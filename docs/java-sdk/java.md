@@ -1,6 +1,6 @@
 ---
-title: Java SDK
-sidebar_label: Java SDK
+title: Java
+sidebar_label: Java
 sidebar_position: 1
 ---
 [Github](https://github.com/prefab-cloud/prefab-cloud-java) | [Maven Repository](https://mvnrepository.com/artifact/cloud.prefab/prefab-cloud-java)

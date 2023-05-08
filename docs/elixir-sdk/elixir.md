@@ -5,6 +5,12 @@ sidebar_position: 1
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
+:::caution
+**Note: This library is under active development and not quite ready for production usage**
+
+[Sign up to be notified when this library releases](https://forms.gle/BuAwqqmEDxfEybkN6)
+:::
+
 ## Getting Started with the Elixir SDK
 
 Add `prefab` to your mix dependencies
