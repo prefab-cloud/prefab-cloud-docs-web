@@ -77,7 +77,7 @@ If using workers in Puma, you can initialize inside an on_worker_boot hook in yo
 ```ruby
 # puma.rb
 on_worker_boot do
-  $prefab = Prefab::Client.new
+  $prefab = $prefab.fork
   $prefab.set_rails_loggers
 end
 ```
@@ -89,7 +89,7 @@ If using workers in Unicorn, you can initialize inside an after_fork hook in you
 ```ruby
 # unicorn.rb
 after_fork do |server, worker|
-  $prefab = Prefab::Client.new
+  $prefab = $prefab.fork
   $prefab.set_rails_loggers
 end
 ```
