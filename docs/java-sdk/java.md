@@ -12,7 +12,7 @@ sidebar_position: 1
 <dependency>
     <groupId>cloud.prefab</groupId>
     <artifactId>client</artifactId>
-    <version>0.3.8</version>
+    <version>0.3.9</version>
 </dependency>
 ```
 
