@@ -166,7 +166,7 @@ Given the context
   user: {
     email: "test@example.com",
     tracking_id: user.tracking_id,
-  }
+  },
 
   device: {
     mobile: true,
