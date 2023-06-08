@@ -53,16 +53,49 @@ if(configValue.isPresent()){
 }
 ```
 
+## Provide Context
 
-## Typical Usage 
-We recommend using the PrefabCloudClient as a singleton in your application. This is the most common way to use the SDK.
+To finely-target configuration rule evaluation, we accept contextual information both inline when making a get request
+
+```java
+prefabCloudClient.configClient().get("the.key", PrefabContext.newBuilder("user")
+                                                    .put("name", "james")
+                                                    .put("tier", "gold")
+                                                    .put("customerMonths", 12)
+                                                    .build()
+                                                 )
+```
+
+and globally or request-scoped with the ContextStore which will affect all logging, featureflag and config lookups.
+
+```java
+
+prefabCloudClient.configClient().getContextStore().addContext(PrefabContext.newBuilder("User")
+                        .put("name", user.getName())
+                        .build());
+```
+
+See [contexts](../explanations/context) for more information
+
+
+## Example Applications
 
 We have runnable example apps walking through installation, configuration and usage for these containers:
 
 * [DropWizard](https://github.com/prefab-cloud/example-dropwizard-app/)
 * [Micronaut](https://github.com/prefab-cloud/example-micronaut-app/)
 
+### Micronaut Up and Running Walkthrough Video
+
+[![YouTube](https://img.youtube.com/vi/pesH3CoiKTs/0.jpg)](https://www.youtube.com/watch?v=pesH3CoiKTs)
+
+
 An example of usage in Spring Boot is on the way. Let us know about any others you'd like to see
+
+
+## Typical Usage 
+We recommend using the PrefabCloudClient as a singleton in your application. This is the most common way to use the SDK.
+
 
 ```java
 // Micronaut Factory
