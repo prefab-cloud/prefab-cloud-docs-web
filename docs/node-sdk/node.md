@@ -9,7 +9,7 @@ sidebar_position: 1
 
 ## Getting started with the Node SDK
 
-`npm install @prefab-cloud/prefab-cloud-node` or `yarn install @prefab-cloud/prefab-cloud-node`
+`npm install @prefab-cloud/prefab-cloud-node` or `yarn add @prefab-cloud/prefab-cloud-node`
 
 ## Initialize a Client
 
