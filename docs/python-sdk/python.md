@@ -166,43 +166,93 @@ Congrats! You're ready to rock!
 Feature flags become more powerful when we give the flag evaluation [rules](/docs/explanations/rules-and-segmentation) more
 information to work with.
 
-We do this by providing a lookup key and identity attributes.
-
-The lookup key serves two purposes. First, it will be the unique key that helps us
-target a specific user using `Lookup Key In` when evaluating a flag.
-
-Second, this key is used to make sure that percent rollout evaluations are
-consistently applied.
-
-Attributes come into play when using the `Property Is One Of` and similar rule
-criteria.
+We do this by providing a [context](https://docs.prefab.cloud/docs/explanations/context)
+for the current user (and/or team, request, etc)
 
 ```python
-lookup_key = "user-1234"
-identity_attributes = {
-    "team_id": 432,
-    "user_id": 123,
-    "subscription_level": 'pro',
-    "email": "alice@example.com"
+context = {
+    "user": {
+        "id": 123,
+        "subscription_level": "pro",
+        "email": "bob@example.com"
+    },
+    "team": {
+        "id": 432,
+    },
+    "device": {
+        "mobile": False
+    }
 }
 
-result = client.enabled("my-first-feature-flag", lookup_key=lookup_key, attributes=identity_attributes)
-print("my-first-feature-flag is", result, "for", lookup_key)
+result = client.enabled("my-first-feature-flag", context=context)
 ```
-
-:::tip
-
-How you choose the `tracking_id` for your user is up to you, but we have some suggestions and we would generally
-discourage
-`user.id` unless you are positive you don't have anonymous users. See the section on [Tracking IDs](../how-tos/tracking-ids) for our suggestion.
-
-:::
 
 Feature flags don't have to return just true or false. You can get other data types using `get`:
 
 ```python
-client.get("ff-with-string", default="default-string")
+client.get("ff-with-string", default="default-string", context=context)
 client.get("ff-with-int", default=5)
+```
+
+### Global context
+
+To avoid having to pass a context explicitly to every call to `get` or `enabled`, it is possible to set a thread-local
+context that will be evaluated as the default argument to `context=` if none is given.
+
+```python
+from prefab_cloud_python import Context
+context = {
+    "user": {
+        "id": 123,
+        "subscription_level": "pro",
+        "email": "bob@example.com"
+    },
+    "team": {
+        "id": 432,
+    },
+    "device": {
+        "mobile": False
+    }
+}
+
+shared_context = Context(context)
+
+Context.set_current(shared_context)
+
+# with this set, the following two client calls are equivalent
+
+result = client.enabled("my-first-feature-flag")
+result = client.enabled("my-first-feature-flag", context=context)
+```
+
+### Scoped context
+
+It is also possible to scope a context for a particular block of code, without needing to set and unset
+the thread-local context
+
+```python
+from prefab_cloud_python import Client
+
+context = {
+    "user": {
+        "id": 123,
+        "subscription_level": "pro",
+        "email": "bob@example.com"
+    },
+    "team": {
+        "id": 432,
+    },
+    "device": {
+        "mobile": False
+    }
+}
+
+with Client.scoped_context(context):
+    result1 = client.enabled("my-first-feature-flag")
+
+result2 = client.enabled("my-first-feature-flag", context=context)
+
+result1 == result2 #=> True
 ```
 
 ## Namespaces
