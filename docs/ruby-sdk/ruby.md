@@ -54,20 +54,25 @@ def prefab_context
       mobile: mobile?
       # ...
     },
+  }.merge(prefab_user_context)
+end
 
-    user: {
-      id: current_user&.id,
-      email: current_user&.email,
-      country: current_user&.country,
-      # ...
-    }
+def prefab_user_context
+  return {} unless current_user
+
+  {
+    key: current_user.tracking_id,
+    id: current_user.id,
+    email: current_user.email,
+    country: current_user.country,
+    # ...
   }
 end
 ```
 
 #### Special Considerations with Forking servers like Puma & Unicorn that use workers
 
-Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork. You do not need to do this if you are only using threads and not workers. 
+Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork. You do not need to do this if you are only using threads and not workers.
 We also need to set the reset the logger for ActionView and friends because those get set pre-fork.
 
 <Tabs groupId="lang">
@@ -81,6 +86,7 @@ on_worker_boot do
   $prefab.set_rails_loggers
 end
 ```
+
 </TabItem>
 
 <TabItem value="unicorn" label="Unicorn">
@@ -93,6 +99,7 @@ after_fork do |server, worker|
   $prefab.set_rails_loggers
 end
 ```
+
 </TabItem>
 </Tabs>
 
@@ -178,11 +185,13 @@ We do this by providing [context](../explanations/context) of the current user (
 context = {
   user: {
     id: 123,
+    key: 'user-123',
     subscription_level: 'pro',
     email: "alice@example.com"
   },
   team: {
     id: 432,
+    key: 'team-abc',
   },
   device: {
     mobile: true,
@@ -373,7 +382,6 @@ options = Prefab::Options.new(
 )
 $prefab = Prefab::Client.new(options)
 ```
-
 
 [Meltano]: https://meltano.com/
 [Singer]: https://www.singer.io/
