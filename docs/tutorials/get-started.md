@@ -3,6 +3,7 @@ title: Get Started
 sidebar_label: Get Started
 sidebar_position: 1
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -14,15 +15,15 @@ Getting setup with prefab cloud should take you 5 minutes, but only if we start 
 
 ## Dashboard
 
-After signing up, you'll see an onboarding dashboard. We've created your first project for you.
+After signing up, you'll see an onboarding dashboard. We've created your first workspace for you.
 
 ![image](/img/docs/getting-started/dashboard.png)
 
-Most organizations will only want a single project.
+Most organizations will only want a single workspace.
 
-## Project Environments
+## Environments
 
-Click on your project name to add environments.
+Click on your workspace name to add environments.
 
 You probably want something like:
 
@@ -42,7 +43,7 @@ Our clients will need to connect to the Prefab APIs. To do that they'll need API
 - **Client API** keys are used in mobile applications or websites. These keys will allow the clients to evaluate feature flags for a single user, but will not expose the raw flag data.
 
 :::info
-Only use Client API Keys in code that gets shipped to end users, 
+Only use Client API Keys in code that gets shipped to end users,
 :::
 
 Let's create an SDK Key for now.
@@ -54,7 +55,6 @@ secure hash on our end. Don't worry if you lose it, you can easily create as man
 
 ![image](/img/docs/getting-started/api-key-created.png)
 
-
 ## Adding a Feature Flag
 
 Now that we have an API key, we're ready to go. Select Flags from the navigation and then choose "Add Flag".
@@ -64,7 +64,6 @@ Let's name our flag `features.example-flag` and use the default type (`bool`).
 Prefab suggests that you name things all in lowercase, with `.` as a logical separator and `-` between words.
 
 ![image](/img/docs/getting-started/add-flag.png)
-
 
 Click Save and now we can take a look at our new feature flag. There are 4 elements to call your attention to.
 
@@ -158,7 +157,6 @@ Prefab.Client.enabled?(
 
 </TabItem>
 </Tabs>
-
 
 And that's it! A nice feature flag with a complex rule and a partial rollout in 5 minutes.
 
