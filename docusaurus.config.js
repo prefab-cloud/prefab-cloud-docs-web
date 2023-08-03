@@ -93,6 +93,11 @@ const config = {
         },
         items: [
           {
+            to: "https://prefab.cloud",
+            position: "right",
+            label: "Prefab Homepage",
+          },
+          {
             to: "https://app.prefab.cloud/users/sign_up",
             position: "right",
             label: "Create Account",
