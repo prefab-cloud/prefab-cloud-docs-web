@@ -35,7 +35,7 @@ function HomepageHeader() {
 function Langs() {
   const { siteConfig } = useDocusaurusContext();
   const linkClasses =
-    "flex flex-col items-center bg-brand-purple-light rounded-xl p-4 lg:p-8 border-4 border-solid border-brand-purple-light hover:border-brand-purple hover:no-underline";
+    "flex flex-col items-center bg-brand-purple-light dark:bg-brand-slate rounded-xl p-4 lg:p-8 border-4 border-solid border-brand-purple-light dark:border-brand-slate hover:border-brand-purple dark:hover:border-brand-coral hover:no-underline";
 
   return (
     <Section>

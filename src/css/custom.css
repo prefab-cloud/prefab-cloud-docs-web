@@ -42,8 +42,8 @@
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme="dark"] {
-  --ifm-color-primary: #25c2a0;
+html[data-theme="dark"] {
+  --ifm-color-primary: var(--color-brand-coral);
   --ifm-color-primary-dark: #21af90;
   --ifm-color-primary-darker: #1fa588;
   --ifm-color-primary-darkest: #1a8870;
@@ -51,6 +51,10 @@
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  /* prefab overrides */
+  /* NOTE: I had to add the html prefix to increase the specificity for some of these overrides to actually work */
+  --ifm-background-color: var(--color-brand-slate);
 }
 
 .navbar {
