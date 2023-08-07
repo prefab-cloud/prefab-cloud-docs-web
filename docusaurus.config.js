@@ -14,6 +14,17 @@ const config = {
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.png",
   plugins: [
+    async function myPlugin(context, options) {
+      return {
+        name: "docusaurus-tailwindcss",
+        configurePostCss(postcssOptions) {
+          // Appends TailwindCSS and AutoPrefixer.
+          postcssOptions.plugins.push(require("tailwindcss"));
+          postcssOptions.plugins.push(require("autoprefixer"));
+          return postcssOptions;
+        },
+      };
+    },
     [
       "posthog-docusaurus",
       {
@@ -74,25 +85,23 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: "Prefab",
+        title: "",
         logo: {
           alt: "Prefab Logo",
-          src: "img/logo.png",
-          href: "https://www.prefab.cloud/",
+          src: "img/logo.svg",
+          // href: "https://www.prefab.cloud/",
         },
         items: [
           {
-            type: "doc",
-            docId: "tutorials/get-started",
-            position: "left",
-            label: "Docs",
+            to: "https://prefab.cloud",
+            position: "right",
+            label: "Prefab Homepage",
           },
-          // {to: '/blog', label: 'Blog', position: 'left'},
-          // {
-          //   href: 'https://github.com/facebook/docusaurus',
-          //   label: 'GitHub',
-          //   position: 'right',
-          // },
+          {
+            to: "https://app.prefab.cloud/users/sign_up",
+            position: "right",
+            label: "Create Account",
+          },
         ],
       },
       footer: {
