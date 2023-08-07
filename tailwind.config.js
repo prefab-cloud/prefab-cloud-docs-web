@@ -6,6 +6,9 @@ module.exports = {
   },
   darkMode: ["class", '[data-theme="dark"]'], // hooks into docusaurus' dark mode settigns
   theme: {
+    fontFamily: {
+      display: "Barlow",
+    },
     extend: {
       colors: {
         "brand-slate": "var(--color-brand-slate)",
