@@ -5,13 +5,13 @@ sidebar_position: 1
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
+## Getting Started with the Elixir SDK
+
 :::caution
 **Note: This library is under active development and not quite ready for production usage**
 
 [Sign up to be notified when this library releases](https://forms.gle/BuAwqqmEDxfEybkN6)
 :::
-
-## Getting Started with the Elixir SDK
 
 Add `prefab` to your mix dependencies
 
@@ -49,17 +49,17 @@ config :prefab,
 
 ### Available options
 
-* `api_key` - your prefab.cloud SDK API key
-* `prefab_api_url` - the API endpoint your API key has been created for (i.e. `https://api.prefab.cloud`)
-* `prefab_grpc_url` - the gRPC endpoint (including port) you wish to connect to (i.e. `grpc.prefab.cloud:443`)
-* `namespace` - an optional namespace to define your client's scope when looking up config
-* `prefab_datasources` - one of `:all` (default) or `:local_only`, determines whether to fetch data from remote
+- `api_key` - your prefab.cloud SDK API key
+- `prefab_api_url` - the API endpoint your API key has been created for (i.e. `https://api.prefab.cloud`)
+- `prefab_grpc_url` - the gRPC endpoint (including port) you wish to connect to (i.e. `grpc.prefab.cloud:443`)
+- `namespace` - an optional namespace to define your client's scope when looking up config
+- `prefab_datasources` - one of `:all` (default) or `:local_only`, determines whether to fetch data from remote
   sources or use only local data
-* `prefab_config_classpath_dir` - the directory from which to load locally defined configuration. This data
+- `prefab_config_classpath_dir` - the directory from which to load locally defined configuration. This data
   will be overwritten by data pulled from remote sources
-* `prefab_config_override_dir` - the directory from which to load local override data. Any data found will be
+- `prefab_config_override_dir` - the directory from which to load local override data. Any data found will be
   loaded overtop of data pulled from remote sources
-* `prefab_envs` - one or more environment names from which to load local configuration and overrides.
+- `prefab_envs` - one or more environment names from which to load local configuration and overrides.
   See [Local config and overrides](#module-local-config-and-overrides) below for additional information.
 
 ## Initialize Client
@@ -95,7 +95,6 @@ Prefab.Client.get(client, "max-jobs-per-second") # => nil
 
 If you would prefer your application raise an error if no value is found
 when no default is provided, you can use `get!`
-
 
 ```elixir
 # raises a Prefab.Errors.MissingDefaultError
@@ -243,7 +242,6 @@ Prefab.Client.critical(client, message)
 ```
 
 You can now control logging at any level of your stack. For convenience, we'll set these as local defaults in `.prefab.default.config.yaml` ([learn more](/docs/explanations/defaults)) but you can set and tweak these on-the-fly in the Prefab web app.
-
 
 ```yaml
 # .prefab.default.config.yaml

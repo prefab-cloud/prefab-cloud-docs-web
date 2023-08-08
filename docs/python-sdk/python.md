@@ -5,14 +5,13 @@ sidebar_position: 1
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
+## Getting Started with the Python SDK
 
 :::caution
 **Note: This library is under active development and not quite ready for production usage**
 
 [Sign up to be notified when this library releases](https://forms.gle/2qsjMFvjGnkTnA9T8)
 :::
-
-## Getting Started with the Python SDK
 
 Add `prefab_cloud_python` to your package dependencies
 
@@ -44,24 +43,24 @@ for that key.
 
 ### Available `Option` parameters
 
-* `api_key` - your prefab.cloud SDK API key
-* `prefab_api_url` - the API endpoint your API key has been created for (i.e. `https://api.prefab.cloud`)
-* `prefab_grpc_url` - the gRPC endpoint (including port) you wish to connect to (i.e. `grpc.prefab.cloud:443`)
-* `namespace` - an optional namespace to define your client's scope when looking up config
-* `prefab_datasources` - one of `"ALL"` (default) or `"LOCAL_ONLY"`, determines whether to fetch data from remote
-    sources or use only local data
-* `prefab_config_classpath_dir` - the directory from which to load locally defined configuration. This data
-    will be overwritten by data pulled from remote sources. This value defaults to the root of your project (i.e. `"."`)
-* `prefab_config_override_dir` - the directory from which to load local override data. Any data found will be
-    loaded overtop of data pulled from remote sources. This value defaults to your `$HOME` directory.
-* `prefab_envs` - one or more environment names from which to load local configuration and overrides.
-    See [Local config and overrides](#module-local-config-and-overrides) below for additional information.
-* `on_no_default` - one of `"RAISE"` (default) or `"RETURN_NONE"`. This determines how the client behaves when a request for
-    a config cannot find a value, and no default is supplied. These settings will, respectively, raise a `MissingDefaultException`,
-    or return `None`.
-* `on_connection_failure` - one of `"RETURN"` (default) or `"RAISE"`. This determines what should happen if the connection to
-    a remote datasource times out. These settings will, respectively, return whatever is in the local cache from the latest sync
-    from the remote source, or else raise an `InitializationTimeoutException`.
+- `api_key` - your prefab.cloud SDK API key
+- `prefab_api_url` - the API endpoint your API key has been created for (i.e. `https://api.prefab.cloud`)
+- `prefab_grpc_url` - the gRPC endpoint (including port) you wish to connect to (i.e. `grpc.prefab.cloud:443`)
+- `namespace` - an optional namespace to define your client's scope when looking up config
+- `prefab_datasources` - one of `"ALL"` (default) or `"LOCAL_ONLY"`, determines whether to fetch data from remote
+  sources or use only local data
+- `prefab_config_classpath_dir` - the directory from which to load locally defined configuration. This data
+  will be overwritten by data pulled from remote sources. This value defaults to the root of your project (i.e. `"."`)
+- `prefab_config_override_dir` - the directory from which to load local override data. Any data found will be
+  loaded overtop of data pulled from remote sources. This value defaults to your `$HOME` directory.
+- `prefab_envs` - one or more environment names from which to load local configuration and overrides.
+  See [Local config and overrides](#module-local-config-and-overrides) below for additional information.
+- `on_no_default` - one of `"RAISE"` (default) or `"RETURN_NONE"`. This determines how the client behaves when a request for
+  a config cannot find a value, and no default is supplied. These settings will, respectively, raise a `MissingDefaultException`,
+  or return `None`.
+- `on_connection_failure` - one of `"RETURN"` (default) or `"RAISE"`. This determines what should happen if the connection to
+  a remote datasource times out. These settings will, respectively, return whatever is in the local cache from the latest sync
+  from the remote source, or else raise an `InitializationTimeoutException`.
 
 ## Start the Client
 
@@ -100,7 +99,6 @@ client.get("max-jobs-per-second")
 
 If you would prefer your application return `None` instead of raising an error,
 you can set `on_no_default="RETURN_NONE"` when creating your Options object.
-
 
 ```python
 options = Options(
@@ -298,7 +296,6 @@ client.logger().critical(message)
 ```
 
 You can now control logging at any level of your stack. For convenience, we'll set these as local defaults in `.prefab.default.config.yaml` ([learn more](/docs/explanations/defaults)) but you can set and tweak these on-the-fly in the Prefab web app.
-
 
 ```yaml
 # .prefab.default.config.yaml
