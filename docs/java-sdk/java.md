@@ -8,14 +8,27 @@ sidebar_position: 1
 ## Getting Started With the Java SDK
 
 ## Install the latest version
+
 ```xml
 <dependency>
     <groupId>cloud.prefab</groupId>
     <artifactId>client</artifactId>
-    <version>0.3.9</version>
+    <version>0.3.13</version>
 </dependency>
 ```
 
+### Dependency-Reduced Version
+
+There's an optional uber-jar with shaded and relocated guava and failsafe dependencies
+
+```xml
+<dependency>
+    <groupId>cloud.prefab</groupId>
+    <artifactId>client</artifactId>
+    <version>0.3.13</version>
+    <classifier>uberjar</classifier>
+</dependency>
+```
 
 ## Initialize the client
 ```java
@@ -32,6 +45,18 @@ Options options = new Options()
   .setOnInitializationFailure(Options.OnInitializationFailure.) // Option Options.OnInitializationFailure.UNLOCK
   .setInitializationTimeoutSec(10);
 ```
+
+#### Option Definitions
+
+| Name | Description | Default | 
+| ---- | ---- | ---- |  
+| collectEvaluationSummaries | Send counts of config/flag evaluation results back to Prefab to view in web app | true |
+| collectLoggerCounts | Send counts of logger usage back to Prefab to power log-levels configuration screen | true |
+| contextUploadMode | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | PERIODIC_EXAMPLE |
+| onInitializationFailure | Choose to crash or continue with local data only if unable to fetch config data from prefab at startup | RAISE (crash) |
+| prefabDatasources | Use either only-local data or local + API data | ALL |
+
+
 
 ## Get FeatureFlag
 ```java
