@@ -21,6 +21,32 @@ $prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
 
 You can use `$prefab.log.info` (and `error`, `warn`, etc.) to use [dynamic log levels](./dynamic-log-levels).
 
+### Options
+
+The full options are at the end of this doc, but here's some highlights:
+
+```ruby
+options = Prefab::Options.new(
+  collect_evaluation_summaries: true,
+  collect_logger_counts: true,
+  context_upload_mode: :periodic_example,
+  on_init_failure: Prefab::Options::ON_INITIALIZATION_FAILURE::RAISE,
+  prefab_datasources: Prefab::Options::DATASOURCES::ALL,
+)
+
+$prefab = Prefab::Client.new(options)
+```
+
+#### Definitions of those options
+
+| Name                         | Description                                                                                                                           | Default       |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| collect_evaluation_summaries | Send counts of config/flag evaluation results back to Prefab to view in web app                                                       | true          |
+| collect_logger_counts        | Send counts of logger usage back to Prefab to power log-levels configuration screen                                                   | true          |
+| context_upload_mode          | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | :periodic     |
+| on_init_failure              | Choose to crash or continue with local data only if unable to fetch config data from prefab at startup                                | RAISE (crash) |
+| prefab_datasources           | Use either only-local data or local + API data                                                                                        | ALL           |
+
 ### Rails Applications
 
 Initializing Prefab in your `application.rb` will allow you to reference dynamic configuration in your environment (e.g. `staging.rb`) and initializers. This is useful for setting environment-specific config like your redis connection URL.
@@ -141,7 +167,7 @@ my-first-feature-flag: false
 
 [Learn more about defaults](/docs/explanations/defaults).
 
-### Getting Started
+### Your first config and flag
 
 ```ruby
 config_key = "my-first-int-config"
@@ -349,37 +375,35 @@ RSpec.describe Job do
 end
 ```
 
-### Client Initialization Options
+## Client Initialization Options
 
 For more control, you can initialize your client with options. Here are the defaults with explanations.
 
 ```ruby
 options = Prefab::Options.new(
   api_key: ENV['PREFAB_API_KEY'],
-  namespace: "",
   logdev: $stdout,
-  # Optional. `log_prefix` can prefix your log lines. `app.controllers.my_controller.index` would be `com.yourapp.app.controllers.my_controller.index`
-  log_prefix: "com.yourapp",
-  log_formatter: Prefab::Options::DEFAULT_LOG_FORMATTER,
-  # one of
-  # - Prefab::Options::ON_NO_DEFAULT::RAISE -- raise an exception when no value or default is available
-  # - Prefab::Options::ON_NO_DEFAULT::RETURN_NIL -- return nil if no value or default is available
-  on_no_default: Prefab::Options::ON_NO_DEFAULT::RAISE,
-  # how long to wait before on_init_failure
-  initialization_timeout_sec: 10,
-  # one of
-  # - Prefab::Options::ON_INITIALIZATION_FAILURE::RAISE -- raise an error if no connection can be made
-  # - Prefab::Options::ON_INITIALIZATION_FAILURE::RETURN -- continue without error using failover config
-  on_init_failure: Prefab::Options::ON_INITIALIZATION_FAILURE::RAISE,
-  prefab_datasources: ENV['PREFAB_DATASOURCES'] == "LOCAL_ONLY" ? Prefab::Options::DATASOURCES::LOCAL_ONLY : Prefab::Options::DATASOURCES::ALL,
+  namespace: '',
+  log_formatter: DEFAULT_LOG_FORMATTER,
+  log_prefix: nil,
+  prefab_api_url: ENV['PREFAB_API_URL'] || 'https://api.prefab.cloud',
+  on_no_default: ON_NO_DEFAULT::RAISE, # options :raise, :warn_and_return_nil,
+  initialization_timeout_sec: 10, # how long to wait before on_init_failure
+  on_init_failure: ON_INITIALIZATION_FAILURE::RAISE,
+  prefab_datasources: ENV['PREFAB_DATASOURCES'] == 'LOCAL_ONLY' ? DATASOURCES::LOCAL_ONLY : DATASOURCES::ALL,
   prefab_config_override_dir: Dir.home,
-  prefab_config_classpath_dir: ".",
-  prefab_api_url: ENV["PREFAB_API_URL"] || 'https://api.prefab.cloud',
-  prefab_grpc_url: ENV["PREFAB_GRPC_URL"] || 'grpc.prefab.cloud:443',
-  # You can specify an array of one ore more items here OR set PREFAB_ENVS to
-  # be split on commas into an array
+  prefab_config_classpath_dir: '.', # where to load local overrides
   prefab_envs: ENV['PREFAB_ENVS'].nil? ? [] : ENV['PREFAB_ENVS'].split(','),
+  collect_logger_counts: true,
+  collect_max_paths: DEFAULT_MAX_PATHS,
+  collect_sync_interval: nil,
+  context_upload_mode: :periodic_example, # :periodic_example, :shape_only, :none
+  context_max_size: DEFAULT_MAX_EVAL_SUMMARIES,
+  collect_evaluation_summaries: true,
+  collect_max_evaluation_summaries: DEFAULT_MAX_EVAL_SUMMARIES,
+  allow_telemetry_in_local_mode: false
 )
+
 $prefab = Prefab::Client.new(options)
 ```
 
