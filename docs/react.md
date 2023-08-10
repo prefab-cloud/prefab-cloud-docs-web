@@ -19,7 +19,7 @@ This client includes a `<PrefabProvider>` and `usePrefab` hook.
 First, wrap your component tree in the `PrefabProvider`, e.g.
 
 ```jsx
-import PrefabProvider from '@prefab-cloud/prefab-cloud-react';
+import { PrefabProvider } from '@prefab-cloud/prefab-cloud-react';
 
 const WrappedApp = () => {
   const contextAttributes = {
