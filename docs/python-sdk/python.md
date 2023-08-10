@@ -333,7 +333,7 @@ To be as language agnostic as possible, `Prefab` provides a standardized
 subset of log levels that can be mapped to language-specific log levels.
 The language-agnostic levels are the levels that should be set in the Prefab
 UI or in your local overrides. The list below shows the mappings from Prefab
-log levels to Elixir log levels
+log levels to Python log levels
 
 ```python
 Prefab => Python
