@@ -57,6 +57,16 @@ const config = {
     locales: ["en"],
   },
 
+  scripts: [
+    {
+      type: "text/javascript",
+      id: "hs-script-loader",
+      async: true,
+      defer: true,
+      src: "//js.hs-scripts.com/465416.js",
+    },
+  ],
+
   presets: [
     [
       "classic",
