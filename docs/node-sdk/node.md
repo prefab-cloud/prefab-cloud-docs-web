@@ -3,10 +3,6 @@ title: Node
 sidebar_position: 1
 ---
 
-**Note: This library is under active development and may not quite be ready for production usage**
-
-[Sign up to be notified when this library releases](https://share.hsforms.com/1BKgbsgReSl2bP351bfdJDg9z48)
-
 ## Getting started with the Node SDK
 
 `npm install @prefab-cloud/prefab-cloud-node` or `yarn add @prefab-cloud/prefab-cloud-node`
@@ -26,7 +22,7 @@ const prefab = new Prefab({
   enablePolling: true,
 });
 
-await prefab.init()
+await prefab.init();
 ```
 
 After the init completes you can use
@@ -46,8 +42,8 @@ const context = {
   },
   subscription: {
     plan: "pro",
-  }
-}
+  },
+};
 ```
 
 You can pass this in to each call
