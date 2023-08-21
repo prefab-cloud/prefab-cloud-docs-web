@@ -49,13 +49,9 @@ function Langs() {
           <img src="/img/langs/java.png" className="" alt="Java" />
           <span>Java</span>
         </Link>
-        <Link className={linkClasses} to="/docs/python-sdk/python">
-          <img src="/img/langs/python.png" className="" alt="Python" />
-          <span>Python</span>
-        </Link>
-        <Link className={linkClasses} to="/docs/elixir-sdk/elixir">
-          <img src="/img/langs/elixir.png" className="" alt="Elixir" />
-          <span>Elixir</span>
+        <Link className={linkClasses} to="/docs/node-sdk/node">
+          <img src="/img/langs/node.png" className="" alt="Node" />
+          <span>Node</span>
         </Link>
         <Link className={linkClasses} to="/docs/react">
           <img src="/img/langs/react.png" className="" alt="React" />
@@ -64,6 +60,14 @@ function Langs() {
         <Link className={linkClasses} to="/docs/javascript">
           <img src="/img/langs/js.png" className="" alt="JS" />
           <span>Javascript</span>
+        </Link>
+        <Link className={linkClasses} to="/docs/elixir-sdk/elixir">
+          <img src="/img/langs/elixir.png" className="" alt="Elixir" />
+          <span>Elixir</span>
+        </Link>
+        <Link className={linkClasses} to="/docs/python-sdk/python">
+          <img src="/img/langs/python.png" className="" alt="Python" />
+          <span>Python</span>
         </Link>
       </div>
       <div className="flex flex-col gap-4 md:gap-8 items-center">
