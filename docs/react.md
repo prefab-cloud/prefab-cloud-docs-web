@@ -8,7 +8,22 @@ import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
 Use your favorite package manager to install `@prefab-cloud/prefab-cloud-react` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-react) | [github](https://github.com/prefab-cloud/prefab-cloud-react)
 
-`npm install @prefab-cloud/prefab-cloud-react` or `yarn add @prefab-cloud/prefab-cloud-react`
+<Tabs groupId="lang">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @prefab-cloud/prefab-cloud-react
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @prefab-cloud/prefab-cloud-react
+```
+
+</TabItem>
+</Tabs>
 
 TypeScript types are included with the package.
 
