@@ -2,8 +2,6 @@
 title: Beta Releases
 sidebar_label: Beta Releases
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 Beta Releases allow you to mitigate risk of bugs by slowly rolling out a feature to your audience.
 

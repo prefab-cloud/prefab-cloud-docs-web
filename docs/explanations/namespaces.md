@@ -4,9 +4,6 @@ sidebar_label: Namespaces
 sidebar_position: 4
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 ## Targetting Dynamic Configuration With Namespaces
 
 Namespaces allow you to share config amongst many applications while still allowing you to override when necessary.
@@ -15,6 +12,7 @@ For instance, let's assume that all our code shares an HTTP library. We can conf
 We'll set `http.connection.retries` and `http.connection.timeout` in the default namespace.
 
 All of our apps should initialize their config store in a namespace. For instance our User Service may have clients in the namespaces:
+
 - `Prefab::Options.new(namespace: "userservice.web.app")`
 - `Prefab::Options.new(namespace: "userservice.daemon.sidekiq")`
 - `Prefab::Options.new(namespace: "userservice.cron.sync-to-billing")`
@@ -27,7 +25,6 @@ It's likely that you have a good namespace already defined as a tag on your pod.
 Prefab config will find the "closest" matching config when the UserService goes to look for a value of `http.connection.timeout`.
 
 Let's imagine that the UserService starts to go down because too many requests are timing out to a our billing service. We can quickly reduce the `http.connection.timeout` for our `userservice.cron.sync-to-billing` namespace and solve the issue without pushing code or restarting.
-
 
 With the following values
 
@@ -59,18 +56,22 @@ client.get("http.connection.retries") # returns 0
 <TabItem value="js" label="JavaScript">
 
 ```javascript
-import prefab, { Identity } from '@prefab-cloud/prefab-cloud-js'
+import prefab, { Identity } from "@prefab-cloud/prefab-cloud-js";
 
-const options = { apiKey: 'YOUR_CLIENT_API_KEY', namespace: "userservice.web.web", identity: new Identity('user-1234', { device: 'desktop' }) };
+const options = {
+  apiKey: "YOUR_CLIENT_API_KEY",
+  namespace: "userservice.web.web",
+  identity: new Identity("user-1234", { device: "desktop" }),
+};
 await prefab.init(options);
 
 prefab.get("http.connection.retries"); //returns 3 in production
 
 // Changing namespaces requires you to `init` again.
-options.namespace = 'userservice.cron.sync-to-billing';
+options.namespace = "userservice.cron.sync-to-billing";
 await prefab.init(options);
 
-prefab.get("http.connection.retries");  //returns 0 in production
+prefab.get("http.connection.retries"); //returns 0 in production
 ```
 
 </TabItem>

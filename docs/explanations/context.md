@@ -4,8 +4,6 @@ sidebar_label: Context
 sidebar_position: 3
 ---
 
-import Tabs from '@theme/Tabs';
-
 Contexts let you provide Prefab with knowledge about the current
 
 - request

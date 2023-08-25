@@ -3,8 +3,6 @@ title: Testing
 sidebar_label: Testing
 sidebar_position: 5
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 ## Testing
 
@@ -35,6 +33,7 @@ client = Prefab::Client.initialize(options)
 Options options = new Options()
   .setPrefabDatasource(Options.Datasources.LOCAL_ONLY)
 ```
+
 [Read the full Java testing docs.](/docs/java-sdk/java#testing)
 
 </TabItem>
@@ -45,6 +44,7 @@ options = Prefab.Options.new(prefab_datasources: :local_only)
 
 client = Prefab.Client.new(options)
 ```
+
 [Read the full Elixir testing docs.](/docs/elixir-sdk/elixir#testing)
 
 </TabItem>
@@ -65,6 +65,7 @@ prefab.setConfig({
   defaultMediaCount: 3,
 });
 ```
+
 [Read the full JavaScript testing docs.](/docs/javascript#testing)
 
 </TabItem>
