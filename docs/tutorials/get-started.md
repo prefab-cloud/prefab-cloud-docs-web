@@ -159,5 +159,3 @@ Prefab.Client.enabled?(
 </Tabs>
 
 And that's it! A nice feature flag with a complex rule and a partial rollout in 5 minutes.
-
-Read on in [Getting Started on The Client Side](/docs/tutorials/get-started-client) to learn how to use this same flag from the web.
