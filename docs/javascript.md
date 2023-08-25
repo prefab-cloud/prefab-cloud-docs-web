@@ -2,8 +2,6 @@
 title: JavaScript Client
 ---
 
-import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
-
 ## Getting Started With the JavaScript Client
 
 Use your favorite package manager to install `@prefab-cloud/prefab-cloud-js` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-js) | [github](https://github.com/prefab-cloud/prefab-cloud-js)
@@ -19,11 +17,14 @@ If you're using React, consider using our [React Client] instead.
 Initialize prefab with your api key and a [`Context` ](./explanations/context) for the current user/visitor/device/request:
 
 ```javascript
-import { prefab, Context } from '@prefab-cloud/prefab-cloud-js'
+import { prefab, Context } from "@prefab-cloud/prefab-cloud-js";
 
 const options = {
-  apiKey: '1234',
-  context: new Context({user: { email: 'test@example.com' }, device: { mobile: true } })
+  apiKey: "1234",
+  context: new Context({
+    user: { email: "test@example.com" },
+    device: { mobile: true },
+  }),
 };
 
 await prefab.init(options);
@@ -44,7 +45,6 @@ While `prefab` is loading, `isEnabled` will return `false`, `get` will return `u
 ## Usage
 
 Now you can use `prefab`'s config and feature flag evaluation, e.g.
-
 
 ```javascript
 if (prefab.isEnabled('cool-feature') {
@@ -115,7 +115,7 @@ prefab.context = new Context({...prefab.context, user: { email: user.email, key:
 In your test suite, you should skip `prefab.init` altogether and instead use `prefab.setConfig` to set up your test state.
 
 ```javascript
-it('shows the turbo button when the feature is enabled', () => {
+it("shows the turbo button when the feature is enabled", () => {
   prefab.setConfig({
     turbo: true,
     defaultMediaCount: 3,

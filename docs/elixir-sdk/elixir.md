@@ -3,8 +3,6 @@ title: Elixir
 sidebar_position: 1
 ---
 
-import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
-
 ## Getting Started with the Elixir SDK
 
 :::caution

@@ -4,12 +4,12 @@ sidebar_label: Default Files
 sidebar_position: 3
 ---
 
-import Tabs from '@theme/Tabs';
-
 ## Default System
+
 Prefab has a powerful system of environment defaults that allows you to get started quickly. Let's look.
 
 The first file is `.prefab.default.config.yaml`. Prefab will always look for and load a file with this name.
+
 ```yaml
 # .prefab.default.config.yaml
 log-level:
@@ -30,10 +30,11 @@ google:
       dataset-name: development-dataset # but use a development dataset
 ```
 
-There are a number of things to note in this example. 
+There are a number of things to note in this example.
 
 ### Nesting
-In order to reduce redundant keys, Prefab default files support nesting. In the example above you would access the GCP 
+
+In order to reduce redundant keys, Prefab default files support nesting. In the example above you would access the GCP
 dataset name with the key `google.gcp.big-query.dataset-name`.
 
 The `_` key is special and lets us specify a value with a key that has nested attributes. The GCP project `my-staging-project`
@@ -46,7 +47,7 @@ A handy shorthand for feature flags is available to set a default value.
 ## Prefab Environments
 
 You can optionally add a list of environments to load additional default files. Let's see how to load the files `.prefab.staging.config.yaml`
-and `.prefab.cloud.config.yaml` in that order. 
+and `.prefab.cloud.config.yaml` in that order.
 
 <Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
@@ -76,8 +77,7 @@ PREFAB_ENVS=staging,cloud myapp
 
 To continue our example from above. Let's look at how we might continue the logging and google configuration.
 
-
-In staging, we no longer want the debug level of logging on our controllers. Let's turn that off. 
+In staging, we no longer want the debug level of logging on our controllers. Let's turn that off.
 We do want to change the big query dataset as well.
 
 ```yaml
@@ -85,7 +85,7 @@ We do want to change the big query dataset as well.
 log-level:
   myapp.controllers:
     _: info # we will inherit levels from the default file unless overridden
-    
+
 redis.url: "redis://1.2.3.4:6379"
 
 google:
@@ -94,7 +94,8 @@ google:
       dataset-name: staging-dataset
 ```
 
-In production, let's change all logging to warn and set both the google configurations to production values. 
+In production, let's change all logging to warn and set both the google configurations to production values.
+
 ```yaml
 # .prefab.production.config.yaml
 log-level:
@@ -112,13 +113,12 @@ google:
 ```
 
 :::tip
-It's fine to use Prefab for configuration even if you don't think it will ever change. 
+It's fine to use Prefab for configuration even if you don't think it will ever change.
 Having it in Prefab means that you always retain the ability to update it on the fly.
 :::
 
-
-
 ## Deleting Values
-The Prefab clients will sometimes return nil even in the default mode. This situation occurs if you have deleted the keys in the Prefab UI. 
-A deleted key value is sent down to the clients as a tombstone and this tombstone takes precedence over default values as indicated in the 
+
+The Prefab clients will sometimes return nil even in the default mode. This situation occurs if you have deleted the keys in the Prefab UI.
+A deleted key value is sent down to the clients as a tombstone and this tombstone takes precedence over default values as indicated in the
 [config load order](bootstrapping.md) doc.

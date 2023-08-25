@@ -3,21 +3,18 @@ title: Tracking IDs
 sidebar_label: Tracking IDs
 ---
 
-import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
-
 ## An Opinionated Guide to Identifying Users
 
 If you are only concerned with logged-in users, your `user.id` will work just fine as the sticky property for roll-outs.
 
 If you are working with users as they transition from anonymous to logged-in users however, we need a value that will persist across this transition.
-If we don't keep this value consistent, we will run into situations where a new user lands on our site and gets the "Control" variant of an experiment, 
+If we don't keep this value consistent, we will run into situations where a new user lands on our site and gets the "Control" variant of an experiment,
 then logs in and is thrown into a different variant.
 
 :::tip
 Prefab's recommendation is that you create a separate tracking ID the moment you see a request, save it in a cookie and then persist it
 to the user record upon creation.
 :::
-
 
 <Tabs groupId="lang">
 <TabItem value="Rails" label="Rails">
@@ -29,6 +26,7 @@ rails g migration AddTrackingId
 ```
 
 Migration to add a column and initialize it.
+
 ```ruby
 class AddTrackingId < ActiveRecord::Migration[7.0]
   def change
@@ -40,6 +38,7 @@ end
 ```
 
 Useful to always have `@tracking_id` available in our controllers.
+
 ```ruby
 class ApplicationController < ActionController::Base
   before_action :set_tracking_id
@@ -50,6 +49,7 @@ end
 ```
 
 TrackingId looks at the (possibly nil) user and cookies and gets us the correct tracking_id while setting it as a long-lived cookie.
+
 ```ruby
 class TrackingId
   COOKIE_KEY = "tid".freeze
@@ -93,6 +93,7 @@ end
 ```
 
 When a user signs up and created an account, we need to remember to permanently set the tracking ID on the user account.
+
 ```ruby
 class RegistrationsController < Devise::RegistrationsController
   def sign_up_params
@@ -100,5 +101,6 @@ class RegistrationsController < Devise::RegistrationsController
   end
 end
 ```
+
 </TabItem>
 </Tabs>

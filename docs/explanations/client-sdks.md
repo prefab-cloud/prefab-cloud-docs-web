@@ -3,8 +3,6 @@ title: How Client SDKs Work
 sidebar_label: Client SDKs
 sidebar_position: 2
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 ## Client Architecture
 
@@ -54,13 +52,14 @@ Clients will make a single request and receive the values of all evaluated Featu
 
 Multiple requests only happen if you change the attributes of a context and re-initialize the client.
 
-Note that **evaluation happens server side**  . This helps prevent potentially sensitive data from leaking out of your system.
+Note that **evaluation happens server side** . This helps prevent potentially sensitive data from leaking out of your system.
 The client will be returned a list that is basically:
+
 ```json
 {
-  "feature.exp12-big-button":  "control",
-  "feature.exp14-button-class":  "very-blue",
-  "feature.risky-business":  true
+  "feature.exp12-big-button": "control",
+  "feature.exp14-button-class": "very-blue",
+  "feature.risky-business": true
 }
 ```
 

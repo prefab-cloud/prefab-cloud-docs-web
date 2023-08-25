@@ -5,13 +5,14 @@ sidebar_position: 3
 ---
 
 ## Config Load Order
+
 On startup, config clients load config in the following order, with each level taking precedence over the previous:
 
 1. Default [Config File](/docs/explanations/defaults) `.prefab.default.config.yaml` on the classpath
 2. [Prefab Env](/docs/explanations/defaults#prefab-environments) config files such as `.prefab.staging.config.yaml`, `.prefab.test.config.yaml` or `.prefab.k8s.config.yaml`
 3. Most current values from PrefabCloud APIs & CDNs as described in [how the server SDK works](server-sdks.md)
 4. Local Override File `.prefab.default.config.yaml` in the override directory (defaults to $HOME)
-4. Local Override Prefab Env Files `.prefab.test.config.yaml` in the override directory (defaults to $HOME)
+5. Local Override Prefab Env Files `.prefab.test.config.yaml` in the override directory (defaults to $HOME)
 
 ### Reconfiguring Config File Locations
 
@@ -21,25 +22,26 @@ The local override config file location can be changed with env var `PREFAB_CONF
 
 ## Override Files & Load Order
 
-All API values will take precedence over the values that come from your default files. 
+All API values will take precedence over the values that come from your default files.
 
 For local development, in can be helpful to have your own settings that are not checked into source control. This is the time for an
 override file. Name your file `.prefab.default.config.yaml` and put it in your home directory. These values will have a higher precedence
 than values from the API.
 
 :::note
-Using an Override file in a deployed environment is an anti-pattern. You should be able to achieve what you need to do 
+Using an Override file in a deployed environment is an anti-pattern. You should be able to achieve what you need to do
 with some combination of [Prefab Envs](/docs/explanations/defaults#prefab-environments) and [namespaces](namespaces.md).
 :::
 
 ## Helpful Logging
 
-Understanding which config your app is using can take some getting used to. To help Prefab has quite a lot of logging. 
+Understanding which config your app is using can take some getting used to. To help Prefab has quite a lot of logging.
 You can turn it all on with `log-level.cloud.prefab: debug` in your `.prefab.default.config.yaml`.
 
 Here you can see the: key, value, type, match and source for each config value.
-The source tells us whether we are using a value from a config file or an API value. 
+The source tells us whether we are using a value from a config file or an API value.
 The match tells us whether there is a value defined for the environment or namespace we are using.
+
 ```bash
 DEBUG 2022-09-06 09:23:53 -0400: prefab:  Initialize ConfigClient
 INFO  2022-09-06 09:23:53 -0400: prefab:  Load ./.prefab.default.config.yaml
@@ -60,20 +62,16 @@ log-level.cloud.prefab                             | debug                      
 redis.url                                          | redis://localhost:6379              | String  | Match: env:Y                   | Source: remote_cdn_api
 ```
 
-
 ## On Initialization Failure
 
 Prefab goes to [great lengths](resiliency.md) to ensure that you can get live data, but we need to specify behavior if
 your application cannot connect. The internal configuration store begins in a locked state. It unlocks once it has live data.
-Prefab gives you two choice if we are unable to get live data. 
+Prefab gives you two choice if we are unable to get live data.
 
 1. We can raise an error. This is the default.
 2. We can unlock and continue with default values.
 
 Here is how to set Prefab to unlock and continue:
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 <Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
@@ -102,4 +100,3 @@ public Prefab getClient(){
 
 </TabItem>
 </Tabs>
-

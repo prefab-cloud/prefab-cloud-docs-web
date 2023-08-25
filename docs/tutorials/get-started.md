@@ -4,9 +4,6 @@ sidebar_label: Get Started
 sidebar_position: 1
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 # Tutorial Intro
 
 Let's discover **Prefab in less than 5 minutes**.
