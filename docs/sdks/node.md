@@ -40,11 +40,15 @@ const prefab = new Prefab({
 await prefab.init();
 ```
 
+## Flags and Config
+
 After the init completes you can use
 
 - `prefab.get('some.config.name')` returns a raw value
 - `prefab.isFeatureEnabled('some.feature.name')` returns true or false
 - `prefab.shouldLog(loggerName, desiredLevel, defaultLevel, contexts)` returns true or false
+
+## Context
 
 Prefab supports [context](../explanations/context) for intelligent rule-based evaluation of `get` and `isFeatureEnabled` based on the current request/device/user/etc.
 
@@ -79,6 +83,8 @@ prefab.inContext(context, (pf) => {
   console.log(pf.isEnabled("some.config.name", optionalJustInTimeContext, false))
 })
 ```
+
+## Reference
 
 ### Option Definitions
 

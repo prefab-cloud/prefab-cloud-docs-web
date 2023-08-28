@@ -361,51 +361,6 @@ mycorp.auth.api.url: "localhost:9090"
 Prefab will first load the defaults, then merge the remote API values over the top, and finally it will apply the overrides file on
 top of those values.
 
-## Emergencies
-
-Prefab is designed to be extremely resilient. The client will try to pull live values from:
-
-1. A Fastly CDN backed by the API
-2. The Prefab API
-3. Prefab Streaming APIs
-
-This strategy ensures the utmost reliability for your clients being able to pull live values, even in the case of a
-major outage of the Prefab APIs.
-
-But wait, there's more.
-
-In the terrible occurrence that the Prefab APIs are down for an extended period of time, your services should be able to
-bootstrap themselves and load from the CDN, but you would be unable to modify configuration.
-
-In the event that one or all of these services become unavailable, the Python SDK stores a local copy of all data pulled
-from the remote endpoints, so it can continue to serve the last available live data, but would not be able to fetch or
-push new data until the APIs are restored.
-
-## Using Prefab For Rollouts
-
-So you've built a new pipeline and are hoping to slowly dial up how much traffic uses it. You've got two great ways to
-do that with Prefab.
-
-One approach is to simply use dynamic config. We can use a floating point number to specify the percent of traffic we
-want to rollout to and then evaluate that against a random number to determine whether to run the new code.
-
-```python
-import random
-
-if random.random() < client.get("percent-to-rollout"):
-    do_new_pipeline
-else:
-    run_old_pipeline
-```
-
-This approach works fine, but each evaluation of `random.random()` will get you a different result. Sometimes this is what you
-want, but if you'd like the rollout to keep server, requests, users in the new pipeline you may want to use a feature
-flag.
-
-```python
-client.enabled("new-feature", lookup_key=any_consistent_id)
-```
-
 ## Debugging
 
 You can control the Prefab client's log level by changing the configuration value of `log-level.prefab`. In the rare
