@@ -1,16 +1,36 @@
 ---
-title: JavaScript Client
+title: JavaScript
+sidebar_position: 15
 ---
 
 ## Getting Started With the JavaScript Client
 
 Use your favorite package manager to install `@prefab-cloud/prefab-cloud-js` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-js) | [github](https://github.com/prefab-cloud/prefab-cloud-js)
 
-`npm install @prefab-cloud/prefab-cloud-js` or `yarn add @prefab-cloud/prefab-cloud-js`
+<Tabs groupId="lang">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @prefab-cloud/prefab-cloud-js
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @prefab-cloud/prefab-cloud-js
+```
+
+</TabItem>
+</Tabs>
 
 TypeScript types are included with the package.
 
+:::tip
+
 If you're using React, consider using our [React Client] instead.
+
+:::
 
 ## Initialize client
 

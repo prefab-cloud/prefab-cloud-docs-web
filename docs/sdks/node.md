@@ -1,11 +1,26 @@
 ---
 title: Node
-sidebar_position: 1
+sidebar_position: 13
 ---
 
 ## Getting started with the Node SDK
 
-`npm install @prefab-cloud/prefab-cloud-node` or `yarn add @prefab-cloud/prefab-cloud-node`
+<Tabs groupId="lang">
+<TabItem value="npm" label="npm">
+
+```bash
+npm install @prefab-cloud/prefab-cloud-node
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @prefab-cloud/prefab-cloud-node
+```
+
+</TabItem>
+</Tabs>
 
 ## Initialize a Client
 

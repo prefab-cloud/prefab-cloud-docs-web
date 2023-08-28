@@ -1,6 +1,6 @@
 ---
 title: Python
-sidebar_position: 1
+sidebar_position: 17
 ---
 
 ## Getting Started with the Python SDK

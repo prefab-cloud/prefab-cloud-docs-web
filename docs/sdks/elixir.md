@@ -1,6 +1,6 @@
 ---
 title: Elixir
-sidebar_position: 1
+sidebar_position: 16
 ---
 
 ## Getting Started with the Elixir SDK
