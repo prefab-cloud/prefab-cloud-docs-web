@@ -283,47 +283,6 @@ mycorp.auth.api.url: "localhost:9090"
 Prefab will first load the defaults. Then merge the API values over the top. Finally it will apply the overrides file on
 top.
 
-## Emergencies
-
-Prefab is designed to be extremely resilient. The client will try to pull live values from:
-
-1. A Fastly CDN backed by the API
-2. The Prefab API
-3. Prefab Streaming APIs
-
-This strategy ensures the utmost reliability for your clients being able to pull live values, even in the case of a
-major outage of the Prefab APIs.
-
-But wait, there's more.
-
-In the terrible occurrence that the Prefab APIs are down for an extended period of time, your services should be able to
-bootstrap themselves and load from the CDN, but you would be unable to modify configuration.
-
-To fix this, Prefab clients will also read from the `live_override_url`. This should be a URL that you are in fully in
-control of. Prefab clients, will periodically poll this endpoint and if any values are found there it will prefer them
-over all other values. The format of this file is the same as a default config value file.
-
-## Using Prefab For Rollouts
-
-So you've built a new pipeline and are hoping to slowly dial up how much traffic uses it. You've got two great ways to
-do that with Prefab.
-
-One approach is to simply use dynamic config. We can use a floating point number to specify the percent of traffic we
-want to rollout to and then evaluate that against a random number to determine whether to run the new code.
-
-```ruby
-if rand() < @config.get_float("percent-to-rollout")
-  do_new_pipeline
-end
-```
-
-This approach works fine, but each evaluation of `rand()` will get you a different result. Sometimes this is what you
-want, but if you'd like the rollout to be sticky and keep server, requests, users in the new pipeline you may want to use a feature flag.
-
-```ruby
-$prefab.enabled? "new-feature", { user: { tracking_id: user.tracking_id } }
-```
-
 ## Setting Dynamic Log Levels
 
 An example here is worth a million words.
