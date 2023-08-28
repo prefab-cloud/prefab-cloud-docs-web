@@ -1,7 +1,7 @@
 ---
 title: Example Applications
 sidebar_label: Example Applications
-sidebar_position: 2
+sidebar_position: 4
 ---
 
 ## Ruby
