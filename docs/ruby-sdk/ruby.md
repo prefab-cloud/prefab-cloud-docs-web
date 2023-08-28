@@ -299,10 +299,6 @@ But wait, there's more.
 In the terrible occurrence that the Prefab APIs are down for an extended period of time, your services should be able to
 bootstrap themselves and load from the CDN, but you would be unable to modify configuration.
 
-To fix this, Prefab clients will also read from the `live_override_url`. This should be a URL that you are in fully in
-control of. Prefab clients, will periodically poll this endpoint and if any values are found there it will prefer them
-over all other values. The format of this file is the same as a default config value file.
-
 ## Using Prefab For Rollouts
 
 So you've built a new pipeline and are hoping to slowly dial up how much traffic uses it. You've got two great ways to
