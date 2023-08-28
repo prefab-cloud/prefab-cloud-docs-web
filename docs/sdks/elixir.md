@@ -331,3 +331,5 @@ options = Prefab.Options.new(data_sources: :local_only)
 
 client = Prefab.Client.new(options)
 ```
+
+## Reference

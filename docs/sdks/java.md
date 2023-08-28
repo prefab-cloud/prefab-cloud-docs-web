@@ -4,9 +4,9 @@ sidebar_label: Java
 sidebar_position: 12
 ---
 
-[Github](https://github.com/prefab-cloud/prefab-cloud-java) | [Maven Repository](https://mvnrepository.com/artifact/cloud.prefab/prefab-cloud-java)
-
 ## Getting Started With the Java SDK
+
+[Github](https://github.com/prefab-cloud/prefab-cloud-java) | [Maven Repository](https://mvnrepository.com/artifact/cloud.prefab/prefab-cloud-java)
 
 ### Install the latest version
 
@@ -257,3 +257,5 @@ Prefab suggests testing with generous usage of Mockito. We also provide a useful
 
   }
 ```
+
+## Reference

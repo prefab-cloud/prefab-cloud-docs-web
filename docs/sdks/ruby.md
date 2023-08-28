@@ -17,9 +17,12 @@ If you set `PREFAB_API_KEY` as an environment variable, initializing the client 
 $prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
 ```
 
-You can use `$prefab.log.info` (and `error`, `warn`, etc.) to use [dynamic log levels](./dynamic-log-levels).
+<details>
+<summary>
+Client Options
+</summary>
 
-### Options
+### Client Options
 
 The full options are at the end of this doc, but here's some highlights:
 
@@ -45,6 +48,8 @@ $prefab = Prefab::Client.new(options)
 | on_init_failure              | Choose to crash or continue with local data only if unable to fetch config data from prefab at startup                                | RAISE (crash) |
 | prefab_datasources           | Use either only-local data or local + API data                                                                                        | ALL           |
 
+</details>
+
 ### Rails Applications
 
 Initializing Prefab in your `application.rb` will allow you to reference dynamic configuration in your environment (e.g. `staging.rb`) and initializers. This is useful for setting environment-specific config like your redis connection URL.
@@ -56,43 +61,14 @@ module MyApplication
     #...
 
     $prefab = Prefab::Client.new
-    $prefab.set_rails_loggers
   end
 end
 ```
 
-`$prefab.set_rails_loggers` wraps the Rails logger to allow using [dynamic log levels](./dynamic-log-levels) with your normal Rails logger calls.
-
-To make the best use of Prefab, we recommend setting [context](../explanations/context) in an `around_action` in your `ApplicationController`. Setting this context for the life-cycle of the request means the Prefab logger can be aware of your user/etc. for [targeted log levels](../explanations/targeted-log-levels) and you won't have to explicitly pass context into your `.enabled?` and `.get` calls.
-
-e.g.
-
-```ruby
-around_action do |_, block|
-  $prefab.with_context(prefab_context, &block)
-end
-
-def prefab_context
-  {
-    device: {
-      mobile: mobile?
-      # ...
-    },
-  }.merge(prefab_user_context)
-end
-
-def prefab_user_context
-  return {} unless current_user
-
-  {
-    key: current_user.tracking_id,
-    id: current_user.id,
-    email: current_user.email,
-    country: current_user.country,
-    # ...
-  }
-end
-```
+<details>
+<summary>
+Special Considerations with Forking servers like Puma & Unicorn that use workers
+</summary>
 
 #### Special Considerations with Forking servers like Puma & Unicorn that use workers
 
@@ -127,43 +103,43 @@ end
 </TabItem>
 </Tabs>
 
+</details>
+
+## Context
+
+To make the best use of Prefab, we recommend setting [context](../explanations/context) in an `around_action` in your `ApplicationController`. Setting this context for the life-cycle of the request means the Prefab logger can be aware of your user/etc. for [targeted log levels](../explanations/targeted-log-levels) and you won't have to explicitly pass context into your `.enabled?` and `.get` calls.
+
+```ruby
+# application_controller.rb
+class ApplicationController < ActionController::Base
+  around_action do |_, block|
+    $prefab.with_context(prefab_context, &block)
+  end
+
+  def prefab_context
+    {
+      device: {
+        mobile: mobile?
+        # ...
+      },
+    }.merge(prefab_user_context)
+  end
+
+  def prefab_user_context
+    return {} unless current_user
+
+    {
+      key: current_user.tracking_id,
+      id: current_user.id,
+      email: current_user.email,
+      country: current_user.country,
+      # ...
+    }
+  end
+end
+```
+
 ## Basic Usage
-
-### Defaults
-
-It is a best practice to specify a default value for all configuration. This reduces the likelihood of exceptions due to
-nil values. Prefab encourages this practice by raising an error if you try to reference a value that is unset.
-
-Here we ask for the value of a config named `max-jobs-per-second`, and we specify `10` as a default value if no value is available.
-
-```ruby
-$prefab.get("max-jobs-per-second", 10) # => returns `10` if no value is available
-```
-
-If we don't provide a default and no value is available, a `Prefab::Errors::MissingDefaultError` error will be raised.
-
-```ruby
-$prefab.get("max-jobs-per-second") # => raises if no value is available
-```
-
-:::note
-
-You can modify this behavior by setting the option `on_no_default` to `Prefab::Options::ON_NO_DEFAULT::RETURN_NIL`
-
-:::
-
-You can specify defaults for your application by creating a file `.prefab.default.config.yaml`
-
-Add the following:
-
-```yaml
-# .prefab.default.config.yaml
-log-level.cloud.prefab: info
-my-first-int-config: 30
-my-first-feature-flag: false
-```
-
-[Learn more about defaults](/docs/explanations/defaults).
 
 ### Your first config and flag
 
@@ -237,6 +213,44 @@ $prefab.get("ff-with-int", default_int_value, context)
 Rather than passing your context in for your `.enabled?` and `.get` calls, you can use an `around_action` in Rails (see above) or `$prefab.with_context` directly.
 :::
 
+## Config
+
+### Defaults
+
+It is a best practice to specify a default value for all configuration. This reduces the likelihood of exceptions due to
+nil values. Prefab encourages this practice by raising an error if you try to reference a value that is unset.
+
+Here we ask for the value of a config named `max-jobs-per-second`, and we specify `10` as a default value if no value is available.
+
+```ruby
+$prefab.get("max-jobs-per-second", 10) # => returns `10` if no value is available
+```
+
+If we don't provide a default and no value is available, a `Prefab::Errors::MissingDefaultError` error will be raised.
+
+```ruby
+$prefab.get("max-jobs-per-second") # => raises if no value is available
+```
+
+:::note
+
+You can modify this behavior by setting the option `on_no_default` to `Prefab::Options::ON_NO_DEFAULT::RETURN_NIL`
+
+:::
+
+You can specify defaults for your application by creating a file `.prefab.default.config.yaml`
+
+Add the following:
+
+```yaml
+# .prefab.default.config.yaml
+log-level.cloud.prefab: info
+my-first-int-config: 30
+my-first-feature-flag: false
+```
+
+[Learn more about defaults](/docs/explanations/defaults).
+
 ## Namespaces
 
 Namespaces allow you to share config between many applications while still allowing you to override when necessary.
@@ -305,9 +319,18 @@ Next, we'll set the Rails logger to use our logger
 
 ```ruby
 #application.rb
-$prefab = Prefab::Client.new
-$prefab.set_rails_loggers
+module MyApplication
+  class Application < Rails::Application
+    #...
+
+    $prefab = Prefab::Client.new
+    // highlight-next-line
+    $prefab.set_rails_loggers
+  end
+end
 ```
+
+`$prefab.set_rails_loggers` wraps the Rails logger to allow using [dynamic log levels](/docs/explanations/features/targeted-log-levels) with your normal Rails logger calls.
 
 :::info
 Please read the [Puma/Unicorn](/docs/ruby-sdk/ruby#special-considerations-with-forking-servers-like-puma--unicorn-that-use-workers) notes for special considerations with forking servers.
@@ -411,7 +434,9 @@ RSpec.describe Job do
 end
 ```
 
-## Client Initialization Options
+## Reference
+
+### Client Initialization Options
 
 For more control, you can initialize your client with options. Here are the defaults with explanations.
 
