@@ -3,7 +3,7 @@ title: React
 sidebar_position: 14
 ---
 
-## Getting Started With the React Client
+## Install the latest version
 
 Use your favorite package manager to install `@prefab-cloud/prefab-cloud-react` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-react) | [github](https://github.com/prefab-cloud/prefab-cloud-react)
 
@@ -26,7 +26,7 @@ yarn add @prefab-cloud/prefab-cloud-react
 
 TypeScript types are included with the package.
 
-## Setup
+## Initialize the Client
 
 This client includes a `<PrefabProvider>` and `usePrefab` hook.
 
@@ -46,6 +46,30 @@ const WrappedApp = () => {
     </PrefabProvider>
   );
 };
+```
+
+## Feature Flags
+
+Now use the `usePrefab` hook to fetch flags. `isEnabled` is a convenience method for boolean flags.
+
+```jsx
+const Logo = () => {
+  const { isEnabled } = usePrefab();
+
+  if (isEnabled("new-logo")) {
+    return <img src={newLogo} className="App-logo" alt="logo" />;
+  }
+
+  return <img src={logo} className="App-logo" alt="logo" />;
+};
+```
+
+You can also use `get` to access flags with other data types.
+
+```jsx
+const { get } = usePrefab();
+
+const flagVlaue = get("my-string-flag");
 ```
 
 ## Using Context
@@ -80,25 +104,11 @@ const WrappedApp = () => {
 };
 ```
 
-## Feature Flags and Dynamic Config
+## Dynamic Config
 
-Now use the `usePrefab` hook to fetch flags
+:::info
 
-```jsx
-const Logo = () => {
-  const { isEnabled } = usePrefab();
-
-  if (isEnabled("new-logo")) {
-    return <img src={newLogo} className="App-logo" alt="logo" />;
-  }
-
-  return <img src={logo} className="App-logo" alt="logo" />;
-};
-```
-
-:::tip
-
-React is a Client SDK and does not receive Config
+React is a Client SDK and does not receive Config. [Learn more about Client SDKs](/docs/explanations/concepts/client-sdks)
 
 :::
 
