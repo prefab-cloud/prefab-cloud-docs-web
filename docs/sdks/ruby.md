@@ -266,6 +266,11 @@ Please read the [Puma/Unicorn](/docs/ruby-sdk/ruby#special-considerations-with-f
 
 You can use [Targeting](/docs/explanations/targeted-log-levels) to change your log levels based on the current user/request/device context using our [rules](/docs/explanations/rules-and-segmentation) engine.
 
+<details>
+<summary>
+Using default files
+</summary>
+
 ### Using default files
 
 You can also set default log levels in the Prefab config file ([learn more](/docs/explanations/defaults))
@@ -281,6 +286,8 @@ log-level:
 :::tip
 If the values are in your `.prefab.default.config.yaml` you'll need to restart the server to see new values. If you change these values on the server, they will update automatically.
 :::
+
+</details>
 
 ## Debugging
 
