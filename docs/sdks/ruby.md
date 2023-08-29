@@ -17,39 +17,6 @@ If you set `PREFAB_API_KEY` as an environment variable, initializing the client 
 $prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
 ```
 
-<details>
-<summary>
-Client Options
-</summary>
-
-### Client Options
-
-The full options are at the end of this doc, but here's some highlights:
-
-```ruby
-options = Prefab::Options.new(
-  collect_evaluation_summaries: true,
-  collect_logger_counts: true,
-  context_upload_mode: :periodic_example,
-  on_init_failure: Prefab::Options::ON_INITIALIZATION_FAILURE::RAISE,
-  prefab_datasources: Prefab::Options::DATASOURCES::ALL,
-)
-
-$prefab = Prefab::Client.new(options)
-```
-
-#### Definitions of those options
-
-| Name                         | Description                                                                                                                           | Default       |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| collect_evaluation_summaries | Send counts of config/flag evaluation results back to Prefab to view in web app                                                       | true          |
-| collect_logger_counts        | Send counts of logger usage back to Prefab to power log-levels configuration screen                                                   | true          |
-| context_upload_mode          | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | :periodic     |
-| on_init_failure              | Choose to crash or continue with local data only if unable to fetch config data from prefab at startup                                | RAISE (crash) |
-| prefab_datasources           | Use either only-local data or local + API data                                                                                        | ALL           |
-
-</details>
-
 ### Rails Applications
 
 Initializing Prefab in your `application.rb` will allow you to reference dynamic configuration in your environment (e.g. `staging.rb`) and initializers. This is useful for setting environment-specific config like your redis connection URL.
@@ -128,10 +95,10 @@ puts "#{config_key} is: #{$prefab.get(config_key)}"
 
 <details>
 <summary>
-Defaults
+Default Values for Configs
 </summary>
 
-### Defaults
+### Default Values for Configs
 
 It is a best practice to specify a default value for all configuration. This reduces the likelihood of exceptions due to
 nil values. Prefab encourages this practice by raising an error if you try to reference a value that is unset.
@@ -289,6 +256,37 @@ If the values are in your `.prefab.default.config.yaml` you'll need to restart t
 
 </details>
 
+## Telemetry
+
+By default, Prefab uploads telemetry that enables powerful features. You can alter or disable this behavior using the following options.
+
+#### Definitions of those options
+
+| Name                         | Description                                                                                                                           | Default           |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| collect_evaluation_summaries | Send counts of config/flag evaluation results back to Prefab to view in web app                                                       | true              |
+| collect_logger_counts        | Send counts of logger usage back to Prefab to power log-levels configuration screen                                                   | true              |
+| context_upload_mode          | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | :periodic_example |
+
+```ruby
+#application.rb
+module MyApplication
+  class Application < Rails::Application
+    #...
+
+    // highlight-start
+    options = Prefab::Options.new(
+      collect_evaluation_summaries: true,
+      collect_logger_counts: true,
+      context_upload_mode: :periodic_example,
+    )
+
+    $prefab = Prefab::Client.new(options)
+    // highlight-end
+  end
+end
+```
+
 ## Debugging
 
 You can control the Prefab client's log level by changing the configuration value of `log-level.cloud.prefab`. In the rare
@@ -361,6 +359,16 @@ end
 ## Reference
 
 ### Client Initialization Options
+
+#### Definitions of those options
+
+| Name                         | Description                                                                                                                           | Default           |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| collect_evaluation_summaries | Send counts of config/flag evaluation results back to Prefab to view in web app                                                       | true              |
+| collect_logger_counts        | Send counts of logger usage back to Prefab to power log-levels configuration screen                                                   | true              |
+| context_upload_mode          | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | :periodic_example |
+| on_init_failure              | Choose to crash or continue with local data only if unable to fetch config data from prefab at startup                                | RAISE (crash)     |
+| prefab_datasources           | Use either only-local data or local + API data                                                                                        | ALL               |
 
 For more control, you can initialize your client with options. Here are the defaults with explanations.
 
