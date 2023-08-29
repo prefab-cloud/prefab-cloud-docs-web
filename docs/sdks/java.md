@@ -109,7 +109,8 @@ public class MyClass {
 To finely-target configuration rule evaluation, we accept contextual information globally or request-scoped with the ContextStore which will affect all logging, featureflag and config lookups.
 
 ```java
-prefabCloudClient.configClient().getContextStore().addContext(PrefabContext.newBuilder("User")
+prefabCloudClient.configClient().getContextStore().addContext(
+                      PrefabContext.newBuilder("User")
                         .put("name", user.getName())
                         .build());
 ```
@@ -119,22 +120,50 @@ When global context is set, log levels and feature flags will evaluate in that c
 <Tabs groupId="lang">
 <TabItem value="micronaut" label="Micronaut">
 
-In your Prefab options, set your Prefab Context store to be your ServerRequestContextStore.
+Add a [filter](https://github.com/prefab-cloud/example-micronaut-app/blob/configure-prefab-context/src/main/java/com/example/prefab/PrefabContextFilter.java) to add a prefab context based on the currently "logged in" user.
+
+```java
+@Filter(Filter.MATCH_ALL_PATTERN)
+public class PrefabContextFilter implements HttpFilter {
+
+    private final ConfigClient configClient;
+
+    @Inject
+    PrefabContextFilter(ConfigClient configClient) {
+        this.configClient = configClient;
+    }
+
+    @Override
+    public Publisher<? extends HttpResponse<?>> doFilter(HttpRequest<?> request, FilterChain chain) {
+
+        request.getUserPrincipal(Authentication.class).ifPresent(authentication ->
+                {
+                    User user = (User) authentication.getAttributes().get(ExampleAuthenticationProvider.USER_ATTR);
+                    configClient.getContextStore()
+                            .addContext(
+                              PrefabContext.newBuilder("user")
+                                .put("id", user.id())
+                                .put("country", user.country())
+                                .put("email", user.email())
+                                .build()
+                            );
+                }
+        );
+        return chain.proceed(request);
+    }
+
+    @Override
+    public int getOrder() {
+        return ServerFilterPhase.SECURITY.after() + 1;
+        // run after the DefaultLoginFilter
+    }
+}
+```
+
+Prefab Context uses ThreadLocals by default. In event-based frameworks like micronaut, that won't work so configure the Prefab Context store to use `ServerRequestContextStore` instead.
 
 ```java
 options.setContextStore(new ServerRequestContextStore());
-```
-
-Next we add a [filter](https://github.com/prefab-cloud/example-micronaut-app/blob/configure-prefab-context/src/main/java/com/example/prefab/PrefabContextFilter.java) to add a prefab context based on the currently "logged in" user.
-
-```java
-configClient.getContextStore()
-      .addContext(PrefabContext.newBuilder("user")
-          .put("id", user.id())
-          .put("country", user.country())
-          .put("email", user.email())
-          .build()
-      );
 ```
 
 Learn more with the [Prefab + Micronaut example app](https://github.com/prefab-cloud/example-micronaut-app)
@@ -164,7 +193,8 @@ public class PrefabContextAddingRequestFilter implements ContainerRequestFilter 
             if (principal instanceof User) {
                 User user = (User) principal;
                 LOGGER.info("will add pf context for {}", user);
-                configClient.getContextStore().addContext(PrefabContext.newBuilder("User")
+                configClient.getContextStore().addContext(
+                      PrefabContext.newBuilder("User")
                         .put("name", user.getName())
                         .build());
             }
@@ -173,7 +203,7 @@ public class PrefabContextAddingRequestFilter implements ContainerRequestFilter 
 }
 ```
 
-Then we'll add another `ContainerResponseFilter` to clear the context when the request finishes.
+Then we'll add another `ContainerResponseFilter` to clear the context from the ThreadLocal when the request finishes.
 
 ```java
 public class PrefabContexClearingResponseFilter implements ContainerResponseFilter {
@@ -215,12 +245,13 @@ featureFlagClient.featureIsOn(
       .build()
   )
 
-prefabCloudClient.configClient().get("the.key", PrefabContext.newBuilder("user")
-                                                    .put("name", "james")
-                                                    .put("tier", "gold")
-                                                    .put("customerMonths", 12)
-                                                    .build()
-                                                 )
+prefabCloudClient.configClient().get("the.key", 
+                PrefabContext.newBuilder("user")
+                  .put("name", "james")
+                  .put("tier", "gold")
+                  .put("customerMonths", 12)
+                  .build()
+              )
 ```
 
 </details>
@@ -319,8 +350,7 @@ public class PrefabFactory {
     return prefabCloudClient.featureFlagClient();
   }
 
-  // highlight-start
-  // in Micronaut @Context is basically eager-singleton
+  // in Micronaut @Context is equivalent to eager-singleton
   @Context
   public ConfigClient configClient(PrefabCloudClient prefabCloudClient) {
     ConfigClient client = prefabCloudClient.getClient();
