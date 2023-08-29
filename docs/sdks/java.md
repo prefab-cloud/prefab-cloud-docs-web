@@ -257,5 +257,3 @@ Prefab suggests testing with generous usage of Mockito. We also provide a useful
 
   }
 ```
-
-## Reference

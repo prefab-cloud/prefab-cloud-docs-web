@@ -380,5 +380,3 @@ Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/architec
 options = Options(data_sources="LOCAL_ONLY")
 client = Client(options)
 ```
-
-## Reference

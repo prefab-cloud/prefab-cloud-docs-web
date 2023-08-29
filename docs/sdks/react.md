@@ -102,10 +102,6 @@ React is a Client SDK and does not receive Config
 
 :::
 
-## Log levels
-
-## Local overrides
-
 ## Testing
 
 Wrap the component under test in a `PrefabTestProvider` and provide a config object to set up your test state.
@@ -166,13 +162,7 @@ it("shows the secret feature when it is enabled", async () => {
 [rtl]: https://testing-library.com/docs/react-testing-library/intro/
 [segment]: /docs/explanations/features/rules-and-segmentation
 
-## Debugging
-
 ## Reference
-
-### `PrefabProvider` properties
-
-### `PrefabTestProvider` properties
 
 ### `usePrefab` properties
 
