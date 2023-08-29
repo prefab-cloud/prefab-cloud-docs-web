@@ -34,10 +34,10 @@ end
 
 <details className="alert--warning">
 <summary>
-Special Considerations with Forking servers like Puma & Unicorn that use workers
-</summary>
 
-#### Special Considerations with Forking servers like Puma & Unicorn that use workers
+#### Special Considerations with Forking servers like Puma & Unicorn that use workers}
+
+</summary>
 
 Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork. You do not need to do this if you are only using threads and not workers.
 We also need to set the reset the logger for ActionView and friends because those get set pre-fork.
@@ -95,10 +95,10 @@ puts "#{config_key} is: #{$prefab.get(config_key)}"
 
 <details>
 <summary>
-Default Values for Configs
-</summary>
 
-### Default Values for Configs
+#### Default Values for Configs
+
+</summary>
 
 It is a best practice to specify a default value for all configuration. This reduces the likelihood of exceptions due to
 nil values. Prefab encourages this practice by raising an error if you try to reference a value that is unset.
@@ -174,10 +174,10 @@ end
 
 <details>
 <summary>
-Just-in-time Context
-</summary>
 
-### Just-in-time Context
+#### Just-in-time Context
+
+</summary>
 
 You can also pass context when evaluating individual flags or config values.
 
@@ -235,10 +235,10 @@ You can use [Targeting](/docs/explanations/targeted-log-levels) to change your l
 
 <details>
 <summary>
-Using default files
-</summary>
 
-### Using default files
+#### Using default files
+
+</summary>
 
 You can also set default log levels in the Prefab config file ([learn more](/docs/explanations/defaults))
 
