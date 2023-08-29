@@ -63,7 +63,7 @@ The client will be returned a list that is basically:
 }
 ```
 
-See [server SDKs](/docs/explanations/server-sdks.md) to compare.
+See [server SDKs](/docs/explanations/concepts/server-sdks.md) to compare.
 
 ## Client Side Reliability
 

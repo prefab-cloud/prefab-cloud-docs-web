@@ -164,7 +164,7 @@ it("shows the secret feature when it is enabled", async () => {
 
 [jest]: https://jestjs.io/
 [rtl]: https://testing-library.com/docs/react-testing-library/intro/
-[segment]: /docs/explanations/rules-and-segmentation
+[segment]: /docs/explanations/features/rules-and-segmentation
 
 ## Debugging
 

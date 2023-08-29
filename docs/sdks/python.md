@@ -121,7 +121,7 @@ my-first-int-config: 30
 my-first-feature-flag: false
 ```
 
-[Learn more about defaults](/docs/explanations/defaults).
+[Learn more about defaults](/docs/explanations/concepts//defaults).
 
 ### Getting Started
 
@@ -159,10 +159,10 @@ Congrats! You're ready to rock!
 
 ## Feature Flags
 
-Feature flags become more powerful when we give the flag evaluation [rules](/docs/explanations/rules-and-segmentation) more
+Feature flags become more powerful when we give the flag evaluation [rules](/docs/explanations/features/rules-and-segmentation) more
 information to work with.
 
-We do this by providing a [context](https://docs.prefab.cloud/docs/explanations/context)
+We do this by providing a [context](/docs/explanations/concepts/context)
 for the current user (and/or team, request, etc)
 
 ```python
@@ -293,7 +293,7 @@ client.logger().error(message)
 client.logger().critical(message)
 ```
 
-You can now control logging at any level of your stack. For convenience, we'll set these as local defaults in `.prefab.default.config.yaml` ([learn more](/docs/explanations/defaults)) but you can set and tweak these on-the-fly in the Prefab web app.
+You can now control logging at any level of your stack. For convenience, we'll set these as local defaults in `.prefab.default.config.yaml` ([learn more](/docs/explanations/concepts/defaults)) but you can set and tweak these on-the-fly in the Prefab web app.
 
 ```yaml
 # .prefab.default.config.yaml
@@ -323,7 +323,7 @@ class MyClass:
 
 ### Targeted Log Levels
 
-You can use [Targeting](../explanations/targeted-log-levels) to change your log levels based on the current user/request/device [context](../explanations/context) using our [rules](/docs/explanations/rules-and-segmentation) engine.
+You can use [Targeting](../explanations/targeted-log-levels) to change your log levels based on the current user/request/device [context](../explanations/context) using our [rules](/docs/explanations/features/rules-and-segmentation) engine.
 
 ### Log levels
 
@@ -374,7 +374,7 @@ By default this level is set to `:warn`
 
 ## Testing
 
-Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/bootstrapping).
+Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/architecture/bootstrapping).
 
 ```python
 options = Options(data_sources="LOCAL_ONLY")

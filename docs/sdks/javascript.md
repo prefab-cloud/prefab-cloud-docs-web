@@ -138,8 +138,8 @@ it("shows the turbo button when the feature is enabled", () => {
 });
 ```
 
-[segment]: /docs/explanations/rules-and-segmentation
-[React Client]: /docs/react
+[segment]: /docs/explanations/features/rules-and-segmentation
+[React Client]: /docs/sdks/react
 
 ## Reference
 

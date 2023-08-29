@@ -5,7 +5,7 @@ sidebar_label: Beta Releases
 
 Beta Releases allow you to mitigate risk of bugs by slowly rolling out a feature to your audience.
 
-Using feature flags and Prefab's [Rules and Segmentation](/docs/explanations/rules-and-segmentation) you can enable a feature for precisely who you want, when you want.
+Using feature flags and Prefab's [Rules and Segmentation](/docs/explanations/features/rules-and-segmentation) you can enable a feature for precisely who you want, when you want.
 
 Let's walk through a common example beta release rollout.
 

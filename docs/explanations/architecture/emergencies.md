@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## Emergencies
 
-Prefab is designed to be extremely [resilient](/docs/explanations/resiliency). The client will try to pull live values from:
+Prefab is designed to be extremely [resilient](/docs/explanations/architecture/resiliency). The client will try to pull live values from:
 
 1. A Fastly CDN backed by the API
 2. The Prefab API

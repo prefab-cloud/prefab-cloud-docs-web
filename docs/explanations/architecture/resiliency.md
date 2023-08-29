@@ -31,4 +31,4 @@ Here's how the load order works for [Server SDKs](./server-sdks):
 
 That's a lot of redundancy and we've got more coming soon.
 
-There's more discussion of these bootstrapping files in [bootstrapping](bootstrapping.md).
+There's more discussion of these bootstrapping files in [bootstrapping](/docs/explanations/architecture/bootstrapping.md).
