@@ -264,7 +264,7 @@ If the values are in your `.prefab.default.config.yaml` you'll need to restart t
 
 ## Telemetry
 
-By default, Prefab uploads telemetry that enable a number of useful features. You can alter or disable this behavior using the following options:
+By default, Prefab uploads telemetry that enables a number of useful features. You can alter or disable this behavior using the following options:
 
 | Name                         | Description                                                                                                                           | Default           |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
