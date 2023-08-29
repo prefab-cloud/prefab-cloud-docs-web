@@ -3,7 +3,7 @@ title: Ruby
 sidebar_position: 11
 ---
 
-## Getting Started With the Ruby SDK
+## Install the latest version
 
 ```bash
  gem install prefab-cloud-ruby
