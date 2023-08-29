@@ -13,7 +13,7 @@ Specifying your Prefab env as 'test' and putting data in `.prefab.test.config.ya
 
 ### Server-side SDKs
 
-Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/bootstrapping).
+Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/architecture/bootstrapping).
 
 <Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
@@ -24,7 +24,7 @@ options = Prefab::Options.new(data_sources: LOCAL_ONLY)
 client = Prefab::Client.initialize(options)
 ```
 
-[Read the full Ruby testing docs.](/docs/ruby-sdk/ruby#testing)
+[Read the full Ruby testing docs.](/docs/sdks/ruby#testing)
 
 </TabItem>
 <TabItem value="java" label="Java">
@@ -34,7 +34,7 @@ Options options = new Options()
   .setPrefabDatasource(Options.Datasources.LOCAL_ONLY)
 ```
 
-[Read the full Java testing docs.](/docs/java-sdk/java#testing)
+[Read the full Java testing docs.](/docs/sdks/java#testing)
 
 </TabItem>
 <TabItem value="elixir" label="Elixir">
@@ -45,7 +45,7 @@ options = Prefab.Options.new(prefab_datasources: :local_only)
 client = Prefab.Client.new(options)
 ```
 
-[Read the full Elixir testing docs.](/docs/elixir-sdk/elixir#testing)
+[Read the full Elixir testing docs.](/docs/sdks/elixir#testing)
 
 </TabItem>
 </Tabs>
@@ -66,7 +66,7 @@ prefab.setConfig({
 });
 ```
 
-[Read the full JavaScript testing docs.](/docs/javascript#testing)
+[Read the full JavaScript testing docs.](/docs/sdks/javascript#testing)
 
 </TabItem>
 
@@ -80,7 +80,7 @@ Don't use the `PrefabProvider`. Instead, use the `PrefabTestProvider` and pass i
 </PrefabTestProvider>,
 ```
 
-[Read the full React testing docs.](/docs/react#testing)
+[Read the full React testing docs.](/docs/sdks/react#testing)
 
 </TabItem>
 </Tabs>

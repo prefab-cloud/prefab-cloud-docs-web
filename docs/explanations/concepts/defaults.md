@@ -121,4 +121,4 @@ Having it in Prefab means that you always retain the ability to update it on the
 
 The Prefab clients will sometimes return nil even in the default mode. This situation occurs if you have deleted the keys in the Prefab UI.
 A deleted key value is sent down to the clients as a tombstone and this tombstone takes precedence over default values as indicated in the
-[config load order](bootstrapping.md) doc.
+[config load order](/docs/explanations/architecture/bootstrapping.md) doc.

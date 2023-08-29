@@ -75,3 +75,8 @@ h1 {
     font-size: 3rem;
   }
 }
+
+summary h4 {
+  line-height: 1.5rem;
+  margin-bottom: 0;
+}

@@ -1,5 +1,6 @@
 ---
-title: React Client
+title: React
+sidebar_position: 14
 ---
 
 ## Getting Started With the React Client
@@ -25,7 +26,7 @@ yarn add @prefab-cloud/prefab-cloud-react
 
 TypeScript types are included with the package.
 
-## Usage in your app
+## Setup
 
 This client includes a `<PrefabProvider>` and `usePrefab` hook.
 
@@ -35,10 +36,32 @@ First, wrap your component tree in the `PrefabProvider`, e.g.
 import { PrefabProvider } from "@prefab-cloud/prefab-cloud-react";
 
 const WrappedApp = () => {
+  const onError = (reason) => {
+    console.error(reason);
+  };
+
+  return (
+    <PrefabProvider apiKey={"YOUR_CLIENT_API_KEY"} onError={onError}>
+      <MyApp />
+    </PrefabProvider>
+  );
+};
+```
+
+## Using Context
+
+`contextAttributes` lets you provide [context](/docs/explanations/concepts/context) that you can use to [segment] your users. Usually you will want to define context once when you setup `PrefabProvider`.
+
+```jsx
+import { PrefabProvider } from "@prefab-cloud/prefab-cloud-react";
+
+const WrappedApp = () => {
+  // highlight-start
   const contextAttributes = {
     user: { email: "jeffrey@example.com" },
     subscription: { plan: "advanced" },
   };
+  // highlight-end
 
   const onError = (reason) => {
     console.error(reason);
@@ -47,6 +70,7 @@ const WrappedApp = () => {
   return (
     <PrefabProvider
       apiKey={"YOUR_CLIENT_API_KEY"}
+      // highlight-next-line
       contextAttributes={contextAttributes}
       onError={onError}
     >
@@ -56,9 +80,9 @@ const WrappedApp = () => {
 };
 ```
 
-`contextAttributes` lets you provide [context](./explanations/context) that you can use to [segment] your users.
+## Feature Flags and Dynamic Config
 
-Now use the `usePrefab` hook to fetch flags and config values
+Now use the `usePrefab` hook to fetch flags
 
 ```jsx
 const Logo = () => {
@@ -72,23 +96,9 @@ const Logo = () => {
 };
 ```
 
-### `usePrefab` properties
-
-```jsx
-const { isEnabled, get, loading, contextAttributes } = usePrefab();
-```
-
-Here's an explanation of each property
-
-| property            | example                 | purpose                                                                                  |
-| ------------------- | ----------------------- | ---------------------------------------------------------------------------------------- |
-| `isEnabled`         | `isEnabled("new-logo")` | returns a boolean (default `false`) if a feature is enabled based on the current context |
-| `get`               | `get('retry-count')`    | returns the value of a flag or config                                                    |
-| `contextAttributes` | (see above)             | this is the context attributes object you passed when setting up the provider            |
-
 :::tip
 
-While `loading` is true, `isEnabled` will return `false` and `get` will return `undefined`.
+React is a Client SDK and does not receive Config
 
 :::
 
@@ -150,4 +160,26 @@ it("shows the secret feature when it is enabled", async () => {
 
 [jest]: https://jestjs.io/
 [rtl]: https://testing-library.com/docs/react-testing-library/intro/
-[segment]: /docs/explanations/rules-and-segmentation
+[segment]: /docs/explanations/features/rules-and-segmentation
+
+## Reference
+
+### `usePrefab` properties
+
+```jsx
+const { isEnabled, get, loading, contextAttributes } = usePrefab();
+```
+
+Here's an explanation of each property
+
+| property            | example                 | purpose                                                                                  |
+| ------------------- | ----------------------- | ---------------------------------------------------------------------------------------- |
+| `isEnabled`         | `isEnabled("new-logo")` | returns a boolean (default `false`) if a feature is enabled based on the current context |
+| `get`               | `get('retry-count')`    | returns the value of a flag or config                                                    |
+| `contextAttributes` | (see above)             | this is the context attributes object you passed when setting up the provider            |
+
+:::tip
+
+While `loading` is true, `isEnabled` will return `false` and `get` will return `undefined`.
+
+:::

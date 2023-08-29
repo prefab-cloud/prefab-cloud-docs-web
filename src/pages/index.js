@@ -41,31 +41,31 @@ function Langs() {
     <Section>
       <h2>Select Your Language</h2>
       <div className="grid grid-cols-3 gap-8">
-        <Link className={linkClasses} to="/docs/ruby-sdk/ruby">
+        <Link className={linkClasses} to="/docs/sdks/ruby">
           <img src="/img/langs/ruby.png" className="" alt="Ruby" />
           <span>Ruby</span>
         </Link>
-        <Link className={linkClasses} to="/docs/java-sdk/java">
+        <Link className={linkClasses} to="/docs/sdks/java">
           <img src="/img/langs/java.png" className="" alt="Java" />
           <span>Java</span>
         </Link>
-        <Link className={linkClasses} to="/docs/node-sdk/node">
+        <Link className={linkClasses} to="/docs/sdks/node">
           <img src="/img/langs/node.png" className="" alt="Node" />
           <span>Node</span>
         </Link>
-        <Link className={linkClasses} to="/docs/react">
+        <Link className={linkClasses} to="/docs/sdks/react">
           <img src="/img/langs/react.png" className="" alt="React" />
           <span>React</span>
         </Link>
-        <Link className={linkClasses} to="/docs/javascript">
+        <Link className={linkClasses} to="/docs/sdks/javascript">
           <img src="/img/langs/js.png" className="" alt="JS" />
           <span>Javascript</span>
         </Link>
-        <Link className={linkClasses} to="/docs/elixir-sdk/elixir">
+        <Link className={linkClasses} to="/docs/sdks/elixir">
           <img src="/img/langs/elixir.png" className="" alt="Elixir" />
           <span>Elixir</span>
         </Link>
-        <Link className={linkClasses} to="/docs/python-sdk/python">
+        <Link className={linkClasses} to="/docs/sdks/python">
           <img src="/img/langs/python.png" className="" alt="Python" />
           <span>Python</span>
         </Link>

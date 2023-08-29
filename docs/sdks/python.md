@@ -1,6 +1,6 @@
 ---
 title: Python
-sidebar_position: 1
+sidebar_position: 17
 ---
 
 ## Getting Started with the Python SDK
@@ -121,7 +121,7 @@ my-first-int-config: 30
 my-first-feature-flag: false
 ```
 
-[Learn more about defaults](/docs/explanations/defaults).
+[Learn more about defaults](/docs/explanations/concepts//defaults).
 
 ### Getting Started
 
@@ -159,10 +159,10 @@ Congrats! You're ready to rock!
 
 ## Feature Flags
 
-Feature flags become more powerful when we give the flag evaluation [rules](/docs/explanations/rules-and-segmentation) more
+Feature flags become more powerful when we give the flag evaluation [rules](/docs/explanations/features/rules-and-segmentation) more
 information to work with.
 
-We do this by providing a [context](https://docs.prefab.cloud/docs/explanations/context)
+We do this by providing a [context](/docs/explanations/concepts/context)
 for the current user (and/or team, request, etc)
 
 ```python
@@ -293,7 +293,7 @@ client.logger().error(message)
 client.logger().critical(message)
 ```
 
-You can now control logging at any level of your stack. For convenience, we'll set these as local defaults in `.prefab.default.config.yaml` ([learn more](/docs/explanations/defaults)) but you can set and tweak these on-the-fly in the Prefab web app.
+You can now control logging at any level of your stack. For convenience, we'll set these as local defaults in `.prefab.default.config.yaml` ([learn more](/docs/explanations/concepts/defaults)) but you can set and tweak these on-the-fly in the Prefab web app.
 
 ```yaml
 # .prefab.default.config.yaml
@@ -323,7 +323,7 @@ class MyClass:
 
 ### Targeted Log Levels
 
-You can use [Targeting](../explanations/targeted-log-levels) to change your log levels based on the current user/request/device [context](../explanations/context) using our [rules](/docs/explanations/rules-and-segmentation) engine.
+You can use [Targeting](/docs/explanations/features/targeted-log-levels) to change your log levels based on the current user/request/device [context](/docs/explanations/concepts/context) using our [rules](/docs/explanations/features/rules-and-segmentation) engine.
 
 ### Log levels
 
@@ -361,51 +361,6 @@ mycorp.auth.api.url: "localhost:9090"
 Prefab will first load the defaults, then merge the remote API values over the top, and finally it will apply the overrides file on
 top of those values.
 
-## Emergencies
-
-Prefab is designed to be extremely resilient. The client will try to pull live values from:
-
-1. A Fastly CDN backed by the API
-2. The Prefab API
-3. Prefab Streaming APIs
-
-This strategy ensures the utmost reliability for your clients being able to pull live values, even in the case of a
-major outage of the Prefab APIs.
-
-But wait, there's more.
-
-In the terrible occurrence that the Prefab APIs are down for an extended period of time, your services should be able to
-bootstrap themselves and load from the CDN, but you would be unable to modify configuration.
-
-In the event that one or all of these services become unavailable, the Python SDK stores a local copy of all data pulled
-from the remote endpoints, so it can continue to serve the last available live data, but would not be able to fetch or
-push new data until the APIs are restored.
-
-## Using Prefab For Rollouts
-
-So you've built a new pipeline and are hoping to slowly dial up how much traffic uses it. You've got two great ways to
-do that with Prefab.
-
-One approach is to simply use dynamic config. We can use a floating point number to specify the percent of traffic we
-want to rollout to and then evaluate that against a random number to determine whether to run the new code.
-
-```python
-import random
-
-if random.random() < client.get("percent-to-rollout"):
-    do_new_pipeline
-else:
-    run_old_pipeline
-```
-
-This approach works fine, but each evaluation of `random.random()` will get you a different result. Sometimes this is what you
-want, but if you'd like the rollout to keep server, requests, users in the new pipeline you may want to use a feature
-flag.
-
-```python
-client.enabled("new-feature", lookup_key=any_consistent_id)
-```
-
 ## Debugging
 
 You can control the Prefab client's log level by changing the configuration value of `log-level.prefab`. In the rare
@@ -419,7 +374,7 @@ By default this level is set to `:warn`
 
 ## Testing
 
-Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/bootstrapping).
+Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/architecture/bootstrapping).
 
 ```python
 options = Options(data_sources="LOCAL_ONLY")

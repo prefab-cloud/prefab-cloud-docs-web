@@ -60,7 +60,7 @@ Additionally, the SDK will poll for updates as a resiliency measure.
 Note that the evaluation is always happening in-process in your application.
 Feature flags and config are stored in process so are lightning fast (no API calls when you access them).
 
-[See Client SDKs to compare](/docs/explanations/client-sdks.md)
+[See Client SDKs to compare](/docs/explanations/concepts/client-sdks.md)
 
 ## Implementation
 
