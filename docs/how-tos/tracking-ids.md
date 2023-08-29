@@ -17,7 +17,7 @@ to the user record upon creation.
 :::
 
 <Tabs groupId="lang">
-<TabItem value="rails" label="Rails">
+<TabItem value="ruby" label="Ruby">
 
 ## Adding a tracking ID to a Rails application
 

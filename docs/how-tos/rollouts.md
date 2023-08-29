@@ -12,7 +12,7 @@ One approach is to simply use dynamic config. We can use a floating point number
 want to rollout to and then evaluate that against a random number to determine whether to run the new code.
 
 <Tabs groupId="lang">
-<TabItem value="rails" label="Rails">
+<TabItem value="ruby" label="Ruby">
 
 ```ruby
 if rand() < @config.get_float("percent-to-rollout")
@@ -27,7 +27,7 @@ This approach works fine, but each evaluation of `rand()` will get you a differe
 want, but if you'd like the rollout to be sticky and keep server, requests, users in the new pipeline you may want to use a feature flag.
 
 <Tabs groupId="lang">
-<TabItem value="rails" label="Rails">
+<TabItem value="ruby" label="Ruby">
 
 ```ruby
 $prefab.enabled? "new-feature", { user: { tracking_id: user.tracking_id } }
