@@ -99,13 +99,14 @@ const config = {
         logo: {
           alt: "Prefab Logo",
           src: "img/logo.svg",
-          // href: "https://www.prefab.cloud/",
+          href: "https://www.prefab.cloud/",
         },
         items: [
           {
-            to: "https://prefab.cloud",
+            to: "/",
             position: "right",
-            label: "Prefab Homepage",
+            label: "Prefab Docs Home",
+            className: "text-white", // workaround for the fact that docusuarus wants to always treat this link as active
           },
           {
             to: "https://app.prefab.cloud/users/sign_up",
