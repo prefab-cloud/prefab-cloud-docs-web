@@ -50,7 +50,7 @@ const WrappedApp = () => {
 
 ## Using Context
 
-`contextAttributes` lets you provide [context](./explanations/context) that you can use to [segment] your users. Usually you will want to define context once when you setup `PrefabProvider`.
+`contextAttributes` lets you provide [context](/docs/explanations/concepts/context) that you can use to [segment] your users. Usually you will want to define context once when you setup `PrefabProvider`.
 
 ```jsx
 import { PrefabProvider } from "@prefab-cloud/prefab-cloud-react";

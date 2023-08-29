@@ -323,7 +323,7 @@ class MyClass:
 
 ### Targeted Log Levels
 
-You can use [Targeting](../explanations/targeted-log-levels) to change your log levels based on the current user/request/device [context](../explanations/context) using our [rules](/docs/explanations/features/rules-and-segmentation) engine.
+You can use [Targeting](/docs/explanations/features/targeted-log-levels) to change your log levels based on the current user/request/device [context](/docs/explanations/concepts/context) using our [rules](/docs/explanations/features/rules-and-segmentation) engine.
 
 ### Log levels
 

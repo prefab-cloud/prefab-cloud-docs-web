@@ -50,7 +50,7 @@ After the init completes you can use
 
 ## Context
 
-Prefab supports [context](../explanations/context) for intelligent rule-based evaluation of `get` and `isFeatureEnabled` based on the current request/device/user/etc.
+Prefab supports [context](/docs/explanations/concepts/context) for intelligent rule-based evaluation of `get` and `isFeatureEnabled` based on the current request/device/user/etc.
 
 Given
 

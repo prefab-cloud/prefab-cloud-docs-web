@@ -34,7 +34,7 @@ If you're using React, consider using our [React Client] instead.
 
 ## Initialize client
 
-Initialize prefab with your api key and a [`Context` ](./explanations/context) for the current user/visitor/device/request:
+Initialize prefab with your api key and a [`Context` ](/docs/explanations/concepts/context) for the current user/visitor/device/request:
 
 ```javascript
 import { prefab, Context } from "@prefab-cloud/prefab-cloud-js";

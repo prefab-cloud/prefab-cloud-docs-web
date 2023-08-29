@@ -12,7 +12,7 @@ Contexts let you provide Prefab with knowledge about the current
 - server
 - etc.
 
-Contexts allow you to set this knowledge to be used when evaluating feature flags and [targeted log levels](./targeted-log-levels) without having to pass your context data deeply around your app.
+Contexts allow you to set this knowledge to be used when evaluating feature flags and [targeted log levels](/docs/explanations/features/targeted-log-levels) without having to pass your context data deeply around your app.
 
 In a web app, the life-cycle of contexts are the life-cycle of the request. You set context at the beginning of the request and then it is cleared out when the request finishes.
 

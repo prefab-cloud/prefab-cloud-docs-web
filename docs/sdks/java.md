@@ -103,7 +103,7 @@ prefabCloudClient.configClient().getContextStore().addContext(PrefabContext.newB
                         .build());
 ```
 
-See [contexts](../explanations/context) for more information
+See [contexts](/docs/explanations/concepts/context) for more information
 
 ## Typical Usage
 

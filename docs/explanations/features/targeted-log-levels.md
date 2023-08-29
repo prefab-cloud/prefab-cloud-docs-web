@@ -16,7 +16,7 @@ Prefab allows you to change your log level at any time at any place in your stac
 
 ## Targeting
 
-Dynamic log levels gain super powers when combined with our [rules engine](rules-and-segmentation). By adding [context](./context) about the current user/request/device/etc. you can get exactly the verbosity you want to track down tricky bugs without blowing through your log retention bill.
+Dynamic log levels gain super powers when combined with our [rules engine](rules-and-segmentation). By adding [context](/docs/explanations/concepts/context) about the current user/request/device/etc. you can get exactly the verbosity you want to track down tricky bugs without blowing through your log retention bill.
 
 ![targeted log rules](/img/docs/explanations/targeted-log-rules.png)
 

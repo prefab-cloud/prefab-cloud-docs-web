@@ -35,7 +35,7 @@ end
 <details className="alert--warning">
 <summary>
 
-#### Special Considerations with Forking servers like Puma & Unicorn that use workers}
+#### Special Considerations with Forking servers like Puma & Unicorn that use workers
 
 </summary>
 
@@ -232,7 +232,7 @@ end
 Now we are free to adjust our log levels, down to the controller or method level in real-time. Invaluable for debugging! You can set and tweak these on-the-fly in the Prefab web app.
 
 :::caution
-Please read the [Puma/Unicorn](/docs/ruby-sdk/ruby#special-considerations-with-forking-servers-like-puma--unicorn-that-use-workers) notes for special considerations with forking servers.
+Please read the [Puma/Unicorn](ruby#special-considerations-with-forking-servers-like-puma--unicorn-that-use-workers) notes for special considerations with forking servers.
 :::
 
 ### Targeted Log Levels

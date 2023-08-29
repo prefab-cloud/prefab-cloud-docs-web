@@ -23,7 +23,7 @@ Enter the beauty of immutable distributed logs. They are perfectly cacheable. On
 
 ### Belts & Suspenders & More Suspenders
 
-Here's how the load order works for [Server SDKs](./server-sdks):
+Here's how the load order works for [Server SDKs](/docs/explanations/concepts/server-sdks):
 
 1. First, the SDKs make a request to the Prefab HTTP APIs, cached by [Fast.ly](https://Fast.ly). This cache is soft purged when you make configuration updates.
 2. If this fails, the SDKs will make a request to the Prefab GRPC APIs, which are running on the same Prefab infrastructure, but are a separate service.

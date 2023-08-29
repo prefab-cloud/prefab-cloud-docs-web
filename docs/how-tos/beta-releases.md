@@ -75,7 +75,7 @@ A feature flag check will always return false until it is fully enabled or a rul
 ## Rules
 
 :::tip
-Rules are evaluated in order. You can drag and drop rules to rearrange them. The first matching rule determines which variant is served. [Read more](/docs/explanations/rules-and-segmentation).
+Rules are evaluated in order. You can drag and drop rules to rearrange them. The first matching rule determines which variant is served. [Read more](/docs/explanations/features/rules-and-segmentation).
 :::
 
 To model the example rollout above in Prefab, we'll create a "Simple Flag".
