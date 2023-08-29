@@ -4,11 +4,9 @@ sidebar_label: Java
 sidebar_position: 12
 ---
 
-## Getting Started With the Java SDK
+## Install the latest version
 
 [Github](https://github.com/prefab-cloud/prefab-cloud-java) | [Maven Repository](https://mvnrepository.com/artifact/cloud.prefab/prefab-cloud-java)
-
-### Install the latest version
 
 ```xml
 <dependency>
@@ -18,7 +16,12 @@ sidebar_position: 12
 </dependency>
 ```
 
-### Dependency-Reduced Version
+<details>
+<summary>
+
+#### Dependency-Reduced Version
+
+</summary>
 
 There's an optional uber-jar with shaded and relocated guava and failsafe dependencies
 
@@ -31,83 +34,19 @@ There's an optional uber-jar with shaded and relocated guava and failsafe depend
 </dependency>
 ```
 
+</details>
+
 ## Initialize the client
+
+### Basic Usage
 
 ```java
 final PrefabCloudClient prefabCloudClient = new PrefabCloudClient(new Options());
 ```
 
-### Options
+### Typical Usage
 
-```java
-Options options = new Options()
-  .setNamespace("billing-service.jobs.dunning-job")
-  .setConfigOverrideDir(System.getProperty("user.home"))
-  .setApikey(System.getenv("PREFAB_API_KEY"))
-  .setPrefabDatasource(Options.Datasources.ALL) // Option: Datasources.LOCAL_ONLY
-  .setOnInitializationFailure(Options.OnInitializationFailure.) // Option Options.OnInitializationFailure.UNLOCK
-  .setInitializationTimeoutSec(10);
-```
-
-#### Option Definitions
-
-| Name                       | Description                                                                                                                           | Default          |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| collectEvaluationSummaries | Send counts of config/flag evaluation results back to Prefab to view in web app                                                       | true             |
-| collectLoggerCounts        | Send counts of logger usage back to Prefab to power log-levels configuration screen                                                   | true             |
-| contextUploadMode          | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | PERIODIC_EXAMPLE |
-| onInitializationFailure    | Choose to crash or continue with local data only if unable to fetch config data from prefab at startup                                | RAISE (crash)    |
-| prefabDatasources          | Use either only-local data or local + API data                                                                                        | ALL              |
-
-## Get FeatureFlag
-
-```java
-FeatureFlagClient featureFlagClient = prefabCloudClient.featureFlagClient();
-
-featureFlagClient.featureIsOn(
-    "features.example-flag",
-    PrefabContext.newBuilder("customer")
-      .put("group", "beta")
-      .build()
-  )
-```
-
-## Get Config
-
-```java
-final Optional<Prefab.ConfigValue> configValue = prefabCloudClient.configClient().get("the.key");
-if(configValue.isPresent()){
-  System.out.println(configValue.get().getString());
-}
-```
-
-## Provide Context
-
-To finely-target configuration rule evaluation, we accept contextual information both inline when making a get request
-
-```java
-prefabCloudClient.configClient().get("the.key", PrefabContext.newBuilder("user")
-                                                    .put("name", "james")
-                                                    .put("tier", "gold")
-                                                    .put("customerMonths", 12)
-                                                    .build()
-                                                 )
-```
-
-and globally or request-scoped with the ContextStore which will affect all logging, featureflag and config lookups.
-
-```java
-
-prefabCloudClient.configClient().getContextStore().addContext(PrefabContext.newBuilder("User")
-                        .put("name", user.getName())
-                        .build());
-```
-
-See [contexts](/docs/explanations/concepts/context) for more information
-
-## Typical Usage
-
-We recommend using the PrefabCloudClient as a singleton in your application. This is the most common way to use the SDK.
+We recommend using the `PrefabCloudClient` as a singleton in your application. This is the most common way to use the SDK.
 
 ```java
 // Micronaut Factory
@@ -121,9 +60,7 @@ public class PrefabFactory {
   }
 
   @Singleton
-  public FeatureFlagClient featureFlagClient(
-    PrefabCloudClient prefabCloudClient
-  ) {
+  public FeatureFlagClient featureFlagClient(PrefabCloudClient prefabCloudClient) {
     return prefabCloudClient.featureFlagClient();
   }
 
@@ -132,34 +69,178 @@ public class PrefabFactory {
     return prefabCloudClient.configClient();
   }
 }
-
-
-public class MyClass {
-  @Inject
-  private ConfigClient configClient;
-
-  public String test(String key){
-    Optional<Prefab.ConfigValue> val = configClient.get(key);
-    return "Live value of %s is %s".formatted(key, val.orElse("no value found"));
-  }
-}
-
 ```
 
-## Live Values
+## Feature Flags
+
+For boolean flags, you can use the `featureIsOn` convenience method:
+
+```java
+public class MyClass {
+  // assumes you have setup a singleton
+  @Inject
+  private FeatureFlagClient featureFlagClient;
+
+  public String test(String key){
+    boolean val = featureFlagClient.featureIsOn(key);
+    return "Feature flag value of %s is %s".formatted(key, val);
+  }
+}
+```
+
+Feature flags don't have to return just true or false. You can get other data types using `get`:
+
+```java
+public class MyClass {
+  // assumes you have setup a singleton
+  @Inject
+  private FeatureFlagClient featureFlagClient;
+
+  public String test(String key){
+    // highlight-next-line
+    Optional<Prefab.ConfigValue> val = featureFlagClient.get(key);
+    return "Feature flag value of %s is %s".formatted(key, val.orElse("no value found"));
+  }
+}
+```
+
+## Context
+
+To finely-target configuration rule evaluation, we accept contextual information globally or request-scoped with the ContextStore which will affect all logging, featureflag and config lookups.
+
+```java
+prefabCloudClient.configClient().getContextStore().addContext(PrefabContext.newBuilder("User")
+                        .put("name", user.getName())
+                        .build());
+```
+
+When global context is set, log levels and feature flags will evaluate in that context. Here are details on setting global context:
+
+<Tabs groupId="lang">
+<TabItem value="micronaut" label="Micronaut">
+
+In your Prefab options, set your Prefab Context store to be your ServerRequestContextStore.
+
+```java
+options.setContextStore(new ServerRequestContextStore());
+```
+
+Next we add a [filter](https://github.com/prefab-cloud/example-micronaut-app/blob/configure-prefab-context/src/main/java/com/example/prefab/PrefabContextFilter.java) to add a prefab context based on the currently "logged in" user.
+
+```java
+configClient.getContextStore()
+      .addContext(PrefabContext.newBuilder("user")
+          .put("id", user.id())
+          .put("country", user.country())
+          .put("email", user.email())
+          .build()
+      );
+```
+
+Learn more with the [Prefab + Micronaut example app](https://github.com/prefab-cloud/example-micronaut-app)
+
+</TabItem>
+
+<TabItem value="dropwizard" label="Dropwizard">
+
+Use a `ContainerRequestFilter` to set the context for your request when the request begins
+
+```java
+public class PrefabContextAddingRequestFilter implements ContainerRequestFilter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PrefabContextAddingRequestFilter.class);
+    private final ConfigClient configClient;
+
+    @Inject
+    public PrefabContextAddingRequestFilter(ConfigClient configClient) {
+        this.configClient = configClient;
+    }
+
+    @Override
+    public void filter(ContainerRequestContext containerRequestContext) throws IOException {
+        final SecurityContext securityContext =
+                containerRequestContext.getSecurityContext();
+        if (securityContext != null) {
+            Principal principal = securityContext.getUserPrincipal();
+            if (principal instanceof User) {
+                User user = (User) principal;
+                LOGGER.info("will add pf context for {}", user);
+                configClient.getContextStore().addContext(PrefabContext.newBuilder("User")
+                        .put("name", user.getName())
+                        .build());
+            }
+        }
+    }
+}
+```
+
+Then we'll add another `ContainerResponseFilter` to clear the context when the request finishes.
+
+```java
+public class PrefabContexClearingResponseFilter implements ContainerResponseFilter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PrefabContexClearingResponseFilter.class);
+    private final ConfigClient configClient;
+
+    @Inject
+    PrefabContexClearingResponseFilter(ConfigClient configClient) {
+        this.configClient = configClient;
+    }
+
+    @Override
+    public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) throws IOException {
+        configClient.getContextStore().clearContexts();
+        LOGGER.info("Cleared context");
+    }
+}
+```
+
+Learn more with the [Prefab + Dropwizard example app](https://github.com/prefab-cloud/example-dropwizard-app)
+
+</TabItem>
+</Tabs>
+
+<details>
+<summary>
+
+#### Just-in-time Context
+
+</summary>
+
+You can also provide context information inline when making a get request. If you provide just-in-time context to your FF or config evaluations, it will be merged with the global context.
+
+```java
+featureFlagClient.featureIsOn(
+    "features.example-flag",
+    PrefabContext.newBuilder("customer")
+      .put("group", "beta")
+      .build()
+  )
+
+prefabCloudClient.configClient().get("the.key", PrefabContext.newBuilder("user")
+                                                    .put("name", "james")
+                                                    .put("tier", "gold")
+                                                    .put("customerMonths", 12)
+                                                    .build()
+                                                 )
+```
+
+</details>
+
+See [contexts](/docs/explanations/concepts/context) for more information
+
+## Dynamic Config
+
+```java
+final Optional<Prefab.ConfigValue> configValue = prefabCloudClient.configClient().get("the.key");
+if(configValue.isPresent()){
+  System.out.println(configValue.get().getString());
+}
+```
+
+### Live Values
 
 Live values are a convenient and clear way to use configuration throughout your system. Inject a prefab client and get live values for the configuration keys you need.
 
 In code, `.get()` will return the value. These values will update automatically when the configuration is updated in Prefab Cloud.
-
-### Get a live value
-
-```yaml
-# .prefab.config.default.yaml
-sample:
-  long: 123
-  string: "hello"
-```
 
 ```java
 import java.util.function.Supplier;
@@ -180,6 +261,24 @@ class MyClass {
   }
 }
 ```
+
+<details>
+<summary>
+
+#### Default Values for Configs
+
+</summary>
+
+You can set default values for configs using the `.prefab.config.default.yaml` file
+
+```yaml
+# .prefab.config.default.yaml
+sample:
+  long: 123
+  string: "hello"
+```
+
+</details>
 
 ## Dynamic Logging with the Java SDK
 
@@ -220,6 +319,7 @@ public class PrefabFactory {
     return prefabCloudClient.featureFlagClient();
   }
 
+  // highlight-start
   // in Micronaut @Context is basically eager-singleton
   @Context
   public ConfigClient configClient(PrefabCloudClient prefabCloudClient) {
@@ -227,10 +327,9 @@ public class PrefabFactory {
     PrefabMDCTurboFilter.install(client);
     return client;
   }
+  // highlight-end
 }
 ```
-
-### Profit
 
 Now we can set our log levels dynamically in the UI and they will update immediately.
 
@@ -245,15 +344,39 @@ You can use [Targeting](/docs/explanations/features/targeted-log-levels) to chan
 Prefab suggests testing with generous usage of Mockito. We also provide a useful `FixedValue` for testing Live Values.
 
 ```java
-  @Test
-  void testPrefab(){
-    ConfigClient mockConfigClient = mock(ConfigClient.class);
-    when(mockConfigClient.liveString("sample.string")).thenReturn(FixedValue.of("test value"));
-    when(mockConfigClient.liveLong("sample.long")).thenReturn(FixedValue.of(123L));
+@Test
+void testPrefab(){
+  ConfigClient mockConfigClient = mock(ConfigClient.class);
+  when(mockConfigClient.liveString("sample.string")).thenReturn(FixedValue.of("test value"));
+  when(mockConfigClient.liveLong("sample.long")).thenReturn(FixedValue.of(123L));
 
-    MyClass myClass = new MyClass(mock(ConfigClient.class));
+  MyClass myClass = new MyClass(mock(ConfigClient.class));
 
-    // test business logic
+  // test business logic
 
-  }
+}
 ```
+
+## Reference
+
+### Options
+
+```java
+Options options = new Options()
+  .setNamespace("billing-service.jobs.dunning-job")
+  .setConfigOverrideDir(System.getProperty("user.home"))
+  .setApikey(System.getenv("PREFAB_API_KEY"))
+  .setPrefabDatasource(Options.Datasources.ALL) // Option: Datasources.LOCAL_ONLY
+  .setOnInitializationFailure(Options.OnInitializationFailure.) // Option Options.OnInitializationFailure.UNLOCK
+  .setInitializationTimeoutSec(10);
+```
+
+#### Option Definitions
+
+| Name                       | Description                                                                                                                           | Default          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| collectEvaluationSummaries | Send counts of config/flag evaluation results back to Prefab to view in web app                                                       | true             |
+| collectLoggerCounts        | Send counts of logger usage back to Prefab to power log-levels configuration screen                                                   | true             |
+| contextUploadMode          | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | PERIODIC_EXAMPLE |
+| onInitializationFailure    | Choose to crash or continue with local data only if unable to fetch config data from prefab at startup                                | RAISE (crash)    |
+| prefabDatasources          | Use either only-local data or local + API data                                                                                        | ALL              |
