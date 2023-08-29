@@ -44,6 +44,7 @@ We also need to set the reset the logger for ActionView and friends because thos
 
 <Tabs groupId="lang">
 <TabItem value="puma" label="Puma">
+
 If using workers in Puma, you can initialize inside an on_worker_boot hook in your puma.rb config file.
 
 ```ruby
@@ -57,6 +58,7 @@ end
 </TabItem>
 
 <TabItem value="unicorn" label="Unicorn">
+
 If using workers in Unicorn, you can initialize inside an after_fork hook in your unicorn.rb config file:
 
 ```ruby
@@ -74,73 +76,25 @@ end
 
 ## Feature Flags
 
+For boolean flags, you can use the `enabled?` convenience method:
+
 ```ruby
 flag_name = "my-first-feature-flag"
 puts "#{flag_name} is: #{$prefab.enabled? flag_name}"
 ```
 
-Like config, feature flags don't have to return just true or false. You can get other data types using `get`:
+Feature flags don't have to return just true or false. You can get other data types using `get`:
 
 ```ruby
-$prefab.get("ff-with-string", default_string_value, context)
-$prefab.get("ff-with-int", default_int_value, context)
+$prefab.get("ff-with-string")
+$prefab.get("ff-with-int")
 ```
-
-## Dynamic Config
-
-```ruby
-config_key = "my-first-int-config"
-puts "#{config_key} is: #{$prefab.get(config_key)}"
-```
-
-<details>
-<summary>
-
-#### Default Values for Configs
-
-</summary>
-
-It is a best practice to specify a default value for all configuration. This reduces the likelihood of exceptions due to
-nil values. Prefab encourages this practice by raising an error if you try to reference a value that is unset.
-
-Here we ask for the value of a config named `max-jobs-per-second`, and we specify `10` as a default value if no value is available.
-
-```ruby
-$prefab.get("max-jobs-per-second", 10) # => returns `10` if no value is available
-```
-
-If we don't provide a default and no value is available, a `Prefab::Errors::MissingDefaultError` error will be raised.
-
-```ruby
-$prefab.get("max-jobs-per-second") # => raises if no value is available
-```
-
-:::note
-
-You can modify this behavior by setting the option `on_no_default` to `Prefab::Options::ON_NO_DEFAULT::RETURN_NIL`
-
-:::
-
-You can specify defaults for your application by creating a file `.prefab.default.config.yaml`
-
-Add the following:
-
-```yaml
-# .prefab.default.config.yaml
-log-level.cloud.prefab: info
-my-first-int-config: 30
-my-first-feature-flag: false
-```
-
-[Learn more about defaults](/docs/explanations/defaults).
-
-</details>
 
 ## Context
 
-Feature flags become more powerful when we give the flag evaluation rules more information to work with. We do this by providing [context](../explanations/context) of the current user (and/or team, request, etc.)
+Feature flags become more powerful when we give the flag evaluation rules more information to work with. We do this by providing [context](/docs/explanations/concepts/context) of the current user (and/or team, request, etc.)
 
-To make the best use of Prefab, we recommend setting [context](../explanations/context) in an `around_action` in your `ApplicationController`. Setting this context for the life-cycle of the request means the Prefab logger can be aware of your user/etc. for [targeted log levels](../explanations/targeted-log-levels) and you won't have to explicitly pass context into your `.enabled?` and `.get` calls.
+To make the best use of Prefab, we recommend setting [context](/docs/explanations/concepts/context) in an `around_action` in your `ApplicationController`. Setting this context for the life-cycle of the request means the Prefab logger can be aware of your user/etc. for feature flags and [targeted log levels](/docs/explanations/features/targeted-log-levels) and you won't have to explicitly pass context into your `.enabled?` and `.get` calls.
 
 ```ruby
 # application_controller.rb
@@ -204,7 +158,59 @@ puts "my-first-feature-flag is: #{result} for #{context.inspect}"
 
 </details>
 
-## Setting Dynamic Log Levels
+## Dynamic Config
+
+Config values are accessed the same way as feature flag values. You can use `enabled?` as a convenience for boolean values, and `get` works for all data types
+
+```ruby
+config_key = "my-first-int-config"
+puts "#{config_key} is: #{$prefab.get(config_key)}"
+```
+
+<details>
+<summary>
+
+#### Default Values for Configs
+
+</summary>
+
+It is a best practice to specify a default value for all configuration. This reduces the likelihood of exceptions due to
+nil values. Prefab encourages this practice by raising an error if you try to reference a value that is unset.
+
+Here we ask for the value of a config named `max-jobs-per-second`, and we specify `10` as a default value if no value is available.
+
+```ruby
+$prefab.get("max-jobs-per-second", 10) # => returns `10` if no value is available
+```
+
+If we don't provide a default and no value is available, a `Prefab::Errors::MissingDefaultError` error will be raised.
+
+```ruby
+$prefab.get("max-jobs-per-second") # => raises if no value is available
+```
+
+:::note
+
+You can modify this behavior by setting the option `on_no_default` to `Prefab::Options::ON_NO_DEFAULT::RETURN_NIL`
+
+:::
+
+You can specify defaults for your application by creating a file `.prefab.default.config.yaml`
+
+Add the following:
+
+```yaml
+# .prefab.default.config.yaml
+log-level.cloud.prefab: info
+my-first-int-config: 30
+my-first-feature-flag: false
+```
+
+[Learn more about defaults](/docs/explanations/concepts/defaults).
+
+</details>
+
+## Dynamic Log Levels
 
 Set the Rails logger to use our logger
 
@@ -231,16 +237,16 @@ Please read the [Puma/Unicorn](/docs/ruby-sdk/ruby#special-considerations-with-f
 
 ### Targeted Log Levels
 
-You can use [Targeting](/docs/explanations/targeted-log-levels) to change your log levels based on the current user/request/device context using our [rules](/docs/explanations/rules-and-segmentation) engine.
+You can use [Targeting](/docs/explanations/features/targeted-log-levels) to change your log levels based on the current user/request/device context using our [rules](/docs/explanations/features/rules-and-segmentation) engine.
 
 <details>
 <summary>
 
-#### Using default files
+#### Setting default log levels in the Prefab config file
 
 </summary>
 
-You can also set default log levels in the Prefab config file ([learn more](/docs/explanations/defaults))
+You can also set default log levels in the Prefab config file ([learn more](/docs/explanations/concepts/defaults))
 
 ```yaml
 #.prefab.default.config.yaml
@@ -258,15 +264,15 @@ If the values are in your `.prefab.default.config.yaml` you'll need to restart t
 
 ## Telemetry
 
-By default, Prefab uploads telemetry that enables powerful features. You can alter or disable this behavior using the following options.
-
-#### Definitions of those options
+By default, Prefab uploads telemetry that enable a number of useful features. You can alter or disable this behavior using the following options:
 
 | Name                         | Description                                                                                                                           | Default           |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | collect_evaluation_summaries | Send counts of config/flag evaluation results back to Prefab to view in web app                                                       | true              |
 | collect_logger_counts        | Send counts of logger usage back to Prefab to power log-levels configuration screen                                                   | true              |
 | context_upload_mode          | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | :periodic_example |
+
+If you want to change any of these options, you can pass an `options` object when initializing the Prefab client.
 
 ```ruby
 #application.rb
@@ -318,7 +324,7 @@ top.
 
 ### Test Setup
 
-Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/bootstrapping).
+Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/architecture/bootstrapping).
 
 ```ruby
 options = Prefab::Options.new(data_sources: LOCAL_ONLY)
@@ -360,16 +366,6 @@ end
 
 ### Client Initialization Options
 
-#### Definitions of those options
-
-| Name                         | Description                                                                                                                           | Default           |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| collect_evaluation_summaries | Send counts of config/flag evaluation results back to Prefab to view in web app                                                       | true              |
-| collect_logger_counts        | Send counts of logger usage back to Prefab to power log-levels configuration screen                                                   | true              |
-| context_upload_mode          | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | :periodic_example |
-| on_init_failure              | Choose to crash or continue with local data only if unable to fetch config data from prefab at startup                                | RAISE (crash)     |
-| prefab_datasources           | Use either only-local data or local + API data                                                                                        | ALL               |
-
 For more control, you can initialize your client with options. Here are the defaults with explanations.
 
 ```ruby
@@ -382,17 +378,17 @@ options = Prefab::Options.new(
   prefab_api_url: ENV['PREFAB_API_URL'] || 'https://api.prefab.cloud',
   on_no_default: ON_NO_DEFAULT::RAISE, # options :raise, :warn_and_return_nil,
   initialization_timeout_sec: 10, # how long to wait before on_init_failure
-  on_init_failure: ON_INITIALIZATION_FAILURE::RAISE,
+  on_init_failure: ON_INITIALIZATION_FAILURE::RAISE, # choose to crash or continue with local data only if unable to fetch config data from prefab at startup
   prefab_datasources: ENV['PREFAB_DATASOURCES'] == 'LOCAL_ONLY' ? DATASOURCES::LOCAL_ONLY : DATASOURCES::ALL,
   prefab_config_override_dir: Dir.home,
   prefab_config_classpath_dir: '.', # where to load local overrides
   prefab_envs: ENV['PREFAB_ENVS'].nil? ? [] : ENV['PREFAB_ENVS'].split(','),
-  collect_logger_counts: true,
+  collect_logger_counts: true, # send counts of logger usage back to Prefab to power log-levels configuration screen
   collect_max_paths: DEFAULT_MAX_PATHS,
   collect_sync_interval: nil,
   context_upload_mode: :periodic_example, # :periodic_example, :shape_only, :none
   context_max_size: DEFAULT_MAX_EVAL_SUMMARIES,
-  collect_evaluation_summaries: true,
+  collect_evaluation_summaries: true, # send counts of config/flag evaluation results back to Prefab to view in web app
   collect_max_evaluation_summaries: DEFAULT_MAX_EVAL_SUMMARIES,
   allow_telemetry_in_local_mode: false
 )
