@@ -46,7 +46,7 @@ const options = {
 await prefab.init(options);
 ```
 
-`prefab.init` will request the calculated feature flags for the provided context as a single HTTPS request.
+`prefab.init` will request the calculated feature flags for the provided context as a single HTTPS request. If you need to check for updates to feature flag values, you can [learn more about polling](#poll) below.
 
 You aren't required to `await` the `init` -- it is a promise, so you can use `.then`, `.finally`, `.catch`, etc. instead if you prefer.
 
@@ -55,15 +55,6 @@ You aren't required to `await` the `init` -- it is a promise, so you can use `.t
 While `prefab` is loading, `isEnabled` will return `false`, `get` will return `undefined`, and `shouldLog` will use your `defaultLevel`.
 
 :::
-
-### Polling for Changes
-
-After `prefab.init()`, you can start polling for any changes:
-
-```javascript
-// some time after init
-prefab.poll({ frequencyInMs: 300000 });
-```
 
 ## Feature Flags
 
@@ -102,13 +93,17 @@ const options = {
 await prefab.init(options);
 ```
 
-### Updating Context
+## `poll()`
 
-Once you set context during `init`, it will be used for all future flag evaluations during polling. However, you can update context at any time and it will supercede the original context
+After `prefab.init()`, you can start polling. Polling uses the context you defined in `init` by default. You can update the context for future polling by setting it on the `prefab` object.
 
 ```javascript
+// some time after init
+prefab.poll({frequencyInMs: 300000})
+
+// we're now polling with the context used from `init`
+
 // later, perhaps after a visitor logs in and now you have the context of their current user
-// highlight-next-line
 prefab.context = new Context({...prefab.context, user: { email: user.email, key: user.trackingId })
 
 // future polling will use the new context
