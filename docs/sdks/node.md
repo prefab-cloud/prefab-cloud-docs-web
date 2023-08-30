@@ -3,7 +3,7 @@ title: Node
 sidebar_position: 13
 ---
 
-## Getting started with the Node SDK
+## Install the Latest Version
 
 <Tabs groupId="lang">
 <TabItem value="npm" label="npm">
@@ -40,13 +40,12 @@ const prefab = new Prefab({
 await prefab.init();
 ```
 
-## Flags and Config
+## Feature Flags and Dynamic Config
 
 After the init completes you can use
 
-- `prefab.get('some.config.name')` returns a raw value
 - `prefab.isFeatureEnabled('some.feature.name')` returns true or false
-- `prefab.shouldLog(loggerName, desiredLevel, defaultLevel, contexts)` returns true or false
+- `prefab.get('some.config.name')` returns a raw value
 
 ## Context
 
@@ -83,6 +82,10 @@ prefab.inContext(context, (pf) => {
   console.log(pf.isEnabled("some.config.name", optionalJustInTimeContext, false))
 })
 ```
+
+## Dynamic Logging
+
+`prefab.shouldLog(loggerName, desiredLevel, defaultLevel, contexts)` returns true or false
 
 ## Reference
 
