@@ -245,7 +245,7 @@ featureFlagClient.featureIsOn(
       .build()
   )
 
-prefabCloudClient.configClient().get("the.key", 
+prefabCloudClient.configClient().get("the.key",
                 PrefabContext.newBuilder("user")
                   .put("name", "james")
                   .put("tier", "gold")
@@ -369,6 +369,25 @@ Now we can set our log levels dynamically in the UI and they will update immedia
 
 You can use [Targeting](/docs/explanations/features/targeted-log-levels) to change your log levels based on the current user/request/device [context](/docs/explanations/concepts/context) using our [rules](/docs/explanations/features/rules-and-segmentation) engine.
 
+## Telemetry
+
+By default, Prefab uploads telemetry that enables a number of useful features. You can alter or disable this behavior using the following options:
+
+| Name                       | Description                                                                                                                           | Default          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| collectEvaluationSummaries | Send counts of config/flag evaluation results back to Prefab to view in web app                                                       | true             |
+| collectLoggerCounts        | Send counts of logger usage back to Prefab to power log-levels configuration screen                                                   | true             |
+| contextUploadMode          | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | PERIODIC_EXAMPLE |
+
+If you want to change any of these options, you can pass an `options` object when initializing the Prefab client.
+
+```java
+Options options = new Options()
+  .setCollectEvaluationSummaries(true)
+  .setCollectLoggerCounts(true)
+  .setContextUploadMode(Options.CollectContextMode.PERIODIC_EXAMPLE);
+```
+
 ## Testing
 
 Prefab suggests testing with generous usage of Mockito. We also provide a useful `FixedValue` for testing Live Values.
@@ -397,7 +416,7 @@ Options options = new Options()
   .setConfigOverrideDir(System.getProperty("user.home"))
   .setApikey(System.getenv("PREFAB_API_KEY"))
   .setPrefabDatasource(Options.Datasources.ALL) // Option: Datasources.LOCAL_ONLY
-  .setOnInitializationFailure(Options.OnInitializationFailure.) // Option Options.OnInitializationFailure.UNLOCK
+  .setOnInitializationFailure(Options.OnInitializationFailure.RAISE) // Option Options.OnInitializationFailure.UNLOCK
   .setInitializationTimeoutSec(10);
 ```
 
