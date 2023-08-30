@@ -56,6 +56,8 @@ While `prefab` is loading, `isEnabled` will return `false`, `get` will return `u
 
 :::
 
+### Polling for Changes
+
 After `prefab.init()`, you can start polling for any changes:
 
 ```javascript
@@ -100,14 +102,11 @@ const options = {
 await prefab.init(options);
 ```
 
-Polling uses the context you defined in `init` by default. You can update the context for future polling by setting it on the `prefab` object.
+### Updating Context
+
+Once you set context during `init`, it will be used for all future flag evaluations during polling. However, you can update context at any time and it will supercede the original context
 
 ```javascript
-// some time after init
-prefab.poll({frequencyInMs: 300000})
-
-// we're now polling with the context used from `init`
-
 // later, perhaps after a visitor logs in and now you have the context of their current user
 // highlight-next-line
 prefab.context = new Context({...prefab.context, user: { email: user.email, key: user.trackingId })
