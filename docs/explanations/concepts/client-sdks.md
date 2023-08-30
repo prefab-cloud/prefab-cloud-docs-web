@@ -6,6 +6,12 @@ sidebar_position: 2
 
 ## Client Architecture
 
+:::caution
+
+Client SDKs only receive Feature Flags and Dyanmic Log Levels. They do not receive Configs. This is to prevent leaking sensitive config information.
+
+:::
+
 The client architecture has different goals and different operating characteristics from the server side SDKs. The goals of the clients are:
 
 1. Make lookups as fast as possible

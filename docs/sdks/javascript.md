@@ -3,7 +3,7 @@ title: JavaScript
 sidebar_position: 15
 ---
 
-## Getting Started With the JavaScript Client
+## Install the latest version
 
 Use your favorite package manager to install `@prefab-cloud/prefab-cloud-js` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-js) | [github](https://github.com/prefab-cloud/prefab-cloud-js)
 
@@ -32,24 +32,21 @@ If you're using React, consider using our [React Client] instead.
 
 :::
 
-## Initialize client
+## Initialize the client
 
-Initialize prefab with your api key and a [`Context` ](/docs/explanations/concepts/context) for the current user/visitor/device/request:
+Initialize `prefab` with your api key:
 
 ```javascript
-import { prefab, Context } from "@prefab-cloud/prefab-cloud-js";
+import { prefab } from "@prefab-cloud/prefab-cloud-js";
 
 const options = {
-  apiKey: "1234",
-  context: new Context({
-    user: { email: "test@example.com" },
-    device: { mobile: true },
-  }),
+  apiKey: "YOUR_CLIENT_API_KEY",
 };
 
 await prefab.init(options);
+```
 
-`prefab.init` will request the calculated config and feature flags for the provided context as a single HTTPS request.
+`prefab.init` will request the calculated feature flags for the provided context as a single HTTPS request.
 
 You aren't required to `await` the `init` -- it is a promise, so you can use `.then`, `.finally`, `.catch`, etc. instead if you prefer.
 
@@ -58,27 +55,52 @@ You aren't required to `await` the `init` -- it is a promise, so you can use `.t
 While `prefab` is loading, `isEnabled` will return `false`, `get` will return `undefined`, and `shouldLog` will use your `defaultLevel`.
 
 :::
+
+After `prefab.init()`, you can start polling for any changes:
+
+```javascript
+// some time after init
+prefab.poll({ frequencyInMs: 300000 });
 ```
 
-## Context
+## Feature Flags
 
-`Context` accepts an object with keys that are context names and key value pairs with attributes describing the context. You can use this to e.g. [segment] your users.
-
-## Usage
-
-Now you can use `prefab`'s config and feature flag evaluation, e.g.
+Now you can use `prefab`'s feature flag evaluation, e.g.
 
 ```javascript
 if (prefab.isEnabled('cool-feature') {
   // ... this code only evaluates if `cool-feature` is enabled for the current context
 }
-
-setTimeout(ping, prefab.get('ping-delay'));
 ```
 
-## `poll()`
+You can also use `get` to access the value of non-boolean flags
 
-After `prefab.init()`, you can start polling. Polling uses the context you defined in `init` by default. You can update the context for future polling by setting it on the `prefab` object.
+```javascript
+const stringValue = prefab.get("my-string-flag");
+```
+
+## Context
+
+`Context` accepts an object with keys that are context names and key value pairs with attributes describing the context. You can use this to write targeting rules, e.g. [segment] your users.
+
+```javascript
+// highlight-next-line
+import { prefab, Context } from "@prefab-cloud/prefab-cloud-js";
+
+const options = {
+  apiKey: "YOUR_CLIENT_API_KEY",
+  // highlight-start
+  context: new Context({
+    user: { email: "test@example.com" },
+    device: { mobile: true },
+  }),
+  // highlight-end
+};
+
+await prefab.init(options);
+```
+
+Polling uses the context you defined in `init` by default. You can update the context for future polling by setting it on the `prefab` object.
 
 ```javascript
 // some time after init
@@ -87,10 +109,19 @@ prefab.poll({frequencyInMs: 300000})
 // we're now polling with the context used from `init`
 
 // later, perhaps after a visitor logs in and now you have the context of their current user
+// highlight-next-line
 prefab.context = new Context({...prefab.context, user: { email: user.email, key: user.trackingId })
 
 // future polling will use the new context
 ```
+
+## Dynamic Config
+
+:::caution
+
+JavaScript is a Client SDK and does not receive Config. [Learn more about Client SDKs](/docs/explanations/concepts/client-sdks)
+
+:::
 
 ## Dynamic Logging
 
