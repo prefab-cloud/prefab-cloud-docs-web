@@ -324,12 +324,11 @@ top.
 
 ### Test Setup
 
-Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/architecture/bootstrapping).
+Specify `LOCAL_ONLY` via an env var and use your [config.yaml file](/docs/explanations/architecture/bootstrapping).
 
-```ruby
-options = Prefab::Options.new(data_sources: LOCAL_ONLY)
 
-$prefab = Prefab::Client.initialize(options)
+```sh
+export PREFAB_DATASOURCES='LOCAL_ONLY'
 ```
 
 If you need to test multiple scenarios that depend on a single config or feature key, you can use a mock or stub to change the Prefab value.
