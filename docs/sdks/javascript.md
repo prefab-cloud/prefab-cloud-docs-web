@@ -84,8 +84,8 @@ const options = {
   apiKey: "YOUR_CLIENT_API_KEY",
   // highlight-start
   context: new Context({
-    user: { email: "test@example.com" },
-    device: { mobile: true },
+    user: { key: "abcdef", email: "test@example.com" },
+    device: { key: "hijklm", mobile: true },
   }),
   // highlight-end
 };

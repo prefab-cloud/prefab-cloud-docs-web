@@ -82,8 +82,8 @@ import { PrefabProvider } from "@prefab-cloud/prefab-cloud-react";
 const WrappedApp = () => {
   // highlight-start
   const contextAttributes = {
-    user: { email: "jeffrey@example.com" },
-    subscription: { plan: "advanced" },
+    user: { key: "abcdef", email: "jeffrey@example.com" },
+    subscription: { key: "adv-sub", plan: "advanced" },
   };
   // highlight-end
 

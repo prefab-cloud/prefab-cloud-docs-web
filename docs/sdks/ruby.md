@@ -148,6 +148,7 @@ context = {
     key: 'team-abc',
   },
   device: {
+    key: "abcdef",
     mobile: true,
   }
 }
@@ -325,7 +326,6 @@ top.
 ### Test Setup
 
 Specify `LOCAL_ONLY` via an env var and use your [config.yaml file](/docs/explanations/architecture/bootstrapping).
-
 
 ```sh
 export PREFAB_DATASOURCES='LOCAL_ONLY'
