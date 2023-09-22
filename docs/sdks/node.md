@@ -54,17 +54,23 @@ Prefab supports [context](/docs/explanations/concepts/context) for intelligent r
 Given
 
 ```js
-const context = {
-  user: {
-    key: "some-unique-identifier",
-    email: "test@example.com",
-    isAdmin: false,
-  },
-  subscription: {
-    key: "sub-pro",
-    plan: "pro",
-  },
-};
+const context = new Map([
+  [
+    "user",
+    new Map([
+      ["key", "some-unique-identifier"],
+      ["country", "US"],
+    ]),
+  ],
+
+  [
+    "subscription",
+    new Map([
+      ["key", "pro-sub"],
+      ["plan", "pro"],
+    ]),
+  ],
+]);
 ```
 
 You can pass this in to each call
