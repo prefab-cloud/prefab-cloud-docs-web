@@ -12,11 +12,15 @@ Contexts let you provide Prefab with knowledge about the current
 - server
 - etc.
 
-Contexts allow you to set this knowledge to be used when evaluating feature flags and [targeted log levels](/docs/explanations/features/targeted-log-levels) without having to pass your context data deeply around your app.
+Contexts allow you to set this knowledge to be used when evaluating feature flags, configs, and [targeted log levels](/docs/explanations/features/targeted-log-levels) without having to pass your context data deeply around your app.
 
 In a web app, the life-cycle of contexts are the life-cycle of the request. You set context at the beginning of the request and then it is cleared out when the request finishes.
 
 For feature flags, context usage is optional but a useful ergonomic -- you can always pass in your context just-in-time to your FF evaluations.
+
+:::tip
+To have your Contexts be searchable in Prefab, be sure to include a `key` field for each context. For the `user` context, you might specify `key` as your user's unique `tracking_id`.
+:::
 
 For usage examples, see your relevant SDK client documentation.
 
@@ -32,7 +36,7 @@ When global context is set, log levels and feature flags will evaluate in that c
 We can use a block to specify the context for the duration of the block.
 
 ```ruby
-context = { device: { mobile: mobile? } }
+context = { device: { key: "abcdef", mobile: mobile? } }
 
 $prefab.with_context(context) do
   # ...
@@ -58,6 +62,7 @@ class ApplicationController < ActionController::Base
   def context
     {
       device: {
+        key: "abcdef",
         mobile: mobile?
       }
       user: current_user&.to_context
@@ -85,7 +90,7 @@ Next we add a [filter](https://github.com/prefab-cloud/example-micronaut-app/blo
 ```java
 configClient.getContextStore()
       .addContext(PrefabContext.newBuilder("user")
-          .put("id", user.id())
+          .put("key", user.key())
           .put("country", user.country())
           .put("email", user.email())
           .build()
@@ -121,6 +126,7 @@ public class PrefabContextAddingRequestFilter implements ContainerRequestFilter 
                 LOGGER.info("will add pf context for {}", user);
                 configClient.getContextStore().addContext(PrefabContext.newBuilder("User")
                         .put("name", user.getName())
+                        .put("key", user.getKey())
                         .build());
             }
         }
@@ -163,16 +169,17 @@ Given the context
 {
   user: {
     email: "test@example.com",
-    tracking_id: user.tracking_id,
+    key: user.tracking_id,
   },
 
   device: {
+    key: "hijklm",
     mobile: true,
   },
 }
 ```
 
-You can reference mobile as `device.mobile` and tracking_id as `user.tracking_id` in the property field in the UI.
+You can reference mobile as `device.mobile` and tracking_id as `user.key` in the property field in the UI.
 
 ![dot notation in UI](/img/docs/explanations/dot-notation.png)
 
@@ -195,12 +202,12 @@ Let's use this example as our initial context. It has two keys: "request" and "s
 }
 ```
 
-If we set the "request" context to `{ id: "f1e6461a" }` then we lose the `mobile` and `country` attributes of our "request" context. Our current context is now
+If we set the "request" context to `{ key: "f1e6461a" }` then we lose the `mobile` and `country` attributes of our "request" context. Our current context is now
 
 ```
 {
   request: {
-    id: "f1e6461a"
+    key: "f1e6461a"
   },
   subscription: {
     allow_overages: false,
@@ -224,7 +231,7 @@ That `enabled?` check uses this context
 
 ```
 {
-  request: { id: "f1e6461a" },
+  request: { key: "f1e6461a" },
   subscription: { allow_overages: true },
   user: { admin: true }
 }
@@ -235,7 +242,7 @@ But then the current context after that evaluation is still
 ```
 {
   request: {
-    id: "f1e6461a"
+    key: "f1e6461a"
   },
   subscription: {
     allow_overages: false,

@@ -168,14 +168,15 @@ for the current user (and/or team, request, etc)
 ```python
 context = {
     "user": {
-        "id": 123,
+        "key": 123,
         "subscription_level": "pro",
         "email": "bob@example.com"
     },
     "team": {
-        "id": 432,
+        "key": 432,
     },
     "device": {
+        "key": "abcdef",
         "mobile": False
     }
 }
@@ -199,14 +200,15 @@ context that will be evaluated as the default argument to `context=` if none is 
 from prefab_cloud_python import Context
 context = {
     "user": {
-        "id": 123,
+        "key": 123,
         "subscription_level": "pro",
         "email": "bob@example.com"
     },
     "team": {
-        "id": 432,
+        "key": 432,
     },
     "device": {
+        "key": "abcdef",
         "mobile": False
     }
 }
@@ -231,14 +233,15 @@ from prefab_cloud_python import Client
 
 context = {
     "user": {
-        "id": 123,
+        "key": 123,
         "subscription_level": "pro",
         "email": "bob@example.com"
     },
     "team": {
-        "id": 432,
+        "key": 432,
     },
     "device": {
+        "key": "abcdef",
         "mobile": False
     }
 }

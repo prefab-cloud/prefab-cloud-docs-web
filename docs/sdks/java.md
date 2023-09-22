@@ -112,6 +112,7 @@ To finely-target configuration rule evaluation, we accept contextual information
 prefabCloudClient.configClient().getContextStore().addContext(
                       PrefabContext.newBuilder("User")
                         .put("name", user.getName())
+                        .put("key", user.getKey())
                         .build());
 ```
 
