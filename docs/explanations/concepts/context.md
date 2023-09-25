@@ -18,17 +18,13 @@ In a web app, the life-cycle of contexts are the life-cycle of the request. You 
 
 For feature flags, context usage is optional but a useful ergonomic -- you can always pass in your context just-in-time to your FF evaluations.
 
-:::tip
-To have your Contexts be searchable in Prefab, be sure to include a `key` field for each context. For the `user` context, you might specify `key` as your user's unique `tracking_id`.
-:::
-
 For usage examples, see your relevant SDK client documentation.
 
 ## Global context
 
 To avoid deeply passing around awareness of the current user, request, etc., Prefab allows you to set Context globally. The mechanisms for doing so will vary by language and framework.
 
-When global context is set, log levels and feature flags will evaluate in that context. If you provide just-in-time context to your FF evaluations, it will be merged with the global context. More on merging below.
+When global context is set, log levels and feature flags will be evaluated in that context. If you provide just-in-time context to your FF evaluations, it will be merged with the global context. More on merging below.
 
 <Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
@@ -85,7 +81,7 @@ In your Prefab options, set your Prefab Context store to be your ServerRequestCo
 options.setContextStore(new ServerRequestContextStore());
 ```
 
-Next we add a [filter](https://github.com/prefab-cloud/example-micronaut-app/blob/configure-prefab-context/src/main/java/com/example/prefab/PrefabContextFilter.java) to add a prefab context based on the currently "logged in" user.
+Next, we add a [filter](https://github.com/prefab-cloud/example-micronaut-app/blob/configure-prefab-context/src/main/java/com/example/prefab/PrefabContextFilter.java) to add a prefab context based on the currently "logged in" user.
 
 ```java
 configClient.getContextStore()
@@ -159,6 +155,18 @@ Learn more with the [Prefab + Dropwizard example app](https://github.com/prefab-
 </TabItem>
 </Tabs>
 
+## Context keys
+
+:::note
+**`key` is special**
+
+The key is the one special attribute of a context. It should be the unchanging, primary key of whatever your context is. For a user, that's likely the tracking ID set when you first saw them. For a team, it's probably the primary key of the table. For a Kubernetes pod, the pod id. Key is the handle Prefab if you want to add this context entity to a feature flag.
+:::
+
+> What if I don't have a key for the context?
+
+It'll be ok. In some instances, there may not be a significant key. If you send `{device: {mobile: true}}`, you can add a rule targeting `device.mobile`, but you won't be able to add a specific device to a feature flag or search for that device in context search. Similarly, if you add `{cloud: {region: us-east, availability-zone: us-east-1a}}`, you'll be able to target `cloud.region` or `cloud.availability-zone` with rules. If you add `cloud.key: "i-1234567890abcdef0"` you can search for this context entity in context search.
+
 ## Dot notation
 
 When referencing fields from context, we use dot notation.
@@ -216,7 +224,7 @@ If we set the "request" context to `{ key: "f1e6461a" }` then we lose the `mobil
 }
 ```
 
-If we provide JIT context to a flag then the JIT keys clobber the current context keys only for the duration of the evaluation
+If we provide JIT context to a flag, then the JIT keys clobber the current context keys only for the duration of the evaluation.
 
 ```ruby
 jit_context = {
