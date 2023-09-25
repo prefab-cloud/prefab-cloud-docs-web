@@ -109,9 +109,8 @@ const config = {
             className: "text-white", // workaround for the fact that docusuarus wants to always treat this link as active
           },
           {
-            to: "https://app.prefab.cloud/users/sign_up",
+            type: "custom-NavbarCta",
             position: "right",
-            label: "Create Account",
           },
         ],
       },
