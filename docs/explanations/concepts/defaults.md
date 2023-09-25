@@ -6,6 +6,10 @@ sidebar_position: 3
 
 ## Default System
 
+:::note
+This default system is only implemented in Java and Ruby. Its inclusion in other SDKs is under discussion. Please let us know your thoughts.
+:::
+
 Prefab has a powerful system of environment defaults that allows you to get started quickly. Let's look.
 
 The first file is `.prefab.default.config.yaml`. Prefab will always look for and load a file with this name.
