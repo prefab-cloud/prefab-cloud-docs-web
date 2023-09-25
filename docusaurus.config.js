@@ -29,7 +29,7 @@ const config = {
       "posthog-docusaurus",
       {
         apiKey: "phc_zbGOXnt4C5OR1aKcUFyH5DgA4N0h5wOsWIsPeAuu24B",
-        appUrl: "https://app.posthog.com", // optional
+        appUrl: "https://pwh.prefab.cloud", // optional
         enableInDevelopment: false, // optional
         // other options are passed to posthog-js init as is
       },
