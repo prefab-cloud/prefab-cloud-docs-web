@@ -7,7 +7,7 @@ function setGUIDCookie() {
     const expirationDate = new Date(
       new Date().setFullYear(new Date().getFullYear() + 1)
     ).toUTCString();
-    document.cookie = `tid=${guid}; expires=${expirationDate}; SameSite=Lax; path=/`;
+    document.cookie = `tid=${guid}; expires=${expirationDate}; domain=.prefab.cloud; SameSite=Lax; path=/`;
   }
 }
 
