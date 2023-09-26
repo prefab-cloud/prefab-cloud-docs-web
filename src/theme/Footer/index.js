@@ -14,6 +14,13 @@ function setGUIDCookie() {
 export default function FooterWrapper(props) {
   useEffect(() => {
     setGUIDCookie();
+
+    const tid = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("tid="))
+      ?.split("=")[1];
+
+    window.posthog?.identify(tid);
   });
 
   return (
