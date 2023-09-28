@@ -121,8 +121,8 @@ public class PrefabContextAddingRequestFilter implements ContainerRequestFilter 
                 User user = (User) principal;
                 LOGGER.info("will add pf context for {}", user);
                 configClient.getContextStore().addContext(PrefabContext.newBuilder("User")
-                        .put("name", user.getName())
                         .put("key", user.getKey())
+                        .put("name", user.getName())
                         .build());
             }
         }
@@ -197,6 +197,42 @@ const WrappedApp = () => {
 ```
 
 </TabItem>
+
+
+<TabItem value="python" label="Python">
+
+
+In Python, there is only the global context. You can't specify a JIT context. Prefab fetches evaluated feature flags based on the context you provided.
+
+```python
+from prefab_cloud_python import Options, Client, Context
+
+context = {
+    "user": {
+        "key": 123,
+        "subscription_level": "pro",
+        "email": "bob@example.com"
+    },
+    "team": {
+        "key": 432,
+    },
+    "device": {
+        "key": "abcdef",
+        "mobile": False
+    }
+}
+
+shared_context = Context(context)
+
+prefab = Client(Options())
+
+Context.set_current(shared_context)
+
+prefab.enabled("my-first-feature-flag")
+```
+
+</TabItem>
+
 
 
 </Tabs>
