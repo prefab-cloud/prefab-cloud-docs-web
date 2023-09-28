@@ -161,70 +161,71 @@ Learn more with the [Prefab + Dropwizard example app](https://github.com/prefab-
 **`key` is special**
 
 The key is the one special attribute of a context. It should be the unchanging, primary key of whatever your context is. For a user, that's likely the tracking ID set when you first saw them. For a team, it's probably the primary key of the table. For a Kubernetes pod, the pod id. Key is the handle Prefab if you want to add this context entity to a feature flag.
+
+It's ok if there isn't a good key. If you add `{cloud: {region: us-east, availability-zone: us-east-1a}}`, you'll be able to target `cloud.region` or `cloud.availability-zone` with rules. If you add `cloud.key: "i-1234567890abcdef0"` you'll additionally be able to search for this context entity in context search tool.
 :::
-
-> What if I don't have a key for the context?
-
-It'll be ok. In some instances, there may not be a significant key. If you send `{device: {mobile: true}}`, you can add a rule targeting `device.mobile`, but you won't be able to add a specific device to a feature flag or search for that device in context search. Similarly, if you add `{cloud: {region: us-east, availability-zone: us-east-1a}}`, you'll be able to target `cloud.region` or `cloud.availability-zone` with rules. If you add `cloud.key: "i-1234567890abcdef0"` you can search for this context entity in context search.
 
 ## Dot notation
 
 When referencing fields from context, we use dot notation.
 
-Given the context
+Given the context:
 
 ```ruby
 {
   user: {
+    key: "1234",
     email: "test@example.com",
-    key: user.tracking_id,
   },
 
   device: {
-    key: "hijklm",
+    key: "abcd123e-a123-bcFG-d123",
     mobile: true,
   },
 }
 ```
 
-You can reference mobile as `device.mobile` and tracking_id as `user.key` in the property field in the UI.
+You can reference `user.key` and `device.mobile` in the property field in the UI.
 
 ![dot notation in UI](/img/docs/explanations/dot-notation.png)
 
-## Adding to and merging contexts
+## Advanced: Adding to and Merging Contexts
 
-Contexts have keys. When you provide a key that conflicts with an existing context key, your new context values will clobber any previous values under that key.
+If you provide a context that conflicts with an existing context, your new context values will clobber any previous value.
 
-Let's use this example as our initial context. It has two keys: "request" and "subscription"
+Let's use this example as our initial context. It has two contexts: "request" and "subscription". 
 
-```
+```json
 {
   request: {
     mobile: true,
     country: "US"
   },
   subscription: {
+    key: "s_123",
     allow_overages: false,
     plan: "Pro"
   }
 }
 ```
 
-If we set the "request" context to `{ key: "f1e6461a" }` then we lose the `mobile` and `country` attributes of our "request" context. Our current context is now
+If we set the "request" context to `{ key: "f1e6461a", type: "iPhone" }` then we lose the `mobile` and `country` attributes of our "request" context. Our current context is now
 
-```
+```json
 {
   request: {
-    key: "f1e6461a"
+    key: "f1e6461a",
+    device_type: "iPhone"
   },
   subscription: {
+    key: "s_123",
     allow_overages: false,
     plan: "Pro"
   }
 }
 ```
 
-If we provide JIT context to a flag, then the JIT keys clobber the current context keys only for the duration of the evaluation.
+If we provide Just-In-Time (JIT) context to our flag evaluation call, then the JIT keys clobber the current context keys only for the duration of the evaluation.
 
 ```ruby
 jit_context = {
@@ -237,9 +238,12 @@ $prefab.enabled?("my.flag.name", jit_context)
 
 That `enabled?` check uses this context
 
-```
+```json
 {
-  request: { key: "f1e6461a" },
+  request: {
+    key: "f1e6461a",
+    type: "iPhone"
+  },
   subscription: { allow_overages: true },
   user: { admin: true }
 }
@@ -247,12 +251,14 @@ That `enabled?` check uses this context
 
 But then the current context after that evaluation is still
 
-```
+```json
 {
   request: {
-    key: "f1e6461a"
+    key: "f1e6461a",
+    type: "iPhone"
   },
   subscription: {
+    key: "s_123",
     allow_overages: false,
     plan: "Pro"
   }
