@@ -153,6 +153,52 @@ public class PrefabContexClearingResponseFilter implements ContainerResponseFilt
 Learn more with the [Prefab + Dropwizard example app](https://github.com/prefab-cloud/example-dropwizard-app)
 
 </TabItem>
+
+<TabItem value="javascript" label="JavaScript">
+
+
+In JavaScript, there is only the global context. You can't specify a JIT context. Prefab fetches evaluated feature flags based on the context you provided.
+
+```javascript
+import { prefab, Context } from '@prefab-cloud/prefab-cloud-js'
+
+const context = new Context({user: { email: 'test@example.com' }, device: { mobile: true } });
+
+const options = { apiKey: '1234', context };
+
+await prefab.init(options);
+
+if (prefab.isEnabled('cool-feature') {
+  // ...
+}
+```
+
+</TabItem>
+
+<TabItem value="react" label="React">
+
+
+In React, there is only the global context. You can't specify a JIT context. Prefab fetches evaluated feature flags based on the context you provided.
+
+```jsx
+import { PrefabProvider } from '@prefab-cloud/prefab-cloud-react';
+
+const WrappedApp = () => {
+  const context = { user: { email: "jeffrey@example.com" }, subscription: { plan: "advanced" } };
+
+  return (
+    <PrefabProvider
+      apiKey={'YOUR_API_KEY'}
+      contextAttributes={context}
+      <App />
+    </PrefabProvider>
+  );
+}
+```
+
+</TabItem>
+
+
 </Tabs>
 
 ## Context keys
