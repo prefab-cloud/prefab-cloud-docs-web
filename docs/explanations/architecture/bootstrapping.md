@@ -81,7 +81,7 @@ options = Prefab::Options.new(
   on_init_failure: Prefab::Options::ON_INITIALIZATION_FAILURE::RETURN,
   initialization_timeout_sec: 20
 )
-$prefab = Prefab.initialize(options)
+Prefab.init(options)
 ```
 
 </TabItem>
