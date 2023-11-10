@@ -1,14 +1,21 @@
 ---
-title: Default YAML Files
+title: Default YAML Files (Deprecated)
 sidebar_label: Default Files
-sidebar_position: 3
+sidebar_position: 6
 ---
 
 ## Default System
 
-:::note
-This default system is only implemented in Java and Ruby. Its inclusion in other SDKs is under discussion. Please let us know your thoughts.
+:::info
+We're replacing the default system with a new pattern that we believe is a much simpler, 
+while providing even more flexibility, power and resiliency.
+
+The core use case of defaults was to provide settings for offline development in testing and CI. 
+This is better solved with our datafiles.
+
+If you believe you need this old system, please reach out to us to discuss.
 :::
+
 
 Prefab has a powerful system of environment defaults that allows you to get started quickly. Let's look.
 

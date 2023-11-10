@@ -4,97 +4,49 @@ sidebar_label: Namespaces
 sidebar_position: 4
 ---
 
-## Targetting Dynamic Configuration With Namespaces
+## Targeting Dynamic Configuration With Namespaces
 
-Namespaces allow you to share config amongst many applications while still allowing you to override when necessary.
+Namespaces is just a useful way to use context to allow you to share config amongst many services while still allowing you to override when necessary.
 
 For instance, let's assume that all our code shares an HTTP library. We can configure the HTTP library to get its retry count & timeout duration from our config store.
-We'll set `http.connection.retries` and `http.connection.timeout` in the default namespace.
+We'll set `http.connection.retries` and `http.connection.timeout`.
 
-All of our apps should initialize their config store in a namespace. For instance our User Service may have clients in the namespaces:
-
-- `Prefab::Options.new(namespace: "userservice.web.app")`
-- `Prefab::Options.new(namespace: "userservice.daemon.sidekiq")`
-- `Prefab::Options.new(namespace: "userservice.cron.sync-to-billing")`
-- `Prefab::Options.new(namespace: "userservice.cron.cleanup-job")`
-
-:::tip
-It's likely that you have a good namespace already defined as a tag on your pod. Something like `namespace = (ENV['DEPLOYED_NAME'] || "").gsub("-",".")` may be just what you're looking for.
-:::
-
-Prefab config will find the "closest" matching config when the UserService goes to look for a value of `http.connection.timeout`.
-
-Let's imagine that the UserService starts to go down because too many requests are timing out to a our billing service. We can quickly reduce the `http.connection.timeout` for our `userservice.cron.sync-to-billing` namespace and solve the issue without pushing code or restarting.
-
-With the following values
-
-![namespaces for http-retries](/img/docs/explanations/namespace-retries.png)
-
-<Tabs groupId="lang">
-<TabItem value="ruby" label="Ruby">
+Each of our applications will declare their `application.key`. For instance our authorization service may have the following config:
 
 ```ruby
-# staging
-client = Prefab::Client.new(Prefab::Options.new())
-client.get("http.connection.retries") # returns 1
+  around_action do |_, block|
+    Prefab.with_context(prefab_context, &block)
+  end
 
-# staging
-client = Prefab::Client.new(Prefab::Options.new(namespace: "userservice.cron.sync-to-billing"))
-client.get("http.connection.retries") # returns 1
+  def prefab_context
+    ctx = {
+      application: {
+        key: "authorization-service",
+        type: "web"
+      },
+    }
+  end  
+ ```
 
-# production
-client = Prefab::Client.new(Prefab::Options.new(namespace: "userservice.web.web"))
-client.get("http.connection.retries") # returns 3
+All of our apps should add the appropriate service name in their `application.key`.
 
-# production
-client = Prefab::Client.new(Prefab::Options.new(namespace: "userservice.cron.sync-to-billing"))
-client.get("http.connection.retries") # returns 0
+:::tip
+It's likely that you have a good namespace already defined as a tag on your pod. Something like `(ENV['DEPLOYED_NAME'] || "").gsub("-",".")` may be just what you're looking for.
+:::
 
+Our client code can now look for `http.connection.timeout` but we can override it for specific applications. 
+
+Let's imagine that the UserService starts to go down because too many requests are timing out to our billing service. We can replicate a circuit breaker pattern here by quickly reducing the `http.connection.timeout` when `application.key` is `user-service` to solve the issue without pushing code or restarting. 
+
+In that example, we'd actually be changing all outgoing HTTP timeouts from the user service, which is probably more than we'd like. To be more precise, we can add additional just-in-time (JIT) context to the timeout lookups to allow us even more fine grained control.
+
+```ruby
+def call_billing_service
+  conn = Faraday.new do |conn|
+    conn.options.timeout = Prefab.get("http.connection.timeout", { http: { endpoint: "billing" } })
+  end
+  response = conn.get("https://billing-service.example.comcom")
+end  
 ```
 
-</TabItem>
-<TabItem value="js" label="JavaScript">
-
-```javascript
-import prefab, { Identity } from "@prefab-cloud/prefab-cloud-js";
-
-const options = {
-  apiKey: "YOUR_CLIENT_API_KEY",
-  namespace: "userservice.web.web",
-  identity: new Identity("user-1234", { device: "desktop" }),
-};
-await prefab.init(options);
-
-prefab.get("http.connection.retries"); //returns 3 in production
-
-// Changing namespaces requires you to `init` again.
-options.namespace = "userservice.cron.sync-to-billing";
-await prefab.init(options);
-
-prefab.get("http.connection.retries"); //returns 0 in production
-```
-
-</TabItem>
-<TabItem value="elixir" label="Elixir">
-
-```elixir
-# staging
-client = Prefab.Client.new(Prefab.Options.new)
-Prefab.Client.get(client, "http.connection.retries") # => 1
-
-# staging
-client = Prefab.Client.new(Prefab.Options.new(namespace: "userservice.cron.sync-to-billing"))
-Prefab.Client.get(client, "http.connection.retries") # => 1
-
-# production
-client = Prefab.Client.new(Prefab.Options.new(namespace: "userservice.web.web"))
-Prefab.Client.get(client, "http.connection.retries") # => 3
-
-# production
-client = Prefab.Client.new(Prefab.Options.new(namespace: "userservice.cron.sync-to-billing"))
-Prefab.Client.get(client, "http.connection.retries") # => 0
-
-```
-
-</TabItem>
-</Tabs>
+With this JIT context, we can now target the `http.connection.timeout` for only calls from the user service to the billing service, by targeting both `app.key` and `http.endpoint`.
