@@ -1,7 +1,7 @@
 ---
 title: Prefab Config Core
 sidebar_label: Prefab Config Core
-sidebar_position: 8
+sidebar_position: 3
 draft: true
 ---
 

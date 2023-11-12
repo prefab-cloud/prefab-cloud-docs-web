@@ -175,9 +175,6 @@ puts "#{config_key} is: #{$prefab.get(config_key)}"
 
 </summary>
 
-It is a best practice to specify a default value for all configuration. This reduces the likelihood of exceptions due to
-nil values. Prefab encourages this practice by raising an error if you try to reference a value that is unset.
-
 Here we ask for the value of a config named `max-jobs-per-second`, and we specify `10` as a default value if no value is available.
 
 ```ruby
@@ -195,19 +192,6 @@ $prefab.get("max-jobs-per-second") # => raises if no value is available
 You can modify this behavior by setting the option `on_no_default` to `Prefab::Options::ON_NO_DEFAULT::RETURN_NIL`
 
 :::
-
-You can specify defaults for your application by creating a file `.prefab.default.config.yaml`
-
-Add the following:
-
-```yaml
-# .prefab.default.config.yaml
-log-level.cloud.prefab: info
-my-first-int-config: 30
-my-first-feature-flag: false
-```
-
-[Learn more about defaults](/docs/explanations/concepts/defaults).
 
 </details>
 
@@ -246,20 +230,6 @@ You can use [Targeting](/docs/explanations/features/targeted-log-levels) to chan
 #### Setting default log levels in the Prefab config file
 
 </summary>
-
-You can also set default log levels in the Prefab config file ([learn more](/docs/explanations/concepts/defaults))
-
-```yaml
-#.prefab.default.config.yaml
-log-level:
-  _: debug
-  cloud.prefab: debug
-  app.controllers.prefab_controller: debug
-```
-
-:::tip
-If the values are in your `.prefab.default.config.yaml` you'll need to restart the server to see new values. If you change these values on the server, they will update automatically.
-:::
 
 </details>
 
@@ -304,24 +274,6 @@ PREFAB_LOG_CLIENT_BOOTSTRAP_LOG_LEVEL = debug
 ```
 
 ## Testing
-
-### Local Overrides
-
-It can be very useful to modify your defaults locally without changing the defaults file or values in the API. To do
-this, add a file in your home directory or classpath called `.prefab.default.config.yaml`
-
-```yaml
-# .prefab.default.config.yaml
-mycorp.auth.api.url: "auth.staging.mycorp.com"
-```
-
-```yaml
-#~/.prefab.default.config.yaml
-mycorp.auth.api.url: "localhost:9090"
-```
-
-Prefab will first load the defaults. Then merge the API values over the top. Finally it will apply the overrides file on
-top.
 
 ### Test Setup
 

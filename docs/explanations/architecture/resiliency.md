@@ -1,7 +1,7 @@
 ---
 title: Reliability
 sidebar_label: Reliability
-sidebar_position: 3
+sidebar_position: 1
 ---
 
 ## What if Prefab.cloud goes down?

@@ -66,9 +66,6 @@ the remote CDN and gRPC data sources and begin syncing data to a local store.
 
 ### Defaults
 
-It is a best practice to specify a default value for all configuration. This
-reduces the likelihood of exceptions due to `None` values.
-
 Here we ask for the value of a config named `max-jobs-per-second`, and we specify
 `10` as a default value if no value is available.
 
@@ -102,35 +99,8 @@ client.get("max-jobs-per-second") # => None
 
 </details>
 
-You can specify defaults for your application by creating a file
-`.prefab.default.config.yaml`
-
-Add the following:
-
-```yaml
-# .prefab.default.config.yaml
-my-first-int-config: 30
-my-first-feature-flag: false
-```
-
-[Learn more about defaults](/docs/explanations/concepts/defaults).
-
 ### Getting Started
 
-```python
-config_key = "my-first-int-config"
-print(config_key, client.get(config_key))
-
-ff_key = "my-first-feature-flag"
-print(config_key, client.enabled(ff_key))
-```
-
-Should output the following:
-
-```
-my-first-int-config 30
-my-first-feature-flag false
-```
 
 Now create a config named `my-first-int-config` in the Prefab UI. Set a default
 value to 50 and sync your change to the API.
@@ -140,7 +110,15 @@ variants of `true` and `false`. Set the inactive variant to false, make the flag
 active and add a rule of type `ALWAYS_TRUE` with the variant to serve as `true`.
 Remember to sync your change to the API.
 
-Run the code above again and you should see:
+```python
+config_key = "my-first-int-config"
+print(config_key, client.get(config_key))
+
+ff_key = "my-first-feature-flag"
+print(config_key, client.enabled(ff_key))
+```
+
+Run the code above and you should see:
 
 ```
 my-first-int-config 50
@@ -260,14 +238,7 @@ client.logger().error(message)
 client.logger().critical(message)
 ```
 
-You can now control logging at any level of your stack. For convenience, we'll set these as local defaults in `.prefab.default.config.yaml` ([learn more](/docs/explanations/concepts/defaults)) but you can set and tweak these on-the-fly in the Prefab web app.
-
-```yaml
-# .prefab.default.config.yaml
-log-level.my_app.my_class: info
-log-level.my_app.my_class.warn: warn
-log-level.my_app.my_class.debug: debug
-```
+You can now control logging at any level of your stack. 
 
 ```python
 # my_app/my_class.py
@@ -309,24 +280,6 @@ warn   => :warn
 error  => :error
 fatal  => :critical
 ```
-
-## Local Overrides
-
-It can be very useful to modify your defaults locally without changing the defaults file or values in the API. To do
-this, add a file in your home directory or classpath called `.prefab.default.config.yaml`
-
-```yaml
-# .prefab.default.config.yaml
-mycorp.auth.api.url: "auth.staging.mycorp.com"
-```
-
-```yaml
-#~/.prefab.default.config.yaml
-mycorp.auth.api.url: "localhost:9090"
-```
-
-Prefab will first load the defaults, then merge the remote API values over the top, and finally it will apply the overrides file on
-top of those values.
 
 ## Debugging
 

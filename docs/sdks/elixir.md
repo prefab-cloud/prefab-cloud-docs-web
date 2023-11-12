@@ -73,9 +73,6 @@ the various remote data sources and begin syncing data to a local store.
 
 ### Defaults
 
-It is a best practice to specify a default value for all configuration. This
-reduces the likelihood of exceptions due to nil values.
-
 Here we ask for the value of a config named max-jobs-per-second, and we specify
 `10` as a default value if no value is available.
 
@@ -101,36 +98,8 @@ Prefab.Client.get!(client, "max-jobs-per-second")
 
 :::
 
-You can specify defaults for your application by creating a file
-`.prefab.default.config.yaml`
-
-Add the following:
-
-```yaml
-# .prefab.default.config.yaml
-log-level.prefab: info
-my-first-int-config: 30
-my-first-feature-flag: false
-```
-
-[Learn more about defaults](/docs/explanations/concepts/defaults).
 
 ### Getting Started
-
-```elixir
-config_key = "my-first-int-config"
-IO.puts("#{config_key}: #{Prefab.Client.get(client, config_key)}")
-
-ff_key = "my-first-feature-flag"
-IO.puts("#{ff_key}: #{Prefab.Client.enabled?(client, ff_key)}")
-```
-
-Should output the following:
-
-```
-my-first-int-config: 30
-my-first-feature-flag: false
-```
 
 Now create a config named `my-first-int-config` in the Prefab UI. Set a default
 value to 50 and sync your change to the API.
@@ -140,7 +109,15 @@ variants of `true` and `false`. Set the inactive variant to false, make the flag
 active and add a rule of type `ALWAYS_TRUE` with the variant to serve as `true`.
 Remember to sync your change to the API.
 
-Run the code above again and you should see:
+```elixir
+config_key = "my-first-int-config"
+IO.puts("#{config_key}: #{Prefab.Client.get(client, config_key)}")
+
+ff_key = "my-first-feature-flag"
+IO.puts("#{ff_key}: #{Prefab.Client.enabled?(client, ff_key)}")
+```
+
+Run the code above and you should see:
 
 ```
 my-first-int-config is: 50
