@@ -21,7 +21,7 @@ Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/architec
 ```ruby
 options = Prefab::Options.new(data_sources: LOCAL_ONLY)
 
-client = Prefab::Client.initialize(options)
+Prefab.init(options)
 ```
 
 [Read the full Ruby testing docs.](/docs/sdks/ruby#testing)

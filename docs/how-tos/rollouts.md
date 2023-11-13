@@ -30,7 +30,7 @@ want, but if you'd like the rollout to be sticky and keep server, requests, user
 <TabItem value="ruby" label="Ruby">
 
 ```ruby
-$prefab.enabled? "new-feature", { user: { tracking_id: user.tracking_id } }
+Prefab.enabled? "new-feature", { user: { tracking_id: user.tracking_id } }
 ```
 
 </TabItem>

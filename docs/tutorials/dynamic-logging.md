@@ -30,14 +30,14 @@ module MyApplication
   class Application < Rails::Application
     #...
 
-    $prefab = Prefab::Client.new
+    Prefab.init
     // highlight-next-line
-    $prefab.set_rails_loggers
+    Prefab.set_rails_loggers
   end
 end
 ```
 
-`$prefab.set_rails_loggers` wraps the Rails logger to allow using [dynamic log levels](/docs/explanations/features/targeted-log-levels) with your normal Rails logger calls.
+`Prefab.set_rails_loggers` wraps the Rails logger to allow using [dynamic log levels](/docs/explanations/features/targeted-log-levels) with your normal Rails logger calls.
 
 :::info
 Please read the [Puma/Unicorn](/docs/sdks/ruby#special-considerations-with-forking-servers-like-puma--unicorn-that-use-workers) notes for special considerations with forking servers.

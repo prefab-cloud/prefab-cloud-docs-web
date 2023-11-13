@@ -29,7 +29,7 @@ A feature flag check will always return false until it is fully enabled or a rul
 <TabItem value="ruby" label="Ruby">
 
 ```ruby
-  if $prefab.enabled?("my-feature-name", { user: { tracking_id: current_user.tracking_id } })
+  if Prefab.enabled?("my-feature-name", { user: { tracking_id: current_user.tracking_id } })
     # serve the new feature
   else
     # serve the old version of the page

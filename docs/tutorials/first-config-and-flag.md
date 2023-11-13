@@ -8,10 +8,10 @@ sidebar_position: 2
 
 ```ruby
 config_key = "my-first-int-config"
-puts "#{config_key} is: #{$prefab.get(config_key)}"
+puts "#{config_key} is: #{Prefab.get(config_key)}"
 
 flag_name = "my-first-feature-flag"
-puts "#{flag_name} is: #{$prefab.enabled? flag_name}"
+puts "#{flag_name} is: #{Prefab.enabled? flag_name}"
 ```
 
 Run these and you should see the following:

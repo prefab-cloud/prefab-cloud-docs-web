@@ -14,7 +14,7 @@ sidebar_position: 11
 If you set `PREFAB_API_KEY` as an environment variable, initializing the client is as easy as
 
 ```ruby
-$prefab = Prefab::Client.new # reads PREFAB_API_KEY env var
+Prefab.init # reads PREFAB_API_KEY env var
 ```
 
 ### Rails Applications
@@ -27,7 +27,7 @@ module MyApplication
   class Application < Rails::Application
     #...
 
-    $prefab = Prefab::Client.new
+    Prefab.init
   end
 end
 ```
@@ -50,8 +50,8 @@ If using workers in Puma, you can initialize inside an on_worker_boot hook in yo
 ```ruby
 # puma.rb
 on_worker_boot do
-  $prefab = $prefab.fork
-  $prefab.set_rails_loggers
+  Prefab.fork
+  Prefab.set_rails_loggers
 end
 ```
 
@@ -64,8 +64,8 @@ If using workers in Unicorn, you can initialize inside an after_fork hook in you
 ```ruby
 # unicorn.rb
 after_fork do |server, worker|
-  $prefab = $prefab.fork
-  $prefab.set_rails_loggers
+  Prefab.fork
+  Prefab.set_rails_loggers
 end
 ```
 
@@ -80,14 +80,14 @@ For boolean flags, you can use the `enabled?` convenience method:
 
 ```ruby
 flag_name = "my-first-feature-flag"
-puts "#{flag_name} is: #{$prefab.enabled? flag_name}"
+puts "#{flag_name} is: #{Prefab.enabled? flag_name}"
 ```
 
 Feature flags don't have to return just true or false. You can get other data types using `get`:
 
 ```ruby
-$prefab.get("ff-with-string")
-$prefab.get("ff-with-int")
+Prefab.get("ff-with-string")
+Prefab.get("ff-with-int")
 ```
 
 ## Context
@@ -100,7 +100,7 @@ To make the best use of Prefab, we recommend setting [context](/docs/explanation
 # application_controller.rb
 class ApplicationController < ActionController::Base
   around_action do |_, block|
-    $prefab.with_context(prefab_context, &block)
+    Prefab.with_context(prefab_context, &block)
   end
 
   def prefab_context
@@ -152,7 +152,7 @@ context = {
     mobile: true,
   }
 }
-result = $prefab.enabled?("my-first-feature-flag", context)
+result = Prefab.enabled?("my-first-feature-flag", context)
 
 puts "my-first-feature-flag is: #{result} for #{context.inspect}"
 ```
@@ -165,7 +165,7 @@ Config values are accessed the same way as feature flag values. You can use `ena
 
 ```ruby
 config_key = "my-first-int-config"
-puts "#{config_key} is: #{$prefab.get(config_key)}"
+puts "#{config_key} is: #{Prefab.get(config_key)}"
 ```
 
 <details>
@@ -181,13 +181,13 @@ nil values. Prefab encourages this practice by raising an error if you try to re
 Here we ask for the value of a config named `max-jobs-per-second`, and we specify `10` as a default value if no value is available.
 
 ```ruby
-$prefab.get("max-jobs-per-second", 10) # => returns `10` if no value is available
+Prefab.get("max-jobs-per-second", 10) # => returns `10` if no value is available
 ```
 
 If we don't provide a default and no value is available, a `Prefab::Errors::MissingDefaultError` error will be raised.
 
 ```ruby
-$prefab.get("max-jobs-per-second") # => raises if no value is available
+Prefab.get("max-jobs-per-second") # => raises if no value is available
 ```
 
 :::note
@@ -221,14 +221,14 @@ module MyApplication
   class Application < Rails::Application
     #...
 
-    $prefab = Prefab::Client.new
+    Prefab.init
     // highlight-next-line
-    $prefab.set_rails_loggers
+    Prefab.set_rails_loggers
   end
 end
 ```
 
-`$prefab.set_rails_loggers` wraps the Rails logger to allow using [dynamic log levels](/docs/explanations/features/targeted-log-levels) with your normal Rails logger calls.
+`Prefab.set_rails_loggers` wraps the Rails logger to allow using [dynamic log levels](/docs/explanations/features/targeted-log-levels) with your normal Rails logger calls.
 
 Now we are free to adjust our log levels, down to the controller or method level in real-time. Invaluable for debugging! You can set and tweak these on-the-fly in the Prefab web app.
 
@@ -288,7 +288,7 @@ module MyApplication
       context_upload_mode: :periodic_example,
     )
 
-    $prefab = Prefab::Client.new(options)
+    Prefab.init(options)
     // highlight-end
   end
 end
@@ -337,12 +337,12 @@ If you need to test multiple scenarios that depend on a single config or feature
 
 Imagine we want to test a `batches` method on our `Job` class. `batches` depends on `job.batch.size` and the value for `job.batch.size` in our default config file is `3`.
 
-We can test how `batches` performs with different values for `job.batch.size` by mocking the return value of `$prefab.get`.
+We can test how `batches` performs with different values for `job.batch.size` by mocking the return value of `Prefab.get`.
 
 ```ruby
 class Job < Array
   def batches
-    slice_size = $prefab.get('job.batch.size')
+    slice_size = Prefab.get('job.batch.size')
     each_slice(slice_size)
   end
 end
@@ -354,7 +354,7 @@ RSpec.describe Job do
 
       expect(jobs.batches.map(&:size)).to eq([3, 2])
 
-      allow($prefab).to receive(:get).with('job.batch.size').and_return(2)
+      allow(Prefab).to receive(:get).with('job.batch.size').and_return(2)
       expect(jobs.batches.map(&:size)).to eq([2, 2, 1])
     end
   end
@@ -392,8 +392,6 @@ options = Prefab::Options.new(
   allow_telemetry_in_local_mode: false
 )
 
-$prefab = Prefab::Client.new(options)
+Prefab.init(options)
 ```
 
-[Meltano]: https://meltano.com/
-[Singer]: https://www.singer.io/

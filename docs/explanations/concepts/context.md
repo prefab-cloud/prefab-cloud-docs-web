@@ -34,7 +34,7 @@ We can use a block to specify the context for the duration of the block.
 ```ruby
 context = { device: { key: "abcdef", mobile: mobile? } }
 
-$prefab.with_context(context) do
+Prefab.with_context(context) do
   # ...
 end
 ```
@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   around_action :set_prefab_context
 
   def set_prefab_context
-    $prefab.with_context(context) do
+    Prefab.with_context(context) do
       yield
     end
   end
@@ -315,7 +315,7 @@ jit_context = {
   user: { admin: true }
 }
 
-$prefab.enabled?("my.flag.name", jit_context)
+Prefab.enabled?("my.flag.name", jit_context)
 ```
 
 That `enabled?` check uses this context
