@@ -43,15 +43,8 @@ end
 Please read the [Puma/Unicorn](/docs/sdks/ruby#special-considerations-with-forking-servers-like-puma--unicorn-that-use-workers) notes for special considerations with forking servers.
 :::
 
-Finally we can start adjusting log levels. For convenience, we'll set these in our local defaults ([learn more](/docs/explanations/concepts/defaults)) but you can set and tweak these on-the-fly in the Prefab web app.
-
-```yaml
-#.prefab.default.config.yaml
-log-level:
-  _: debug
-  cloud.prefab: debug
-  app.controllers.prefab_controller: debug
-```
+Now we can start adjusting log levels. You can set and tweak these on-the-fly in the Prefab web app. 
+Let's set the root level logger to `DEBUG` in development.
 
 Our results speak for themselves. You can see that we've enabled debug for the prefab internals, rails internals and our application code.
 
@@ -67,24 +60,14 @@ DEBUG 2022-09-06 13:02:03 -0400:  active_record.log_subscriber.log_query_source:
 INFO  2022-09-06 13:05:17 -0400:  lograge.log_subscriber.process_action: method=GET path=/prefab format=html controller=PrefabController action=index status=200 duration=151.10 view=141.43 db=6.20
 ```
 
-If we set our levels to `info`, we see much less logging.
+If we set our levels to `INFO`, we see much less logging.
 
-```yaml
-#.prefab.default.config.yaml
-log-level:
-  _: info
-  cloud.prefab: info
-  app.controllers.prefab_controller: info
-```
 
 ```shell
 INFO  2022-09-06 13:05:17 -0400:  app.controllers.prefab_controller.index: info level logging
 INFO  2022-09-06 13:05:17 -0400:  lograge.log_subscriber.process_action: method=GET path=/prefab format=html controller=PrefabController action=index status=200 duration=151.10 view=141.43 db=6.20
 ```
 
-:::tip
-If the values are in your `.prefab.default.config.yaml` you'll need to restart the server to see new values. If you change these values on the server, they will update automatically.
-:::
 
 Now we are free to adjust our log levels, down to the controller or method level in real-time. Invaluable for debugging!
 

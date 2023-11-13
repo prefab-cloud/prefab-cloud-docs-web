@@ -294,24 +294,6 @@ class MyClass {
 }
 ```
 
-<details>
-<summary>
-
-#### Default Values for Configs
-
-</summary>
-
-You can set default values for configs using the `.prefab.config.default.yaml` file
-
-```yaml
-# .prefab.config.default.yaml
-sample:
-  long: 123
-  string: "hello"
-```
-
-</details>
-
 ## Dynamic Logging with the Java SDK
 
 Setting up a dynamic logger with Prefab is easy.

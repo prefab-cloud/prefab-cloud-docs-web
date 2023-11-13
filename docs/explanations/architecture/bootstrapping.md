@@ -1,10 +1,20 @@
 ---
 title: Bootstrapping
 sidebar_label: Bootstrapping
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 ## Config Load Order
+
+:::info
+We're replacing the default system with a new pattern that we believe is a much simpler,
+while providing even more flexibility, power and resiliency.
+
+The core use case of defaults was to provide settings for offline development in testing and CI.
+This is better solved with our datafiles.
+
+If you believe you need this old system, please reach out to us to discuss.
+:::
 
 On startup, config clients load config in the following order, with each level taking precedence over the previous:
 
