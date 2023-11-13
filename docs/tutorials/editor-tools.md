@@ -5,13 +5,13 @@ sidebar_label: Editor Tools
 
 ## VSCode
 
-You can install the extension by pressing cmd+shift+x to open the extensions sidebar. Search for Prefab and click install.
+You can install the extension by pressing `cmd+shift+x` to open the extensions sidebar. search for Prefab and click install. Alternatively, you can use the [extension marketplace](https://marketplace.visualstudio.com/items?itemName=Prefab.prefab-editor-tools).
 
 ![image](/img/docs/how-tos/vscode-install.jpg)
 
 You’ll need to enter a production API key. The extension will read your `.env` or `.envrc` file to find `PREFAB_API_KEY`. 
 
-Alternatively, you can find settings for the extension by clicking on the gear on the Prefab extension and choosing “Extension Settings”
+Alternatively, you can find settings for the extension by clicking on the gear on the Prefab extension and choosing “Extension Settings”.
 
 
 ## Features
@@ -27,3 +27,13 @@ Hovering over a configuration or flag will show you the current values of the fl
 ### Personal Overrides
 Personal overrides allow you to override a feature flag for your local development environment. This is useful for testing a feature flag without changing the flag for other developers. To do this, make sure that you've generated your own `PREFAB_API_KEY` for development. API keys are tied to your account which lets Prefab set the override for you. Overrides are simple rule matches to a `prefab.user-id` context key that Prefab sets for you. This is visible in the Prefab UI.
 ![image](/img/docs/how-tos/lsp-personal.gif)
+
+<div className="flex flex-col gap-4 md:gap-8 items-center">
+<div className="text-lg md:text-2xl font-bold text-center">
+  Use Vim or a Jetbrains IDE?
+</div>
+<Button
+  label="Get Notified When We Add Your Editor"
+  href="https://share.hsforms.com/1WGgDPf6pQp-6y7oT4ZMiFA9z48"
+/>
+</div>
