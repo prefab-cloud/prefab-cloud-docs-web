@@ -16,21 +16,11 @@ After signing up, you'll see an onboarding dashboard. We've created your first w
 
 ![image](/img/docs/getting-started/dashboard.png)
 
-Most organizations will only want a single workspace.
+Most organizations will only want a single workspace. 
 
 ## Environments
 
-Click on your workspace name to add environments.
-
-You probably want something like:
-
-- Development
-- Staging
-- Production
-
-There's no limit on the number of environments you can have. We've already created the Development environment for you.
-
-![image](/img/docs/getting-started/add-project-env.png)
+Click on environments to view environments. We've added `Development`, `Staging` and `Production` for you.
 
 ## API Keys
 
@@ -60,18 +50,21 @@ Let's name our flag `features.example-flag` and use the default type (`bool`).
 
 Prefab suggests that you name things all in lowercase, with `.` as a logical separator and `-` between words.
 
-![image](/img/docs/getting-started/add-flag.png)
+![image](/img/docs/getting-started/new-feature-add-flag.jpg)
 
 Click Save and now we can take a look at our new feature flag. There are 4 elements to call your attention to.
 
-![image](/img/docs/getting-started/new-feature-flag-variants.png)
+![image](/img/docs/getting-started/new-feature-flag-variants.jpg)
 
-There are 4 areas to note:
+There are 5 areas to note:
 
-1. The app has automatically created two boolean variants for us. Feature flags can return strings or numbers as well, but booleans are most common.
-2. The Publish Changes button is disabled because we haven't confirmed the default value for our environment. Once we save the default value rule, we can publish our flag.
-3. Each environment gets a tab for its own rules.
-4. Code snippets live here, making it easy to copy out the correct code into your application.
+1. **Variants** The app has automatically created two boolean variants for us. Feature flags can return strings or numbers as well, but booleans are most common.
+3. **Rules** Each environment gets a tab for its own rules.
+2. **Save** Once we save the default value rule, we can publish our flag. Publishing makes the flag available to our clients.
+![image](/img/docs/getting-started/new-feature-flag-publish.jpg)
+4. **Code Samples** snippets live here, making it easy to copy out the correct code into your application.
+5. **Evaluations** once we start running the client, we'll be able to see evaluation charts here.
+
 
 ## Configuring our Feature Flag
 
@@ -81,11 +74,11 @@ Additionally, since the beta group might not reflect our whole user base, so we 
 
 For the rollout, click the false dropdown and pick "Rollout". Now enter `95` as your percent for `false` and `5` for `true`.
 
-Now click "Add Rule" to add our customer group rule. Select "true" and "Property is one of". Enter "customer-group" for the "Property" field and "beta" for the values field.
+Now click "Add Rule" to add our customer group rule. Select `true` then enter `user.group` for the when, `is one of` for the operator and `beta` for the values field.
 
-![image](/img/docs/getting-started/ff-edit-form.png)
+![image](/img/docs/getting-started/new-feature-edit-form.jpg)
 
-Save both rules and publish.
+Save and publish.
 
 :::tip
 The order of the rules matters. Rules are evaluated from top to bottom and the value of the first matching rule is used.
@@ -103,9 +96,14 @@ To use the flag, all we need to do is initialize a client with the SDK key we cr
 ```ruby
 Prefab.init(api_key: "SDK-KEY, or set ENV var PREFAB_API_KEY")
 # Users in the beta group will always return true
-puts Prefab.enabled?("features.example-flag", { user: { "customer-group": "beta" } })
+
+context = { user: { key: rand(1000)}}
 # 5% of other users will return true
-puts Prefab.enabled?("features.example-flag", {})
+puts Prefab.enabled?("features.example-flag", context)
+
+# 100% of users in the beta group will return true
+context[:user][:group] = "beta"
+puts Prefab.enabled?("features.example-flag", context)
 ```
 
 </TabItem>
@@ -120,17 +118,68 @@ FeatureFlagClient featureFlagClient = client.featureFlagClient();
 featureFlagClient.featureIsOn(
       "features.example-flag",
       PrefabContext.newBuilder("user")
-        .put("trackingId", user.getTrackingId())
+        .put("key", Math.random())
         .build()
     )
 
 // true because of the beta group rule
 featureFlagClient.featureIsOn(
       "features.example-flag",
-      PrefabContext.newBuilder("customer")
+      PrefabContext.newBuilder("user")
         .put("group", "beta")
         .build()
     )
+```
+
+</TabItem>
+<TabItem value="node" label="Node">
+
+```javascript
+import { Prefab } from "@prefab-cloud/prefab-cloud-node";
+
+const prefab = new Prefab({
+    apiKey: "SDK-KEY, or set ENV var PREFAB_API_KEY"
+});
+await prefab.init();
+
+// true for 5% of the users
+const context = new Map([
+    [
+        "user",
+        new Map([
+            ["key", Math.random()],
+        ]),
+    ]
+]);
+prefab.isFeatureEnabled('features.example-flag', context, false)
+
+// 100% of users in the beta group will return true
+const context = new Map([
+    [
+        "user",
+        new Map([
+            ["key", Math.random()],
+            ["group", "beta"],
+        ]),
+    ]
+]);
+prefab.isFeatureEnabled('features.example-flag', context, false)
+
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+prefab = Client(Options(api_key="SDK-KEY, or set ENV var PREFAB_API_KEY"))
+
+context = { "user": { "key": random.randrange(1000)}}
+# 5% of other users will return true
+print prefab.enabled('features.example-flag', context)
+
+# 100% of users in the beta group will return true
+context["user"]["group"] = "beta"
+print prefab.enabled('features.example-flag', context)
 ```
 
 </TabItem>
@@ -156,3 +205,5 @@ Prefab.Client.enabled?(
 </Tabs>
 
 And that's it! A nice feature flag with a complex rule and a partial rollout in 5 minutes.
+
+For this example, we used "Just in Time" context, passing the context block into the `enabled?` methods. In general, you'll set the context once at the beginning of the request and then use the `enabled?` method without the context block. Read more about context [here](/docs/explanations/concepts/context).
