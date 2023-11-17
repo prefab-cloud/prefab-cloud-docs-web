@@ -4,15 +4,26 @@ sidebar_label: Context
 sidebar_position: 3
 ---
 
-Contexts let you provide Prefab with knowledge about the current
+Feature Flags, Dynamic Logging and Config are most powerful when we can target specific users, teams or parts of our infrastructure.
+Context is how we do that.
 
-- request
-- device
-- user
-- server
-- etc.
+```mermaid
+graph TD;
+    A[Request] --> Server
+    subgraph Server
+        Filter
+        subgraph Filter[Set Context In Filter]
+            D["Prefab.setContext (<br/>user: {key: 123, name: bob},<br/>team: {key: 456, tier: enterprise}<br/>cloud: {key: pod/web-55bbd, region: us-east})"]
+            subgraph ApplicationCode[Application Code]
+                E[prefab.enabled? my-flag // target user, team or cloud]
+            end
+            D --> ApplicationCode
+        end
+    end
 
-Contexts allow you to set this knowledge to be used when evaluating feature flags, configs, and [targeted log levels](/docs/explanations/features/targeted-log-levels) without having to pass your context data deeply around your app.
+```
+
+Setting context in a filter allows you to set this knowledge once and use it everywhere when you evaluate feature flags, configs, and [targeted log levels](/docs/explanations/features/targeted-log-levels) without having to pass your context data deeply around your app.
 
 In a web app, the life-cycle of contexts are the life-cycle of the request. You set context at the beginning of the request and then it is cleared out when the request finishes.
 
