@@ -224,15 +224,6 @@ Please read the [Puma/Unicorn](ruby#special-considerations-with-forking-servers-
 
 You can use [Targeting](/docs/explanations/features/targeted-log-levels) to change your log levels based on the current user/request/device context using our [rules](/docs/explanations/features/rules-and-segmentation) engine.
 
-<details>
-<summary>
-
-#### Setting default log levels in the Prefab config file
-
-</summary>
-
-</details>
-
 ## Telemetry
 
 By default, Prefab uploads telemetry that enables a number of useful features. You can alter or disable this behavior using the following options:
