@@ -175,11 +175,11 @@ prefab = Client(Options(api_key="SDK-KEY, or set ENV var PREFAB_API_KEY"))
 
 context = { "user": { "key": random.randrange(1000)}}
 # 5% of other users will return true
-print prefab.enabled('features.example-flag', context)
+print(prefab.enabled('features.example-flag', context))
 
 # 100% of users in the beta group will return true
 context["user"]["group"] = "beta"
-print prefab.enabled('features.example-flag', context)
+print(prefab.enabled('features.example-flag', context))
 ```
 
 </TabItem>
