@@ -7,7 +7,7 @@ sidebar_position: 5
 Our SDKs and Clients have library and language-specific testing advice. For specific details, refer to the docs for the SDK or client you're using.
 :::
 
-Testing is a first-class citizen in Prefab. We've think we've designed Prefab in a way that makes it easy to test your Prefab using code.
+Testing is a first-class citizen in Prefab. We've think we've designed Prefab in a way that makes it easy to test your code that uses Prefab.
 
 
 
