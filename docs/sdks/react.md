@@ -112,6 +112,31 @@ React is a Client SDK and does not receive Config. [Learn more about Client SDKs
 
 :::
 
+## Tracking Experiment Exposures
+
+If you're using Prefab for A/B testing, you can supply code for tracking experiment exposures to your data warehouse or analytics tool of choice.
+
+```jsx
+<PrefabProvider
+  apiKey={"YOUR_CLIENT_API_KEY"}
+  contextAttributes={contextAttributes}
+  onError={onError}
+  // highlight-start
+  afterEvaluationCallback={(key, value) => {
+    // call your analytics tool here...in this example we are sending data to posthog
+    window.posthog?.capture("Feature Flag Evaluation", {
+      key,
+      value,
+    });
+  }}
+  // highlight-end
+>
+  <App />
+</PrefabProvider>
+```
+
+`afterEvaluationCallback` will be called each time you evaluate a feature flag using `get` or `isEnabled`.
+
 ## Testing
 
 Wrap the component under test in a `PrefabTestProvider` and provide a config object to set up your test state.
