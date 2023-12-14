@@ -7,8 +7,13 @@ sidebar_position: 5
 Our SDKs and Clients have library and language-specific testing advice. For specific details, refer to the docs for the SDK or client you're using.
 :::
 
-Testing is a first-class citizen in Prefab. We've think we've designed Prefab in a way that makes it easy to test your code that uses Prefab.
+Testing is a first-class citizen in Prefab. We've designed Prefab in a way that makes it easy to test your code that uses Prefab.
 
+### Best Practices For Testing
+
+The best practice for testing is to create a test environment and use a datafile for the bulk of your configuration. A datafile is a JSON snapshot of your configuration which allows the Prefab client to boot up in a consistent state without talking to the Prefab server.
+
+You can then use mocking to override specific values as needed, when you are testing the behavior of a specific feature flag or config.
 
 
 ## Mocking
@@ -128,9 +133,3 @@ If you don't want the test data there, you could also create another environment
 
 ### Keeping The Datafile Up To Date
 The CLI download will take a snapshot of the configuration at a given moment, but it won't keep it up to date. As you add configuration or feature flags that you need to test, you'll need to update the datafile by re-running the CLI command and committing the new datafile.
-
-### Best Practices For Testing
-
-The best practice for testing is to create a test environment and use a datafile for the bulk of your configuration. 
-
-You can then use mocking to override specific values as needed, when you are testing the behavior of a specific feature flag or config. 
