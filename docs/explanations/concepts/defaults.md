@@ -7,15 +7,14 @@ sidebar_position: 6
 ## Default System
 
 :::info
-We're replacing the default system with a new pattern that we believe is a much simpler, 
+We're replacing the default system with a new pattern that we believe is a much simpler,
 while providing even more flexibility, power and resiliency.
 
-The core use case of defaults was to provide settings for offline development in testing and CI. 
-This is better solved with our datafiles.
+The core use case of defaults was to provide settings for offline development in testing and CI.
+This is better solved with our [datafiles](./testing).
 
 If you believe you need this old system, please reach out to us to discuss.
 :::
-
 
 Prefab has a powerful system of environment defaults that allows you to get started quickly. Let's look.
 
