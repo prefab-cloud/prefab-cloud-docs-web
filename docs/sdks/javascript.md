@@ -99,14 +99,19 @@ After `prefab.init()`, you can start polling. Polling uses the context you defin
 
 ```javascript
 // some time after init
-prefab.poll({frequencyInMs: 300000})
+prefab.poll({ frequencyInMs: 300000 });
 
 // we're now polling with the context used from `init`
 
-// later, perhaps after a visitor logs in and now you have the context of their current user
-prefab.context = new Context({...prefab.context, user: { email: user.email, key: user.trackingId }})
+// later, perhaps after a visitor logs in and now you have the context of
+// their current user
+prefab.updateContext({
+  ...prefab.context,
+  user: { email: user.email, key: user.trackingId },
+});
 
-// future polling will use the new context
+// updateContext will immediately load the newest from Prefab based on the
+// new context. Future polling will use the new context as well.
 ```
 
 ## Dynamic Config
@@ -170,12 +175,13 @@ it("shows the turbo button when the feature is enabled", () => {
 
 ### `prefab` Properties
 
-| property      | example                             | purpose                                                                                      |
-| ------------- | ----------------------------------- | -------------------------------------------------------------------------------------------- |
-| `isEnabled`   | `prefab.isEnabled("new-logo")`      | returns a boolean (default `false`) if a feature is enabled based on the current context     |
-| `get`         | `prefab.get('retry-count')`         | returns the value of a flag or config evaluated in the current context                       |
-| `loaded`      | `if (prefab.loaded) { ... }`        | a boolean indicating whether prefab content has loaded                                       |
-| `shouldLog`   | `if (prefab.shouldLog(...)) {`      | returns a boolean indicating whether the proposed log level is valid for the current context |
-| `poll`        | `prefab.poll({frequencyInMs})`      | starts polling every `frequencyInMs` ms.                                                     |
-| `stopPolling` | `prefab.stopPolling()`              | stops the polling process                                                                    |
-| `context`     | `prefab.context = new Context(...)` | get or set the current context (after `init()`)                                              |
+| property        | example                            | purpose                                                                                      |
+| --------------- | ---------------------------------- | -------------------------------------------------------------------------------------------- |
+| `isEnabled`     | `prefab.isEnabled("new-logo")`     | returns a boolean (default `false`) if a feature is enabled based on the current context     |
+| `get`           | `prefab.get('retry-count')`        | returns the value of a flag or config evaluated in the current context                       |
+| `loaded`        | `if (prefab.loaded) { ... }`       | a boolean indicating whether prefab content has loaded                                       |
+| `shouldLog`     | `if (prefab.shouldLog(...)) {`     | returns a boolean indicating whether the proposed log level is valid for the current context |
+| `poll`          | `prefab.poll({frequencyInMs})`     | starts polling every `frequencyInMs` ms.                                                     |
+| `stopPolling`   | `prefab.stopPolling()`             | stops the polling process                                                                    |
+| `context`       | `prefab.context`                   | get the current context (after `init()`).                                                    |
+| `updateContext` | `prefab.updateContext(newContext)` | update the context and refetch. Pass `false` as a second argument to skip refetching         |
