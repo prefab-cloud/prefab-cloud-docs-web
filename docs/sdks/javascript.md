@@ -104,7 +104,7 @@ prefab.poll({frequencyInMs: 300000})
 // we're now polling with the context used from `init`
 
 // later, perhaps after a visitor logs in and now you have the context of their current user
-prefab.context = new Context({...prefab.context, user: { email: user.email, key: user.trackingId })
+prefab.context = new Context({...prefab.context, user: { email: user.email, key: user.trackingId }})
 
 // future polling will use the new context
 ```
