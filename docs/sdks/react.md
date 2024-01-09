@@ -53,6 +53,8 @@ const WrappedApp = () => {
 Now use the `usePrefab` hook to fetch flags. `isEnabled` is a convenience method for boolean flags.
 
 ```jsx
+import { usePrefab } from "@prefab-cloud/prefab-cloud-react";
+
 const Logo = () => {
   const { isEnabled } = usePrefab();
 
