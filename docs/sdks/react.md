@@ -116,7 +116,7 @@ React is a Client SDK and does not receive Config. [Learn more about Client SDKs
 
 ## Dealing with Loading States
 
-The Prefab client needs to load your feature flags from the Prefab servers before they are available. This means there will be a brief period when the client is in a loading state. If you call the `usePrefab` hook during loading, you will see the following behavior.
+The Prefab client needs to load your feature flags from the [Prefab CDN](/docs/explanations/concepts/client-sdks) before they are available. This means there will be a brief period when the client is in a loading state. If you call the `usePrefab` hook during loading, you will see the following behavior.
 
 ```jsx
 const { get, isEnabled, loading } = usePrefab();
