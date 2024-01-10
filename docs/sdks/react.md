@@ -114,6 +114,90 @@ React is a Client SDK and does not receive Config. [Learn more about Client SDKs
 
 :::
 
+## Dealing with Loading States
+
+The Prefab client needs to load your feature flags from the Prefab servers before they are available. This means there will be a brief period when the client is in a loading state. If you call the `usePrefab` hook during loading, you will see the following behavior.
+
+```jsx
+const { get, isEnabled, loading } = usePrefab();
+
+console.log(loading); // true
+console.log(get("my-string-flag)); // undefined for all flags
+console.log(isEnabled("my-boolean-flag")); // false for all flags
+```
+
+Here are some suggestions for how to handle the loading state.
+
+### At the top level of your application or page component
+
+For a single page application, you likely already display a spinner or skeleton component while fetching data from your own backend. In this case, we recommend checking whether Prefab is loaded in the logic for displaying this state. That way you can ensure that Prefab is always loaded before the rest of your component tree renders, and you will not need to check for `loading` when evaluating individual flags.
+
+```jsx
+const MyPageComponent (myData, myDataIsLoading) => {
+  // highlight-start
+  const { loading: prefabIsLoading } = usePrefab();
+
+  if (myDataIsLoading || prefabIsLoading) {
+    // highlight-end
+    return <MySpinnerComponent />
+  }
+
+  return (
+    // actual page content
+  )
+}
+```
+
+However, if you have SEO concerns, such as when using a tool like Docusaurus, you may want to consider one of the following options instead.
+
+### In individual components
+
+You can get a `loading` value back each time you call the `usePrefab` hook and use it to render a spinner or other loading state only for the part of the page that is affected by your flag. This can be a good choice if you are swapping between two different UI treatments and don't want your users to see the page flicker from one to the other after the initial render.
+
+```jsx
+const MyComponent () => {
+  const {get, loading} = usePrefab();
+
+  if (loading) {
+    return <MySpinnerComponent />
+  }
+
+  switch (get("my-feature-flag")) {
+    case "new-ui":
+      return (<div>Render the new UI...</div>);
+    case "old-ui":
+    default:
+      return (<div>Render the old UI...</div>);
+  }
+}
+```
+
+### Do nothing
+
+If your feature flag is choosing between rendering something and rendering nothing, it may be acceptable to have that content pop-in once Prefab finishes loading. This works because `isEnabled` will always return false until the Prefab client is loaded.
+
+```jsx
+const MyComponent () => {
+  // highlight-next-line
+  const {isEnabled} = usePrefab();
+
+  return (
+    <div>
+      // highlight-start
+      {isEnabled("my-feature-flag") && (
+        <div>
+          // Flag content...
+        </div>
+      )}
+      // highlight-end
+      <div>
+        // Other content...
+      </div>
+    </div>
+  );
+}
+```
+
 ## Tracking Experiment Exposures
 
 If you're using Prefab for A/B testing, you can supply code for tracking experiment exposures to your data warehouse or analytics tool of choice.
