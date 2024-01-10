@@ -1,6 +1,6 @@
 ---
 title: Elixir
-sidebar_position: 16
+sidebar_position: 20
 ---
 
 ## Getting Started with the Elixir SDK
@@ -97,7 +97,6 @@ Prefab.Client.get!(client, "max-jobs-per-second")
 ```
 
 :::
-
 
 ### Getting Started
 

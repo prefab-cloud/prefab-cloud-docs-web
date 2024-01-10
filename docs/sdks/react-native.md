@@ -1,24 +1,26 @@
 ---
-title: React
-sidebar_position: 14
+title: React Native
+sidebar_position: 15
 ---
+
+Note: right now, this is a thin wrapper around the [React Client](./react.md). Let us know what features you'd like to see.
 
 ## Install the latest version
 
-Use your favorite package manager to install `@prefab-cloud/prefab-cloud-react` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-react) | [github](https://github.com/prefab-cloud/prefab-cloud-react)
+Use your favorite package manager to install `@prefab-cloud/prefab-cloud-react-native` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-react-native) | [github](https://github.com/prefab-cloud/prefab-cloud-react-native)
 
 <Tabs groupId="lang">
 <TabItem value="npm" label="npm">
 
 ```bash
-npm install @prefab-cloud/prefab-cloud-react
+npm install @prefab-cloud/prefab-cloud-react-native
 ```
 
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
 ```bash
-yarn add @prefab-cloud/prefab-cloud-react
+yarn add @prefab-cloud/prefab-cloud-react-native
 ```
 
 </TabItem>
@@ -33,7 +35,7 @@ This client includes a `<PrefabProvider>` and `usePrefab` hook.
 First, wrap your component tree in the `PrefabProvider`, e.g.
 
 ```jsx
-import { PrefabProvider } from "@prefab-cloud/prefab-cloud-react";
+import { PrefabProvider } from "@prefab-cloud/prefab-cloud-react-native";
 
 const WrappedApp = () => {
   const onError = (reason) => {
@@ -53,7 +55,7 @@ const WrappedApp = () => {
 Now use the `usePrefab` hook to fetch flags. `isEnabled` is a convenience method for boolean flags.
 
 ```jsx
-import { usePrefab } from "@prefab-cloud/prefab-cloud-react";
+import { usePrefab } from "@prefab-cloud/prefab-cloud-react-native";
 
 const Logo = () => {
   const { isEnabled } = usePrefab();
@@ -79,7 +81,7 @@ const flagVlaue = get("my-string-flag");
 `contextAttributes` lets you provide [context](/docs/explanations/concepts/context) that you can use to [segment] your users. Usually you will want to define context once when you setup `PrefabProvider`.
 
 ```jsx
-import { PrefabProvider } from "@prefab-cloud/prefab-cloud-react";
+import { PrefabProvider } from "@prefab-cloud/prefab-cloud-react-native";
 
 const WrappedApp = () => {
   // highlight-start
@@ -110,7 +112,7 @@ const WrappedApp = () => {
 
 :::info
 
-React is a Client SDK and does not receive Config. [Learn more about Client SDKs](/docs/explanations/concepts/client-sdks)
+React Native is a Client SDK and does not receive Config. [Learn more about Client SDKs](/docs/explanations/concepts/client-sdks)
 
 :::
 
