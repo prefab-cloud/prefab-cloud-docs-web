@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkprefab_cloud_docs_web=self.webpackChunkprefab_cloud_docs_web||[]).push([[8322],{4876:t=>{t.exports=JSON.parse('{"title":"Tutorials","description":"Tutorials","slug":"/category/tutorials","permalink":"/docs/category/tutorials","navigation":{"next":{"title":"Get Started","permalink":"/docs/tutorials/get-started"}}}')}}]);
