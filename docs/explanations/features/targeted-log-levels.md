@@ -1,7 +1,7 @@
 ---
 title: Targeted Log Levels
 sidebar_label: Targeted Log Levels
-sidebar_position: 3
+sidebar_position: 1
 ---
 
 SDK clients provide wrappers for loggers to enable dynamic and targeted log levels.
