@@ -123,12 +123,12 @@ PREFAB_SECRET_KEY_PRODUCTION=994899132443777d89091e40cddc5541abdeff123830488a7fe
 
 #### Update the prefab.secrets.encryption.key to look for the other ENV var in production
 ```bash
-$ prefab change-default --confidential
+$ prefab change-default --confidential --env-var=PREFAB_SECRET_KEY_PRODUCTION              
+
 ? Which item would you like to change the default for? prefab.secrets.encryption.key
 ? Which environment would you like to change the default for? Production
-Default value: PREFAB_SECRET_KEY_PRODUCTION
-Confirm: change the default for prefab.secrets.encryption.key in Production to `PREFAB_SECRET_KEY_PRODUCTION`? yes/no: yes
-✔ Successfully changed default to `PREFAB_SECRET_KEY_PRODUCTION` (confidential)
+Confirm: change the default for prefab.secrets.encryption.key in Production to be provided by `PREFAB_SECRET_KEY_PRODUCTION`? yes/no: yes
+✔ Successfully changed default to be provided by `PREFAB_SECRET_KEY_PRODUCTION` (confidential)
 ```
 
 This is now the mapping of environment to ENV Var. 
@@ -147,8 +147,21 @@ graph
    
   end
 ```
+We can also see this by running `prefab info`.
+```bash
+$ prefab info  prefab.secrets.encryption.key
+
+- Default: `PREFAB_SECRET_KEY_DEFAULT` via ENV
+- Development: [inherit]
+- Production: `PREFAB_SECRET_KEY_PRODUCTION` via ENV
+
+No evaluations in the past 24 hours
+```
+
 
 #### Set a Secret in Production
+
+Finally, let's set a production secret.
 
 ```bash
 $ prefab change-default
