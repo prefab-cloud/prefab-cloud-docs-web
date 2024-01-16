@@ -23,11 +23,11 @@ In particular, it uses two special types of configuration attributes: `decryptWi
 
 ### Step 1: Create an Encryption Key
 
-Prefab allows you to declare that a configuration value will be provided by an environment variable. Prefab will store a config that is kind of an empty vessel2039. It is a pointer that says "find my value from this ENV VAR".
+Prefab allows you to declare that a configuration value will be *"provided by"* an environment variable. Prefab will store a config that is kind of an empty vessel. It is a pointer that says "find my value from this ENV VAR".
 
 We want Prefab to have zero knowledge of your encryption key, so we'll use these provided values so you don't have to tell us the encryption key.
 
-#### Create the empty vessel
+#### Create the Provided By Env Var Config
 
 ```bash
 prefab create prefab.secrets.encryption.key --env-var=PREFAB_SECRET_KEY_DEFAULT --type string --confidential
