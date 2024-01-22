@@ -1,5 +1,6 @@
 ---
 title: Node
+collapsed: false
 ---
 
 ## Install the Latest Version
