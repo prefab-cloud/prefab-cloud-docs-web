@@ -1,6 +1,5 @@
 ---
 title: React
-sidebar_position: 14
 ---
 
 ## Install the latest version

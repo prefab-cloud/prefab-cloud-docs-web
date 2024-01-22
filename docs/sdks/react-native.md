@@ -1,6 +1,5 @@
 ---
 title: React Native
-sidebar_position: 15
 ---
 
 Note: right now, this is a thin wrapper around the [React Client](./react.md). Let us know what features you'd like to see.

@@ -1,7 +1,5 @@
 ---
 title: Java
-sidebar_label: Java
-sidebar_position: 12
 ---
 
 ## Install the latest version

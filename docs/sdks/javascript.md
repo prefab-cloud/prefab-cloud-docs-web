@@ -1,6 +1,5 @@
 ---
 title: JavaScript
-sidebar_position: 16
 ---
 
 ## Install the latest version
