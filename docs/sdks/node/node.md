@@ -1,6 +1,5 @@
 ---
 title: Node
-sidebar_position: 13
 ---
 
 ## Install the Latest Version
@@ -79,6 +78,28 @@ prefab.inContext(context, (pf) => {
 ## Dynamic Logging
 
 `prefab.shouldLog(loggerName, desiredLevel, defaultLevel, contexts)` returns true or false
+
+Another option is to create a Prefab logger to use instead of `console.log`. We will create a Prefab logger with the name `netlify.functions.hello` and the default level of `warn` so we don't get too much output.
+
+We can replace our `console.log` with some `logger.debug` and `logger.info`, and now it's safe to deploy. They won't emit logs until we turn them on.
+
+```javascript
+const logger = prefab.logger("netlify.functions.hello", "warn");
+
+// simple info logging
+logger.info(`getting results for ${userId}`);
+
+var sql = "SELECT * FROM table WHERE user_id = $1";
+
+// more detailed debug logging
+logger.debug(`running the following SQL ${sql} for ${userId}`);
+db.run(sql, [userId], function (err, rows) {
+  logger.debug("query returned", { rows: rows });
+  return new Response("200 Okey-dokey");
+});
+```
+
+This logging will _not_ show up in your Netlify logs yet, because the logger is `warn` but the logging here is `info` and `debug`. That means it's safe to go ahead and deploy.
 
 ## Reference
 

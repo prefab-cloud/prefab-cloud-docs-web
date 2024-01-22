@@ -1,6 +1,5 @@
 ---
 title: Ruby
-sidebar_position: 11
 ---
 
 ## Install the latest version
@@ -337,4 +336,3 @@ options = Prefab::Options.new(
 
 Prefab.init(options)
 ```
-

@@ -1,6 +1,5 @@
 ---
 title: Python
-sidebar_position: 17
 ---
 
 ## Getting Started with the Python SDK
@@ -50,12 +49,11 @@ for that key.
 
 #### Definitions of those options
 
-| Name                  | Description                                                                                                                                                                                | Default        |
-|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|
-| prefab_datasources    | Send counts of config/flag evaluation results back to Prefab to view in web app                                                                                                            | ALL            |
-| api_key | Your prefab.cloud SDK API key                                                                                                                                                              | PREFAB_API_KEY |
-| prefab_envs   | One or more environment names from which to load local configuration and overrides. See [Local config and overrides](#module-local-config-and-overrides) below for additional information. | []             |
-
+| Name               | Description                                                                                                                                                                                | Default        |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
+| prefab_datasources | Send counts of config/flag evaluation results back to Prefab to view in web app                                                                                                            | ALL            |
+| api_key            | Your prefab.cloud SDK API key                                                                                                                                                              | PREFAB_API_KEY |
+| prefab_envs        | One or more environment names from which to load local configuration and overrides. See [Local config and overrides](#module-local-config-and-overrides) below for additional information. | []             |
 
 </details>
 
@@ -100,7 +98,6 @@ client.get("max-jobs-per-second") # => None
 </details>
 
 ### Getting Started
-
 
 Now create a config named `my-first-int-config` in the Prefab UI. Set a default
 value to 50 and sync your change to the API.
@@ -238,7 +235,7 @@ client.logger().error(message)
 client.logger().critical(message)
 ```
 
-You can now control logging at any level of your stack. 
+You can now control logging at any level of your stack.
 
 ```python
 # my_app/my_class.py
