@@ -120,9 +120,21 @@ Example: `prefab override my.flag.name --value=true`
 
 ### serve
 
-`prefab serve` will start a local server to serve up a local datafile the same way that React and JS clients can talk to. See `prefab download` for more.
+`prefab serve` will start a local server to serve up a local datafile that React and JS clients can talk to. See `prefab download` for more.
 
 ```
 prefab serve prefab.test.588.config.json
 Server is listening on 3099. Press ctrl-c to stop.
+```
+
+Example Dockerfile
+
+```
+FROM node:20
+WORKDIR /app
+RUN npm i -g @prefab-cloud/prefab@next
+COPY prefab.Production.589.config.json /app
+ENV PREFAB_LOCAL_ONLY=true
+EXPOSE 9898
+CMD prefab serve prefab.Production.589.config.json --port=9898
 ```
