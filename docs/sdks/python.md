@@ -304,7 +304,6 @@ client = Client(options)
 
 - `api_key` - your prefab.cloud SDK API key
 - `prefab_api_url` - the API endpoint your API key has been created for (i.e. `https://api.prefab.cloud`)
-- `prefab_grpc_url` - the gRPC endpoint (including port) you wish to connect to (i.e. `grpc.prefab.cloud:443`)
 - `prefab_datasources` - one of `"ALL"` (default) or `"LOCAL_ONLY"`, determines whether to fetch data from remote
   sources or use only local data
 - `prefab_config_classpath_dir` - the directory from which to load locally defined configuration. This data
@@ -319,3 +318,7 @@ client = Client(options)
 - `on_connection_failure` - one of `"RETURN"` (default) or `"RAISE"`. This determines what should happen if the connection to
   a remote datasource times out. These settings will, respectively, return whatever is in the local cache from the latest sync
   from the remote source, or else raise an `InitializationTimeoutException`.
+- `collect_sync_interval` - how often to send telemetry to Prefab (seconds, defaults to 30)
+- `collect_evaluation_summaries` - send aggregate data about config and feaure flag evaluations, results (defaults to True) **Evaluation Summary telemetry Implemented in v0.10+**
+- `collect_logs` - send aggregate logger volume data to Prefab (defaults to True)
+- `context_upload_mode` - send context information to prefab. Values (from the `Options.ContextUploadMode` enum) are `NONE` (don't send any context data), `SHAPE_ONLY` to only send the schema of the contexts to prefab (field name, data types), `PERIODIC_EXAMPLE` to send the data types AND the actual contexts being used to Prefab **Context telemetry Implemented in v0.10+**
