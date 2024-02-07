@@ -78,16 +78,26 @@ end
 For boolean flags, you can use the `enabled?` convenience method:
 
 ```ruby
-flag_name = "my-first-feature-flag"
-puts "#{flag_name} is: #{Prefab.enabled? flag_name}"
+if Prefab.enabled?("my-first-feature-flag")
+  # ...
+else
+  # ...
+end
 ```
 
-Feature flags don't have to return just true or false. You can get other data types using `get`:
+<details className="alert--info">
+<summary>
+Feature flags don't have to return just true or false.
+</summary>
+
+You can get other data types using `get`:
 
 ```ruby
 Prefab.get("ff-with-string")
 Prefab.get("ff-with-int")
 ```
+
+</details>
 
 ## Context
 
