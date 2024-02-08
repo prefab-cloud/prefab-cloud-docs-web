@@ -253,11 +253,64 @@ fatal  => :critical
 
 ### Configuration for Standard Logging
 
-TODO
+In standard logging there are two steps
+1) Create an instance of `LoggerFilter` and configure it as a filter on the logging streamhandler
+2) Set the root logger's loglevel to `logging.DEBUG` so that the `LoggerFilter` will see all the log records 
+
+
+```python
+import logging
+
+ # basic logging setup - yours may vary
+
+logging.basicConfig(level=logging.DEBUG) 
+root_logger = logging.getLogger()
+ch = logging.StreamHandler(sys.stdout)
+ch.setFormatter(
+    logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+)
+root_logger.addHandler(ch)
+
+# key step
+ch.addFilter(LoggerFilter())
+```
+
+Now your normal logging use cases eg
+
+```python
+logger = logging.get_logger(__name__)
+logger.debug("something")
+```
+can be controlled dynamically from Prefab
+
 
 ### Configuration for Structlogger
 
-TODO
+The configuration below is for a structlogger setup backed by the standard logger. 
+
+Using the `structlog.stdlib.LoggerFactory()` ensures the logger instances have names. The initial two processors ensure the log name and level are available on the event dictionary.
+
+
+```python
+import structlog
+
+ structlog.configure(
+        processors=[
+            structlog.stdlib.add_logger_name,
+            structlog.processors.add_log_level,
+            LoggerFilter().processor,
+            structlog.processors.StackInfoRenderer(),
+            structlog.dev.set_exc_info,
+            structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S", utc=False),
+            structlog.dev.ConsoleRenderer(colors=True),
+        ],
+        logger_factory=structlog.stdlib.LoggerFactory(),  # Use Python's logging factory
+        wrapper_class=structlog.stdlib.BoundLogger
+    )
+```
+
+Please contact us for help with your configuration if it varies from one of these standard cases.
+
 
 ## Debugging
 
@@ -270,8 +323,8 @@ By default this level is set to `Logging.WARNING`
 Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/architecture/bootstrapping).
 
 ```python
-options = Options(data_sources="LOCAL_ONLY")
-client = Client(options)
+prefab_cloud_python.set_options(Options(data_sources="LOCAL_ONLY")
+prefab_cloud_python.get_client()...
 ```
 
 ## Reference
