@@ -15,7 +15,7 @@ Add `prefab_cloud_python` to your package dependencies
 ```python
 # pyproject.toml
 [tool.poetry.dependencies]
-prefab-cloud-python = "^0.9.0"
+prefab-cloud-python = "^0.10.0"
 ```
 
 ## Initialize Client
@@ -38,7 +38,27 @@ the remote CDN.
 
 </summary>
 
-TODO
+Webservers like gunicorn can be configured to either use threads or fork child process workers. When forking, the prefab client must be re-created in order to continue to fetch updated configuration.
+
+```python
+
+# gunicorn configuration hook
+def post_worker_init(worker):
+    prefab_cloud_python.reset_instance()
+```
+
+You may also do something like using uWSGI decorators
+
+```python
+
+@uwsgidecorators.postfork
+def post_fork():
+    prefab_cloud_python.reset_instance()
+```
+
+
+This clears the package-singleton client and on the next `prefab_cloud_python.get_client()` it will be recreated with the options previously set with `set_options()`
+
 
 </details>
 
