@@ -11,7 +11,7 @@ We're replacing the default system with a new pattern that we believe is a much 
 while providing even more flexibility, power and resiliency.
 
 The core use case of defaults was to provide settings for offline development in testing and CI.
-This is better solved with our datafiles.
+This is better solved with our [datafiles](/docs/explanations/concepts/testing).
 
 If you believe you need this old system, please reach out to us to discuss.
 :::
