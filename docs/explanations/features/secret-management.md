@@ -14,6 +14,8 @@ Prefab has zero-knowledge support for [sharing your secrets](https://prefab.clou
 4. Prefab will share the encrypted contents with your applications.
 5. Your applications will decrypt the contents with the `secret key`.
 
+## What Does That Look Like?
+[![YouTube](https://img.youtube.com/vi/el_IEDCfoIU/0.jpg)](https://www.youtube.com/watch?v=el_IEDCfoIU)
 
 ## Walkthrough
 
