@@ -15,7 +15,7 @@ Add `prefab_cloud_python` to your package dependencies
 ```python
 # pyproject.toml
 [tool.poetry.dependencies]
-prefab-cloud-python = "^0.5.1"
+prefab-cloud-python = "^0.10.0"
 ```
 
 ## Initialize Client
@@ -23,42 +23,45 @@ prefab-cloud-python = "^0.5.1"
 If you set `PREFAB_API_KEY` as an environment variable, initializing the client is as easy as
 
 ```python
-from prefab_cloud_python import Options, Client
+import prefab_cloud_python
 
-prefab = Client(Options()) # reads PREFAB_API_KEY env var
+prefab_cloud_python.set_options(prefab.cloud.python.Options()) # reads PREFAB_API_KEY env var
+
 ```
+Unless your options are configured to run using only local data, the client will attempt to connect to
+the remote CDN.
 
-<details>
+<details className="alert--warning">
 <summary>
-Client Options
+
+#### Special Considerations with Forking servers like Gunicorn that use workers
+
 </summary>
 
-```python
-from prefab_cloud_python import Options, Client
+Webservers like gunicorn can be configured to either use threads or fork child process workers. When forking, the prefab client must be re-created in order to continue to fetch updated configuration.
 
-options = Options(
-    api_key="SDK-your-api-key"
-)
-prefab = Client(options)
+```python
+
+# gunicorn configuration hook
+def post_worker_init(worker):
+    prefab_cloud_python.reset_instance()
 ```
 
-To avoid passing your API key directly in code, we recommend setting it in your
-environment as `PREFAB_API_KEY`. Once you've done this you do not need to pass
-a value for that key to `Options(...)`, as it will look in your ENV for a value
-for that key.
+You may also do something like using uWSGI decorators
 
-#### Definitions of those options
+```python
 
-| Name               | Description                                                                                                                                                                                | Default        |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
-| prefab_datasources | Send counts of config/flag evaluation results back to Prefab to view in web app                                                                                                            | ALL            |
-| api_key            | Your prefab.cloud SDK API key                                                                                                                                                              | PREFAB_API_KEY |
-| prefab_envs        | One or more environment names from which to load local configuration and overrides. See [Local config and overrides](#module-local-config-and-overrides) below for additional information. | []             |
+@uwsgidecorators.postfork
+def post_fork():
+    prefab_cloud_python.reset_instance()
+```
+
+
+This clears the package-singleton client and on the next `prefab_cloud_python.get_client()` it will be recreated with the options previously set with `set_options()`
+
 
 </details>
 
-Unless your options are configured to run using only local data, the client will attempt to connect to
-the remote CDN and gRPC data sources and begin syncing data to a local store.
 
 ## Basic Usage
 
@@ -68,14 +71,14 @@ Here we ask for the value of a config named `max-jobs-per-second`, and we specif
 `10` as a default value if no value is available.
 
 ```python
-client.get("max-jobs-per-second", default=10) # => 10
+prefab_cloud_python.get_client().get("max-jobs-per-second", default=10) # => 10
 ```
 
 If no default is provided, the default behavior is to raise a `MissingDefaultException`.
 
 ```python
 # raises a `MissingDefaultException`
-client.get("max-jobs-per-second")
+prefab_cloud_python.get_client().get("max-jobs-per-second")
 ```
 
 <details>
@@ -91,8 +94,8 @@ options = Options(
     ...
     on_no_default="RETURN_NONE"
 )
-client = Client(options)
-client.get("max-jobs-per-second") # => None
+prefab_cloud_python.set_options(options)
+prefab_cloud_python.get_client().get("max-jobs-per-second") # => None
 ```
 
 </details>
@@ -109,10 +112,10 @@ Remember to sync your change to the API.
 
 ```python
 config_key = "my-first-int-config"
-print(config_key, client.get(config_key))
+print(config_key, prefab_cloud_python.get_client().get(config_key))
 
 ff_key = "my-first-feature-flag"
-print(config_key, client.enabled(ff_key))
+print(config_key, prefab_cloud_python.get_client().enabled(ff_key))
 ```
 
 Run the code above and you should see:
@@ -148,14 +151,14 @@ context = {
     }
 }
 
-result = client.enabled("my-first-feature-flag", context=context)
+result = prefab_cloud_python.get_client().enabled("my-first-feature-flag", context=context)
 ```
 
 Feature flags don't have to return just true or false. You can get other data types using `get`:
 
 ```python
-client.get("ff-with-string", default="default-string", context=context)
-client.get("ff-with-int", default=5)
+prefab_cloud_python.get_client().get("ff-with-string", default="default-string", context=context)
+prefab_cloud_python.get_client().get("ff-with-int", default=5)
 ```
 
 ### Global context
@@ -186,8 +189,8 @@ Context.set_current(shared_context)
 
 # with this set, the following two client calls are equivalent
 
-result = client.enabled("my-first-feature-flag")
-result = client.enabled("my-first-feature-flag", context=context)
+result = prefab_cloud_python.get_client().enabled("my-first-feature-flag")
+result = prefab_cloud_python.get_client().enabled("my-first-feature-flag", context=context)
 ```
 
 ### Scoped context
@@ -196,6 +199,7 @@ It is also possible to scope a context for a particular block of code, without n
 the thread-local context
 
 ```python
+import prefab_cloud_python
 from prefab_cloud_python import Client
 
 context = {
@@ -214,47 +218,16 @@ context = {
 }
 
 with Client.scoped_context(context):
-    result1 = client.enabled("my-first-feature-flag")
+    result1 = prefab_cloud_python.get_client().enabled("my-first-feature-flag")
 
-result2 = client.enabled("my-first-feature-flag", context=context)
+result2 = prefab_cloud_python.get_client().enabled("my-first-feature-flag", context=context)
 
 result1 == result2 #=> True
 ```
 
 ## Logging
 
-Prefab's Python Client comes with a powerful upgrade to the default Python `logging` by building on top of [`structlog`](https://www.structlog.org/en/stable/) to provide dynamic log levels.
-
-To use it, use the logging functions included in the `Client` public API
-
-```python
-client.logger().debug(message)
-client.logger().info(message)
-client.logger().warn(message)
-client.logger().error(message)
-client.logger().critical(message)
-```
-
-You can now control logging at any level of your stack.
-
-```python
-# my_app/my_class.py
-class MyClass:
-    def warn(self, client):
-        client.logger().warn("shown")
-        client.logger().info("never logs")
-        client.logger().debug("never logs")
-
-    def debug(self, client):
-        client.logger().warn("shown")
-        client.logger().info("shown")
-        client.logger().debug("shown")
-
-    def default(self, client):
-        client.logger().warn("shown")
-        client.logger().info("shown")
-        client.logger().debug("never logs")
-```
+Prefab's Python Client upgrades provides a logging filter that can be plugged into `logging` or `structlogger` to provide dynamic log levels. The client assumes your loggers are initialized with the name of each module, ie `logger = logging.get_logger(__name__)`
 
 ### Targeted Log Levels
 
@@ -278,24 +251,80 @@ error  => :error
 fatal  => :critical
 ```
 
-## Debugging
+### Configuration for Standard Logging
 
-You can control the Prefab client's log level by changing the configuration value of `log-level.prefab`. In the rare
-case that you are trying to debug issues that occur before this config file has been read, set env var
+In standard logging there are two steps
+1) Create an instance of `LoggerFilter` and configure it as a filter on the logging streamhandler
+2) Set the root logger's loglevel to `logging.DEBUG` so that the `LoggerFilter` will see all the log records 
 
-```bash
-PREFAB_LOG_CLIENT_BOOTSTRAP_LOG_LEVEL = debug
+
+```python
+import logging
+
+ # basic logging setup - yours may vary
+
+logging.basicConfig(level=logging.DEBUG) 
+root_logger = logging.getLogger()
+ch = logging.StreamHandler(sys.stdout)
+ch.setFormatter(
+    logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+)
+root_logger.addHandler(ch)
+
+# key step
+ch.addFilter(LoggerFilter())
 ```
 
-By default this level is set to `:warn`
+Now your normal logging use cases eg
+
+```python
+logger = logging.get_logger(__name__)
+logger.debug("something")
+```
+can be controlled dynamically from Prefab
+
+
+### Configuration for Structlogger
+
+The configuration below is for a structlogger setup backed by the standard logger. 
+
+Using the `structlog.stdlib.LoggerFactory()` ensures the logger instances have names. The initial two processors ensure the log name and level are available on the event dictionary.
+
+
+```python
+import structlog
+
+ structlog.configure(
+        processors=[
+            structlog.stdlib.add_logger_name,
+            structlog.processors.add_log_level,
+            LoggerFilter().processor,
+            structlog.processors.StackInfoRenderer(),
+            structlog.dev.set_exc_info,
+            structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S", utc=False),
+            structlog.dev.ConsoleRenderer(colors=True),
+        ],
+        logger_factory=structlog.stdlib.LoggerFactory(),  # Use Python's logging factory
+        wrapper_class=structlog.stdlib.BoundLogger
+    )
+```
+
+Please contact us for help with your configuration if it varies from one of these standard cases.
+
+
+## Debugging
+
+At this time, it's not possible to dynamically control the loglevel of the prefab client itself. Instead control the Prefab client's log level by changing the `prefab_client_log_level` in the `Options` class at start up.
+
+By default this level is set to `Logging.WARNING`
 
 ## Testing
 
 Specify `LOCAL_ONLY` and use your [config.yaml file](/docs/explanations/architecture/bootstrapping).
 
 ```python
-options = Options(data_sources="LOCAL_ONLY")
-client = Client(options)
+prefab_cloud_python.set_options(Options(data_sources="LOCAL_ONLY")
+prefab_cloud_python.get_client()...
 ```
 
 ## Reference
