@@ -4,8 +4,6 @@ title: Python
 
 ## Getting Started with the Python SDK
 
-:::caution
-**Note: This library is under active development**
 
 [Sign up to be notified about updates](https://forms.gle/2qsjMFvjGnkTnA9T8)
 :::
@@ -161,7 +159,7 @@ prefab_cloud_python.get_client().get("ff-with-string", default="default-string",
 prefab_cloud_python.get_client().get("ff-with-int", default=5)
 ```
 
-### Global context
+### Thread-local context
 
 To avoid having to pass a context explicitly to every call to `get` or `enabled`, it is possible to set a thread-local
 context that will be evaluated as the default argument to `context=` if none is given.
@@ -351,3 +349,5 @@ prefab_cloud_python.get_client()...
 - `collect_evaluation_summaries` - send aggregate data about config and feaure flag evaluations, results (defaults to True) **Evaluation Summary telemetry Implemented in v0.10+**
 - `collect_logs` - send aggregate logger volume data to Prefab (defaults to True)
 - `context_upload_mode` - send context information to prefab. Values (from the `Options.ContextUploadMode` enum) are `NONE` (don't send any context data), `SHAPE_ONLY` to only send the schema of the contexts to prefab (field name, data types), `PERIODIC_EXAMPLE` to send the data types AND the actual contexts being used to Prefab **Context telemetry Implemented in v0.10+**
+- `global_context` - an immutable global context to be used in all lookups. Use this for things like availability zone, machine type...
+- `on_ready_callback` - register a single method to be called when the client has loaded its first configuration and is ready for use
