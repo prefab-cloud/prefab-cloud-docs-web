@@ -10,7 +10,7 @@ title: Java
 <dependency>
     <groupId>cloud.prefab</groupId>
     <artifactId>client</artifactId>
-    <version>0.3.13</version>
+    <version>0.3.20</version>
 </dependency>
 ```
 
@@ -27,7 +27,7 @@ There's an optional uber-jar with shaded and relocated guava and failsafe depend
 <dependency>
     <groupId>cloud.prefab</groupId>
     <artifactId>client</artifactId>
-    <version>0.3.13</version>
+    <version>0.3.20</version>
     <classifier>uberjar</classifier>
 </dependency>
 ```
@@ -104,17 +104,65 @@ public class MyClass {
 
 ## Context
 
-To finely-target configuration rule evaluation, we accept contextual information globally or request-scoped with the ContextStore which will affect all logging, featureflag and config lookups.
+To finely-target configuration rule evaluation, we accept contextual information globally, request-scoped (thread-locally) with the ContextStore which will affect all logging, featureflag and config lookups.
+
+### Global Context
+
+Use global context for information that doesn't change - for example, your application's name, availability-zone etc. Set it in the client's options as below
 
 ```java
+
+    PrefabContext deploymentContext = PrefabContext
+      .newBuilder("application")
+      .put("key", "my-api")
+      .put("az", "1a")
+      .put("type", "web")
+      .build();
+
+Options options = new Options()
+      .setGlobalContext(PrefabContextSet.from(deploymentContext))
+
+```
+
+
+
+
+
+### Thread-local (Request-scoped)
+
+```java
+// set the thread-local context
 prefabCloudClient.configClient().getContextStore().addContext(
                       PrefabContext.newBuilder("User")
                         .put("name", user.getName())
                         .put("key", user.getKey())
                         .build());
+
+// or using an autoclosable scope helper
+// this will replace any-existing threadlocal context until the try-with-resources block exits
+PrefabContextHelper prefabContextHelper = new PrefabContextHelper(
+      prefabClient.configClient()
+    );
+
+  try (
+        PrefabContextHelper.PrefabContextScope ignored = prefabContextHelper.performWorkWithAutoClosingContext(
+           PrefabContext.newBuilder("User")
+                        .put("name", user.getName())
+                        .put("key", user.getKey())
+                        .build());
+        )
+      ) {
+            // do config/flag operations
+
+  }
+
+
+
+
+
 ```
 
-When global context is set, log levels and feature flags will evaluate in that context. Here are details on setting global context:
+When thread-local context is set, log levels and feature flags will evaluate in that context. Here are details on setting thread-local context:
 
 <Tabs groupId="lang">
 <TabItem value="micronaut" label="Micronaut">
@@ -230,7 +278,7 @@ Learn more with the [Prefab + Dropwizard example app](https://github.com/prefab-
 <details>
 <summary>
 
-#### Just-in-time Context
+### Just-in-time Context
 
 </summary>
 
