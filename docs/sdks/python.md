@@ -313,7 +313,7 @@ import structlog
 
 See [example](https://github.com/prefab-cloud/prefab-cloud-python/blob/main/examples/structlogger/structlogger-example.py)
 
-Note the LoggerProcess has an overrideable `logger_name` method so you can subclass and determine your own logger name from elements on the logger record as needed.
+Note the LoggerProcessor has an overrideable `logger_name` method so you can subclass and determine your own logger name from elements on the logger record as needed.
 
 Please contact us for help with your configuration if it varies from one of these standard cases.
 
