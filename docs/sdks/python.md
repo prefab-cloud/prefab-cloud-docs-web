@@ -13,7 +13,7 @@ Add `prefab_cloud_python` to your package dependencies
 ```python
 # pyproject.toml
 [tool.poetry.dependencies]
-prefab-cloud-python = "^0.10.0"
+prefab-cloud-python = "^0.10.2"
 ```
 
 ## Initialize Client
@@ -281,6 +281,10 @@ logger.debug("something")
 ```
 can be controlled dynamically from Prefab
 
+See [example](https://github.com/prefab-cloud/prefab-cloud-python/blob/main/examples/standard-logging/standard-logger-example.py)
+
+Note the LoggerFilter has an overrideable `logger_name` method so you can subclass and determine your own logger name as needed
+
 
 ### Configuration for Structlogger
 
@@ -296,7 +300,7 @@ import structlog
         processors=[
             structlog.stdlib.add_logger_name,
             structlog.processors.add_log_level,
-            LoggerFilter().processor,
+            LoggerProcessor(),
             structlog.processors.StackInfoRenderer(),
             structlog.dev.set_exc_info,
             structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S", utc=False),
@@ -306,6 +310,10 @@ import structlog
         wrapper_class=structlog.stdlib.BoundLogger
     )
 ```
+
+See [example](https://github.com/prefab-cloud/prefab-cloud-python/blob/main/examples/structlogger/structlogger-example.py)
+
+Note the LoggerProcess has an overrideable `logger_name` method so you can subclass and determine your own logger name from elements on the logger record as needed.
 
 Please contact us for help with your configuration if it varies from one of these standard cases.
 
