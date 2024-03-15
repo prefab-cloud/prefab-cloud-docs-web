@@ -441,12 +441,18 @@ void testPrefab(){
 
 ```java
 Options options = new Options()
-  .setNamespace("billing-service.jobs.dunning-job")
   .setConfigOverrideDir(System.getProperty("user.home"))
   .setApikey(System.getenv("PREFAB_API_KEY"))
   .setPrefabDatasource(Options.Datasources.ALL) // Option: Datasources.LOCAL_ONLY
   .setOnInitializationFailure(Options.OnInitializationFailure.RAISE) // Option Options.OnInitializationFailure.UNLOCK
-  .setInitializationTimeoutSec(10);
+  .setInitializationTimeoutSec(10)
+  .setGlobalContext(PrefabContextSet.from(PrefabContext
+      .newBuilder("application")
+      .put("key", "my-api")
+      .put("az", "1a")
+      .put("type", "web")
+      .build())
+   );
 ```
 
 #### Option Definitions
@@ -458,3 +464,4 @@ Options options = new Options()
 | contextUploadMode          | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | PERIODIC_EXAMPLE |
 | onInitializationFailure    | Choose to crash or continue with local data only if unable to fetch config data from prefab at startup                                | RAISE (crash)    |
 | prefabDatasources          | Use either only-local data or local + API data                                                                                        | ALL              |
+| globalContext  | set a static context to be used as the base layer in all configuration evaluation | EMPTY |
