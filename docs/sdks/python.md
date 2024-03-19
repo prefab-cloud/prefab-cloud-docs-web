@@ -13,7 +13,7 @@ Add `prefab_cloud_python` to your package dependencies
 ```python
 # pyproject.toml
 [tool.poetry.dependencies]
-prefab-cloud-python = "^0.10.2"
+prefab-cloud-python = "^0.10.3"
 ```
 
 ## Initialize Client
@@ -23,7 +23,7 @@ If you set `PREFAB_API_KEY` as an environment variable, initializing the client 
 ```python
 import prefab_cloud_python
 
-prefab_cloud_python.set_options(prefab.cloud.python.Options()) # reads PREFAB_API_KEY env var
+prefab_cloud_python.set_options(prefab_cloud_python.Options()) # reads PREFAB_API_KEY env var
 
 ```
 Unless your options are configured to run using only local data, the client will attempt to connect to
@@ -276,7 +276,7 @@ ch.addFilter(LoggerFilter())
 Now your normal logging use cases eg
 
 ```python
-logger = logging.get_logger(__name__)
+logger = logging.getLogger(__name__)
 logger.debug("something")
 ```
 can be controlled dynamically from Prefab
