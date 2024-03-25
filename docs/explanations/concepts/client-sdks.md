@@ -6,9 +6,9 @@ sidebar_position: 2
 
 ## Client Architecture
 
-:::caution
+:::info
 
-Client SDKs only receive Feature Flags and Dyanmic Log Levels. They do not receive Configs. This is to prevent leaking sensitive config information.
+Client SDKs do not receive Configs by default, but you can enable client availability for any individual config. This is to prevent accidentally leaking sensitive config information.
 
 :::
 

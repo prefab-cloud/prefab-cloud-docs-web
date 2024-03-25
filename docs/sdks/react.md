@@ -107,11 +107,9 @@ const WrappedApp = () => {
 
 ## Dynamic Config
 
-:::info
+Config values are accessed the same way as feature flag values. You can use `isEnabled` as a convenience for boolean values, and `get` works for all data types.
 
-React is a Client SDK and does not receive Config. [Learn more about Client SDKs](/docs/explanations/concepts/client-sdks)
-
-:::
+By default configs are not sent to client SDKs. You must enable access for each individual config. You can do this by checking the "Send to client SDKs" checkbox when creating or editing a config.
 
 ## Dealing with Loading States
 
