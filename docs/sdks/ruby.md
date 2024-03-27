@@ -13,7 +13,7 @@ title: Ruby
 If you set `PREFAB_API_KEY` as an environment variable, initializing the client is as easy as
 
 ```ruby
-Prefab.init # reads PREFAB_API_KEY env var
+Prefab.init # reads PREFAB_API_KEY env var by default
 ```
 
 ### Rails Applications
@@ -50,7 +50,7 @@ If using workers in Puma, you can initialize inside an on_worker_boot hook in yo
 # puma.rb
 on_worker_boot do
   Prefab.fork
-  Prefab.set_rails_loggers
+  SemanticLogger.reopen # if you are using SemanticLogger
 end
 ```
 
@@ -64,7 +64,7 @@ If using workers in Unicorn, you can initialize inside an after_fork hook in you
 # unicorn.rb
 after_fork do |server, worker|
   Prefab.fork
-  Prefab.set_rails_loggers
+  SemanticLogger.reopen # if you are using SemanticLogger
 end
 ```
 
@@ -206,28 +206,65 @@ You can modify this behavior by setting the option `on_no_default` to `Prefab::O
 
 ## Dynamic Log Levels
 
-Set the Rails logger to use our logger
+To use dynamic logging, we recommend [semantic logger]. Add semantic_logger to your Gemfile and then we'll configure our app to use it.
+
+<Tabs groupId="ruby-usage">
+<TabItem value="ruby" label="Ruby">
 
 ```ruby
-#application.rb
-module MyApplication
-  class Application < Rails::Application
-    #...
-
-    Prefab.init
-    // highlight-next-line
-    Prefab.set_rails_loggers
-  end
-end
+# Gemfile
+gem "semantic_logger"
 ```
 
-`Prefab.set_rails_loggers` wraps the Rails logger to allow using [dynamic log levels](/docs/explanations/features/targeted-log-levels) with your normal Rails logger calls.
+```ruby
+require "semantic_logger"
+require "prefab"
 
-Now we are free to adjust our log levels, down to the controller or method level in real-time. Invaluable for debugging! You can set and tweak these on-the-fly in the Prefab web app.
+Prefab.init
+
+SemanticLogger.sync!
+SemanticLogger.default_level = :trace # Prefab will take over the filtering
+SemanticLogger.add_appender(
+  io: $stdout,
+  formatter: :json,
+  filter: Prefab.log_filter,
+)
+```
+
+</TabItem>
+
+<TabItem value="rails" label="Rails">
+
+```ruby
+# Gemfile
+gem "amazing_print"
+gem "rails_semantic_logger"
+```
+
+```ruby
+# config/application.rb
+Prefab.init
+```
+
+```ruby
+# config/initializers/logging.rb
+SemanticLogger.sync!
+SemanticLogger.default_level = :trace # Prefab will take over the filtering
+SemanticLogger.add_appender(
+  io: $stdout,
+  formatter: Rails.env.development? ? :color : :json,
+  filter: Prefab.log_filter,
+)
+```
 
 :::caution
 Please read the [Puma/Unicorn](ruby#special-considerations-with-forking-servers-like-puma--unicorn-that-use-workers) notes for special considerations with forking servers.
 :::
+
+</TabItem>
+</Tabs>
+
+Now we are free to adjust our log levels, down to the controller or method level in real-time. Invaluable for debugging! You can set and tweak these on-the-fly in the Prefab web app.
 
 ### Targeted Log Levels
 
@@ -322,10 +359,6 @@ For more control, you can initialize your client with options. Here are the defa
 ```ruby
 options = Prefab::Options.new(
   api_key: ENV['PREFAB_API_KEY'],
-  logdev: $stdout,
-  namespace: '',
-  log_formatter: DEFAULT_LOG_FORMATTER,
-  log_prefix: nil,
   prefab_api_url: ENV['PREFAB_API_URL'] || 'https://api.prefab.cloud',
   on_no_default: ON_NO_DEFAULT::RAISE, # options :raise, :warn_and_return_nil,
   initialization_timeout_sec: 10, # how long to wait before on_init_failure
@@ -346,3 +379,5 @@ options = Prefab::Options.new(
 
 Prefab.init(options)
 ```
+
+[semantic logger]: https://logger.rocketjob.io/
