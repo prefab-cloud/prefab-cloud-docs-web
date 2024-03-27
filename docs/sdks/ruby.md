@@ -103,6 +103,24 @@ Prefab.get("ff-with-int")
 
 Feature flags become more powerful when we give the flag evaluation rules more information to work with. We do this by providing [context](/docs/explanations/concepts/context) of the current user (and/or team, request, etc.)
 
+### Global Context
+
+When initializing the client, you can set a global context that will be used for all evaluations.
+
+```ruby
+Prefab.init(
+  global_context: {
+    application: {name: "my-cool-app"},
+    cpu: {count: 4},
+    clock: {timezone: "UTC"}
+  }
+)
+```
+
+Global context is the least specific context and will be overridden by more specific context passed in at the time of evaluation.
+
+### Thread-local (Request-scoped)
+
 To make the best use of Prefab, we recommend setting [context](/docs/explanations/concepts/context) in an `around_action` in your `ApplicationController`. Setting this context for the life-cycle of the request means the Prefab logger can be aware of your user/etc. for feature flags and [targeted log levels](/docs/explanations/features/targeted-log-levels) and you won't have to explicitly pass context into your `.enabled?` and `.get` calls.
 
 ```ruby
@@ -137,9 +155,7 @@ end
 
 <details>
 <summary>
-
-#### Just-in-time Context
-
+Just-in-time Context
 </summary>
 
 You can also pass context when evaluating individual flags or config values.
