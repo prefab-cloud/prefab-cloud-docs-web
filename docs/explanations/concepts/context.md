@@ -31,11 +31,13 @@ For feature flags, context usage is optional but a useful ergonomic -- you can a
 
 For usage examples, see your relevant SDK client documentation.
 
-## Global context
+## Global and scoped context
 
-To avoid deeply passing around awareness of the current user, request, etc., Prefab allows you to set Context globally. The mechanisms for doing so will vary by language and framework.
+To avoid deeply passing around awareness of the current user, request, etc., Prefab allows you to set Context globally and also for a thread/request. The mechanisms for doing so will vary by language and framework.
 
-When global context is set, log levels and feature flags will be evaluated in that context. If you provide just-in-time context to your FF evaluations, it will be merged with the global context. More on merging below.
+When context is set, log levels and feature flags will be evaluated in that context. If you provide just-in-time context to your FF evaluations, it will be merged with the thread/request context and global context. More on merging below.
+
+The most-specific context will always win. If you set the same key in your JIT context that is present in another context, it will clobber the global context and thread/request context for the duration of the evaluation.
 
 <Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
@@ -43,6 +45,9 @@ When global context is set, log levels and feature flags will be evaluated in th
 We can use a block to specify the context for the duration of the block.
 
 ```ruby
+
+Prefab.init(global_context: {application: {name: "my-cool-app"}})
+
 context = { device: { key: "abcdef", mobile: mobile? } }
 
 Prefab.with_context(context) do
@@ -53,10 +58,17 @@ end
 </TabItem>
 <TabItem value="ror" label="Ruby on Rails">
 
+We can set global context when initializing Prefab
+
+```ruby
+# in config/application.rb
+Prefab.init(global_context: {application: {name: "my-cool-app"}})
+```
+
 We can use an `around_action` to set our context for the life-cycle of the request.
 
 ```ruby
-
+# in app/controllers/application_controller.rb
 class ApplicationController < ActionController::Base
   around_action :set_prefab_context
 
@@ -77,7 +89,6 @@ class ApplicationController < ActionController::Base
     }
   end
 end
-
 ```
 
 Learn more with the [Prefab + Rails example app](https://github.com/prefab-cloud/example-rails-app)
@@ -167,7 +178,6 @@ Learn more with the [Prefab + Dropwizard example app](https://github.com/prefab-
 
 <TabItem value="javascript" label="JavaScript">
 
-
 In JavaScript, there is only the global context. You can't specify a JIT context. Prefab fetches evaluated feature flags based on the context you provided.
 
 ```javascript
@@ -187,7 +197,6 @@ if (prefab.isEnabled('cool-feature') {
 </TabItem>
 
 <TabItem value="react" label="React">
-
 
 In React, there is only the global context. You can't specify a JIT context. Prefab fetches evaluated feature flags based on the context you provided.
 
@@ -209,9 +218,7 @@ const WrappedApp = () => {
 
 </TabItem>
 
-
 <TabItem value="python" label="Python">
-
 
 In Python, there is only the global context. You can't specify a JIT context. Prefab fetches evaluated feature flags based on the context you provided.
 
@@ -243,8 +250,6 @@ prefab.enabled("my-first-feature-flag")
 ```
 
 </TabItem>
-
-
 
 </Tabs>
 
@@ -286,18 +291,18 @@ You can reference `user.key` and `device.mobile` in the property field in the UI
 
 If you provide a context that conflicts with an existing context, your new context values will clobber any previous value.
 
-Let's use this example as our initial context. It has two contexts: "request" and "subscription". 
+Let's use this example as our initial context. It has two contexts: "request" and "subscription".
 
 ```json
 {
-  request: {
-    mobile: true,
-    country: "US"
+  "request": {
+    "mobile": true,
+    "country": "US"
   },
-  subscription: {
-    key: "s_123",
-    allow_overages: false,
-    plan: "Pro"
+  "subscription": {
+    "key": "s_123",
+    "allow_overages": false,
+    "plan": "Pro"
   }
 }
 ```
@@ -306,14 +311,14 @@ If we set the "request" context to `{ key: "f1e6461a", type: "iPhone" }` then we
 
 ```json
 {
-  request: {
-    key: "f1e6461a",
-    device_type: "iPhone"
+  "request": {
+    "key": "f1e6461a",
+    "device_type": "iPhone"
   },
-  subscription: {
-    key: "s_123",
-    allow_overages: false,
-    plan: "Pro"
+  "subscription": {
+    "key": "s_123",
+    "allow_overages": false,
+    "plan": "Pro"
   }
 }
 ```
@@ -333,12 +338,12 @@ That `enabled?` check uses this context
 
 ```json
 {
-  request: {
-    key: "f1e6461a",
-    type: "iPhone"
+  "request": {
+    "key": "f1e6461a",
+    "type": "iPhone"
   },
-  subscription: { allow_overages: true },
-  user: { admin: true }
+  "subscription": { "allow_overages": true },
+  "user": { "admin": true }
 }
 ```
 
@@ -346,14 +351,14 @@ But then the current context after that evaluation is still
 
 ```json
 {
-  request: {
-    key: "f1e6461a",
-    type: "iPhone"
+  "request": {
+    "key": "f1e6461a",
+    "type": "iPhone"
   },
-  subscription: {
-    key: "s_123",
-    allow_overages: false,
-    plan: "Pro"
+  "subscription": {
+    "key": "s_123",
+    "allow_overages": false,
+    "plan": "Pro"
   }
 }
 ```
