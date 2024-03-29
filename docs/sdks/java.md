@@ -108,7 +108,7 @@ To finely-target configuration rule evaluation, we accept contextual information
 
 ### Global Context
 
-Use global context for information that doesn't change - for example, your application's name, availability-zone etc. Set it in the client's options as below
+Use global context for information that doesn't change - for example, your application's key, availability-zone etc. Set it in the client's options as below
 
 ```java
 
@@ -123,10 +123,6 @@ Options options = new Options()
       .setGlobalContext(PrefabContextSet.from(deploymentContext))
 
 ```
-
-
-
-
 
 ### Thread-local (Request-scoped)
 
@@ -464,4 +460,4 @@ Options options = new Options()
 | contextUploadMode          | Upload either context "shapes" (the names and data types your app uses in prefab contexts) or periodically send full example contexts | PERIODIC_EXAMPLE |
 | onInitializationFailure    | Choose to crash or continue with local data only if unable to fetch config data from prefab at startup                                | RAISE (crash)    |
 | prefabDatasources          | Use either only-local data or local + API data                                                                                        | ALL              |
-| globalContext  | set a static context to be used as the base layer in all configuration evaluation | EMPTY |
+| globalContext              | set a static context to be used as the base layer in all configuration evaluation                                                     | EMPTY            |

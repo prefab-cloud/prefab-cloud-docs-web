@@ -43,7 +43,7 @@ end
 Please read the [Puma/Unicorn](/docs/sdks/ruby#special-considerations-with-forking-servers-like-puma--unicorn-that-use-workers) notes for special considerations with forking servers.
 :::
 
-Now we can start adjusting log levels. You can set and tweak these on-the-fly in the Prefab web app. 
+Now we can start adjusting log levels. You can set and tweak these on-the-fly in the Prefab web app.
 Let's set the root level logger to `DEBUG` in development.
 
 Our results speak for themselves. You can see that we've enabled debug for the prefab internals, rails internals and our application code.
@@ -62,12 +62,10 @@ INFO  2022-09-06 13:05:17 -0400:  lograge.log_subscriber.process_action: method=
 
 If we set our levels to `INFO`, we see much less logging.
 
-
 ```shell
 INFO  2022-09-06 13:05:17 -0400:  app.controllers.prefab_controller.index: info level logging
 INFO  2022-09-06 13:05:17 -0400:  lograge.log_subscriber.process_action: method=GET path=/prefab format=html controller=PrefabController action=index status=200 duration=151.10 view=141.43 db=6.20
 ```
-
 
 Now we are free to adjust our log levels, down to the controller or method level in real-time. Invaluable for debugging!
 
