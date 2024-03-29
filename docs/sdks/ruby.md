@@ -110,7 +110,7 @@ When initializing the client, you can set a global context that will be used for
 ```ruby
 Prefab.init(
   global_context: {
-    application: {name: "my-cool-app"},
+    application: {key: "my.corp.web"},
     cpu: {count: 4},
     clock: {timezone: "UTC"}
   }
@@ -390,7 +390,8 @@ options = Prefab::Options.new(
   context_max_size: DEFAULT_MAX_EVAL_SUMMARIES,
   collect_evaluation_summaries: true, # send counts of config/flag evaluation results back to Prefab to view in web app
   collect_max_evaluation_summaries: DEFAULT_MAX_EVAL_SUMMARIES,
-  allow_telemetry_in_local_mode: false
+  allow_telemetry_in_local_mode: false,
+  global_context: {}
 )
 
 Prefab.init(options)

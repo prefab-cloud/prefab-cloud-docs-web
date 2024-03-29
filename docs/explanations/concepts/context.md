@@ -46,7 +46,7 @@ We can use a block to specify the context for the duration of the block.
 
 ```ruby
 
-Prefab.init(global_context: {application: {name: "my-cool-app"}})
+Prefab.init(global_context: {application: {key: "my.corp.web"}})
 
 context = { device: { key: "abcdef", mobile: mobile? } }
 
@@ -62,7 +62,7 @@ We can set global context when initializing Prefab
 
 ```ruby
 # in config/application.rb
-Prefab.init(global_context: {application: {name: "my-cool-app"}})
+Prefab.init(global_context: {application: {key: "my.corp.web"}})
 ```
 
 We can use an `around_action` to set our context for the life-cycle of the request.
