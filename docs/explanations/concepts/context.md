@@ -261,6 +261,8 @@ prefab.enabled("my-first-feature-flag")
 The key is the one special attribute of a context. It should be the unchanging, primary key of whatever your context is. For a user, that's likely the tracking ID set when you first saw them. For a team, it's probably the primary key of the table. For a Kubernetes pod, the pod id. Key is the handle Prefab if you want to add this context entity to a feature flag.
 
 It's ok if there isn't a good key. If you add `{cloud: {region: us-east, availability-zone: us-east-1a}}`, you'll be able to target `cloud.region` or `cloud.availability-zone` with rules. If you add `cloud.key: "i-1234567890abcdef0"` you'll additionally be able to search for this context entity in context search tool.
+
+If you provide a `name` attributes (as a sibling to `key`), it will be used in the Prefab UI to display the context entity as a "friendly" alternative to `key`. If you don't provide a `name`, Prefab will use the `key` as the display name.
 :::
 
 ## Dot notation

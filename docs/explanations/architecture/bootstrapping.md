@@ -40,7 +40,7 @@ than values from the API.
 
 :::note
 Using an Override file in a deployed environment is an anti-pattern. You should be able to achieve what you need to do
-with some combination of [Prefab Envs](/docs/explanations/concepts/defaults#prefab-environments) and [namespaces](/docs/explanations/concepts/namespaces).
+with some combination of [Prefab Envs](/docs/explanations/concepts/defaults#prefab-environments) and [context](/docs/explanations/concepts/context).
 :::
 
 ## Helpful Logging
