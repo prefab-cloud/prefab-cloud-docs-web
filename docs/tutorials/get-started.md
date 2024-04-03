@@ -16,7 +16,7 @@ After signing up, you'll see an onboarding dashboard. We've created your first w
 
 ![image](/img/docs/getting-started/dashboard.png)
 
-Most organizations will only want a single workspace. 
+Most organizations will only want a single workspace.
 
 ## Environments
 
@@ -26,14 +26,14 @@ Click on environments to view environments. We've added `Development`, `Staging`
 
 Our clients will need to connect to the Prefab APIs. To do that they'll need API Keys. Prefab has 2 different types of API Keys.
 
-- **SDK API** keys are used for the server side APIs. These keys will have access to all information for their respective environment.
-- **Client API** keys are used in mobile applications or websites. These keys will allow the clients to evaluate feature flags for a single user, but will not expose the raw flag data.
+- **Backend API** keys are used for the server side APIs. These keys will have access to all information for their respective environment.
+- **Frontend API** keys are used in mobile applications or websites. These keys will allow the clients to evaluate feature flags for a single user, but will not expose the raw flag data.
 
 :::info
-Only use Client API Keys in code that gets shipped to end users,
+Only use Frontend API Keys in code that gets shipped to end users,
 :::
 
-Let's create an SDK Key for now.
+Let's create a Backend Key for now.
 
 ![image](/img/docs/getting-started/add-project-api-key.png)
 
@@ -59,12 +59,11 @@ Click Save and now we can take a look at our new feature flag. There are 4 eleme
 There are 5 areas to note:
 
 1. **Variants** The app has automatically created two boolean variants for us. Feature flags can return strings or numbers as well, but booleans are most common.
-3. **Rules** Each environment gets a tab for its own rules.
-2. **Save** Once we save the default value rule, we can publish our flag. Publishing makes the flag available to our clients.
-![image](/img/docs/getting-started/new-feature-flag-publish.jpg)
+2. **Rules** Each environment gets a tab for its own rules.
+3. **Save** Once we save the default value rule, we can publish our flag. Publishing makes the flag available to our clients.
+   ![image](/img/docs/getting-started/new-feature-flag-publish.jpg)
 4. **Code Samples** snippets live here, making it easy to copy out the correct code into your application.
 5. **Evaluations** once we start running the client, we'll be able to see evaluation charts here.
-
 
 ## Configuring our Feature Flag
 
@@ -88,7 +87,7 @@ You can drag the rules to re-order them but the default rule sticks to the botto
 
 ## Use in Code
 
-To use the flag, all we need to do is initialize a client with the SDK key we created and
+To use the flag, all we need to do is initialize a client with the backend key we created and
 
 <Tabs groupId="lang">
 <TabItem value="ruby" label="Ruby">
@@ -138,33 +137,25 @@ featureFlagClient.featureIsOn(
 import { Prefab } from "@prefab-cloud/prefab-cloud-node";
 
 const prefab = new Prefab({
-    apiKey: "SDK-KEY, or set ENV var PREFAB_API_KEY"
+  apiKey: "SDK-KEY, or set ENV var PREFAB_API_KEY",
 });
 await prefab.init();
 
 // true for 5% of the users
-const context = new Map([
-    [
-        "user",
-        new Map([
-            ["key", Math.random()],
-        ]),
-    ]
-]);
-prefab.isFeatureEnabled('features.example-flag', context, false)
+const context = new Map([["user", new Map([["key", Math.random()]])]]);
+prefab.isFeatureEnabled("features.example-flag", context, false);
 
 // 100% of users in the beta group will return true
 const context = new Map([
-    [
-        "user",
-        new Map([
-            ["key", Math.random()],
-            ["group", "beta"],
-        ]),
-    ]
+  [
+    "user",
+    new Map([
+      ["key", Math.random()],
+      ["group", "beta"],
+    ]),
+  ],
 ]);
-prefab.isFeatureEnabled('features.example-flag', context, false)
-
+prefab.isFeatureEnabled("features.example-flag", context, false);
 ```
 
 </TabItem>

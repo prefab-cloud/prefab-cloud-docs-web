@@ -1,18 +1,18 @@
 ---
-title: How Client SDKs Work
-sidebar_label: Client SDKs
+title: How Frontend SDKs Work
+sidebar_label: Frontend SDKs
 sidebar_position: 2
 ---
 
-## Client Architecture
+## Frontend Architecture
 
 :::info
 
-Client SDKs do not receive Configs by default, but you can enable client availability for any individual config. This is to prevent accidentally leaking sensitive config information.
+Frontend SDKs do not receive Configs by default, but you can enable frontend availability for any individual config. This is to prevent accidentally leaking sensitive config information.
 
 :::
 
-The client architecture has different goals and different operating characteristics from the server side SDKs. The goals of the clients are:
+The frontend architecture has different goals and different operating characteristics from the backend SDKs. The goals of the clients are:
 
 1. Make lookups as fast as possible
 2. Don't leak raw configuration data to the end user
@@ -37,7 +37,7 @@ flowchart TB
             code["prefab.enabled?(my-flag)"]
         end
 
-        subgraph "Prefab Client SDK"
+        subgraph "Prefab Frontend SDK"
             init
             ResultsCache["Cached evaluated flags for user"]
             ResultsCache --> code
@@ -69,7 +69,7 @@ The client will be returned a list that is basically:
 }
 ```
 
-See [server SDKs](/docs/explanations/concepts/server-sdks.md) to compare.
+See [backend SDKs](/docs/explanations/concepts/backend-sdks.md) to compare.
 
 ## Client Side Reliability
 

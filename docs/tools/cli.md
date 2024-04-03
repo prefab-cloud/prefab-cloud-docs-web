@@ -114,7 +114,7 @@ Development: 7
 
 `prefab override` lets you override the value for a config or feature flag for your prefab.cloud user. This is especially helpful for testing both sides of a feature flag.
 
-Are you using an SDK key for your backend and a client key for your UI? No problem; this override will apply to any environment using an API key created by your prefab.cloud user.
+Are you using a backend key for your server code and a frontend key for your UI? No problem; this override will apply to any environment using an API key created by your prefab.cloud user.
 
 Example: `prefab override my.flag.name --value=true`
 

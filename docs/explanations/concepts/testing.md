@@ -3,6 +3,7 @@ title: Testing & DataFiles
 sidebar_label: Testing & DataFiles
 sidebar_position: 5
 ---
+
 :::tip
 Our SDKs and Clients have library and language-specific testing advice. For specific details, refer to the docs for the SDK or client you're using.
 :::
@@ -15,10 +16,10 @@ The best practice for testing is to create a test environment and use a datafile
 
 You can then use mocking to override specific values as needed, when you are testing the behavior of a specific feature flag or config.
 
-
 ## Mocking
 
-### Server-Side SDKs
+### Backend SDKs
+
 The primary way to test Prefab is by mocking out calls to Prefab. Here are some examples:
 
 <Tabs groupId="lang">
@@ -38,6 +39,7 @@ void testPrefab(){
 
 }
 ```
+
 </TabItem>
 <TabItem value="ruby" label="Ruby">
 
@@ -60,11 +62,11 @@ RSpec.describe Job do
   end
 end
 ```
+
 </TabItem>
 </Tabs>
 
-
-### Client-Side Libraries
+### Frontend Libraries
 
 Rather than talking to the server, use `setConfig` or use a `Provider` manually with your test setup.
 
@@ -99,14 +101,13 @@ Don't use the `PrefabProvider`. Instead, use the `PrefabTestProvider` and pass i
 </TabItem>
 </Tabs>
 
-
 ## Testing with DataFiles
 
 Mocking out all of the Prefab calls can be tedious, so we've added a feature called DataFiles to Prefab.
 
 Having your tests/CI reach out to Prefab to get the latest configuration is a viable approach, but for consistency & reproducibility many of us prefer to have full control over the configuration used to run tests.
 
-Prefab supports this approach by allowing you to specify a datafile.  When specifying a datafile via `PREFAB_DATAFILE` or the `datafile` option, Prefab will use the datafile for all configuration instead of reaching out to the server and will run in `local-only` mode.
+Prefab supports this approach by allowing you to specify a datafile. When specifying a datafile via `PREFAB_DATAFILE` or the `datafile` option, Prefab will use the datafile for all configuration instead of reaching out to the server and will run in `local-only` mode.
 
 The datafile is a JSON representation of all your configuration for an environment. It is human readable, but we recommend using the Prefab CLI to generate it and not editing it by hand.
 
@@ -114,10 +115,12 @@ To get started with a datafile:
 
 1. Create an Environment in the Prefab UI called "Test"
 2. Generate a datafile for that environment using the Prefab CLI
+
 ```bash
 prefab download --environment test
 # writes prefab.test.108.config.json
 ```
+
 3. Add the datafile to git `git add prefab.test.108.config.json`.
 4. Set `PREFAB_DATAFILE=prefab.test.108.config.json` in your CI environment.
 5. Set the SDK appropriate version of `Prefab::Options.new(datafile: Rails.env.test? ? "prefab.test.108.config.json" : ENV['PREFAB_DATAFILE'])` in your Prefab initializer
@@ -126,10 +129,11 @@ prefab download --environment test
 Datafiles can also be useful in Docker builds or other environments where you want to avoid reaching out to Prefab. A very common pattern is to use this for `assets:precompile` in a Ruby on Rails application. That often looks like:
 
 `RUN RAILS_ENV=production REFAB_DATAFILE=prefab.test.108.config.json bundle exec rake assets:precompile
-` 
+`
 
 If you don't want the test data there, you could also create another environment called 'docker-build' with any other configuration you want and use the CLI to download that as well.
 :::
 
 ### Keeping The Datafile Up To Date
+
 The CLI download will take a snapshot of the configuration at a given moment, but it won't keep it up to date. As you add configuration or feature flags that you need to test, you'll need to update the datafile by re-running the CLI command and committing the new datafile.
