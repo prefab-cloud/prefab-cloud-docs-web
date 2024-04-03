@@ -111,11 +111,11 @@ const WrappedApp = () => {
 
 Config values are accessed the same way as feature flag values. You can use `isEnabled` as a convenience for boolean values, and `get` works for all data types.
 
-By default configs are not sent to client SDKs. You must enable access for each individual config. You can do this by checking the "Send to client SDKs" checkbox when creating or editing a config.
+By default configs are not sent to frontend SDKs. You must enable access for each individual config. You can do this by checking the "Send to frontend SDKs" checkbox when creating or editing a config.
 
 ## Dealing with Loading States
 
-The Prefab client needs to load your feature flags from the [Prefab CDN](/docs/explanations/concepts/client-sdks) before they are available. This means there will be a brief period when the client is in a loading state. If you call the `usePrefab` hook during loading, you will see the following behavior.
+The Prefab client needs to load your feature flags from the [Prefab CDN](/docs/explanations/concepts/frontend-sdks) before they are available. This means there will be a brief period when the client is in a loading state. If you call the `usePrefab` hook during loading, you will see the following behavior.
 
 ```jsx
 const { get, isEnabled, loading } = usePrefab();

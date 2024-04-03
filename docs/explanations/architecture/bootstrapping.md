@@ -20,7 +20,7 @@ On startup, config clients load config in the following order, with each level t
 
 1. Default [Config File](/docs/explanations/concepts/defaults) `.prefab.default.config.yaml` on the classpath
 2. [Prefab Env](/docs/explanations/concepts/defaults#prefab-environments) config files such as `.prefab.staging.config.yaml`, `.prefab.test.config.yaml` or `.prefab.k8s.config.yaml`
-3. Most current values from PrefabCloud APIs & CDNs as described in [how the server SDK works](/docs/explanations/concepts/server-sdks.md)
+3. Most current values from PrefabCloud APIs & CDNs as described in [how the backend SDK works](/docs/explanations/concepts/backend-sdks.md)
 4. Local Override File `.prefab.default.config.yaml` in the override directory (defaults to $HOME)
 5. Local Override Prefab Env Files `.prefab.test.config.yaml` in the override directory (defaults to $HOME)
 

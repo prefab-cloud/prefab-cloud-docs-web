@@ -9,7 +9,7 @@ sidebar_position: 1
 Uptime is incredibly important to us at Prefab but configuration is critical infrastructure so it is important to have a belt & suspenders approach.
 We have a couple sets of suspenders actually.
 
-### Server SDK Clients run on local copies of data
+### Backend SDK Clients run on local copies of data
 
 Prefab clients store all config locally so they are robust to network blips or outages.
 
@@ -23,7 +23,7 @@ Enter the beauty of immutable distributed logs. They are perfectly cacheable. On
 
 ### Belts & Suspenders & More Suspenders
 
-Here's how the load order works for [Server SDKs](/docs/explanations/concepts/server-sdks):
+Here's how the load order works for [Backend SDKs](/docs/explanations/concepts/backend-sdks):
 
 1. First, the SDKs make a request to the Prefab HTTP APIs, cached by [Fast.ly](https://Fast.ly). This cache is soft purged when you make configuration updates.
 2. If this fails, the SDKs will make a request to the Prefab GRPC APIs, which are running on the same Prefab infrastructure, but are a separate service.

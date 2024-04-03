@@ -1,12 +1,12 @@
 ---
-title: How Server SDKs Work
-sidebar_label: Server SDKs
+title: How Backend SDKs Work
+sidebar_label: Backend SDKs
 sidebar_position: 1
 ---
 
 ## SDK Architecture
 
-The Prefab server side SDK are all built with the 3 goals in mind:
+The Prefab server-side SDKs are all built with the following 3 goals in mind:
 
 1. Very fast lookups that do not require any remote calls.
 2. Being highly resilient in the case of outages
@@ -21,7 +21,7 @@ flowchart RL
             code[feature_flag.isEnabled?<br> my-flag, context]
         end
 
-        subgraph "Prefab SDK"
+        subgraph "Prefab Backend SDK"
             Evaluation
             ConfigCache
         end
@@ -60,7 +60,7 @@ Additionally, the SDK will poll for updates as a resiliency measure.
 Note that the evaluation is always happening in-process in your application.
 Feature flags and config are stored in process so are lightning fast (no API calls when you access them).
 
-[See Client SDKs to compare](/docs/explanations/concepts/client-sdks.md)
+[See Frontend SDKs to compare](/docs/explanations/concepts/frontend-sdks.md)
 
 ## Implementation
 
