@@ -299,6 +299,7 @@ Here's an explanation of each property
 | `contextAttributes` | (see above)             | this is the context attributes object you passed when setting up the provider            |
 | `loading`           | `if (loading) { ... }`  | a boolean indicating whether prefab content is being loaded                              |
 | `prefab`            | N/A                     | the underlying [JavaScript](./javascript.md) prefab instance                             |
+| `keys`              | N/A                     | an array of all the flag and config names in the current configuration                   |
 
 :::tip
 
