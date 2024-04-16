@@ -45,7 +45,7 @@ See the <a href="#context">context</a> section for more information on how to in
 Initialize `prefab` with your api key:
 
 <Tabs groupId="lang">
-<TabItem value="pkg" label="package (npm/yarn/etc.)">
+<TabItem value="import" label="import">
 
 ```javascript
 import { prefab } from "@prefab-cloud/prefab-cloud-js";
@@ -107,7 +107,7 @@ const stringValue = prefab.get("my-string-flag");
 `Context` accepts an object with keys that are context names and key value pairs with attributes describing the context. You can use this to write targeting rules, e.g. [segment] your users.
 
 <Tabs groupId="lang">
-<TabItem value="pkg" label="package (npm/yarn/etc.)">
+<TabItem value="import" label="import">
 
 ```javascript
 // highlight-next-line
