@@ -2,6 +2,12 @@
 title: JavaScript
 ---
 
+:::tip
+
+If you're using React, consider using our [React Client] instead.
+
+:::
+
 ## Install the latest version
 
 Use your favorite package manager to install `@prefab-cloud/prefab-cloud-js` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-js) | [github](https://github.com/prefab-cloud/prefab-cloud-js)
@@ -13,6 +19,8 @@ Use your favorite package manager to install `@prefab-cloud/prefab-cloud-js` [np
 npm install @prefab-cloud/prefab-cloud-js
 ```
 
+TypeScript types are included with the package.
+
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
@@ -20,20 +28,24 @@ npm install @prefab-cloud/prefab-cloud-js
 yarn add @prefab-cloud/prefab-cloud-js
 ```
 
-</TabItem>
-</Tabs>
-
 TypeScript types are included with the package.
 
-:::tip
+</TabItem>
+<TabItem value="script" label="<script> tag">
 
-If you're using React, consider using our [React Client] instead.
+We recommend using [jsDelivr][jsDelivr] for a minified/bundled version.
 
-:::
+See the <a href="#context">context</a> section for more information on how to initialize with the `<script>` tag.
+
+</TabItem>
+</Tabs>
 
 ## Initialize the client
 
 Initialize `prefab` with your api key:
+
+<Tabs groupId="lang">
+<TabItem value="pkg" label="package (npm/yarn/etc.)">
 
 ```javascript
 import { prefab } from "@prefab-cloud/prefab-cloud-js";
@@ -48,6 +60,25 @@ await prefab.init(options);
 `prefab.init` will request the calculated feature flags for the provided context as a single HTTPS request. If you need to check for updates to feature flag values, you can [learn more about polling](#poll) below.
 
 You aren't required to `await` the `init` -- it is a promise, so you can use `.then`, `.finally`, `.catch`, etc. instead if you prefer.
+
+</TabItem>
+
+<TabItem value="script" label="<script> tag">
+
+```javascript
+// `prefab` is available globally on the window object
+const options = {
+  apiKey: "YOUR_CLIENT_API_KEY",
+};
+
+prefab.init(options).then(() => {
+  console.log(options);
+  console.log("test-flag is " + prefab.isEnabled("test-flag"));
+});
+```
+
+</TabItem>
+</Tabs>
 
 :::tip
 
@@ -75,6 +106,9 @@ const stringValue = prefab.get("my-string-flag");
 
 `Context` accepts an object with keys that are context names and key value pairs with attributes describing the context. You can use this to write targeting rules, e.g. [segment] your users.
 
+<Tabs groupId="lang">
+<TabItem value="pkg" label="package (npm/yarn/etc.)">
+
 ```javascript
 // highlight-next-line
 import { prefab, Context } from "@prefab-cloud/prefab-cloud-js";
@@ -91,6 +125,37 @@ const options = {
 
 await prefab.init(options);
 ```
+
+</TabItem>
+
+<TabItem value="script" label="<script> tag">
+
+```javascript
+// `prefab` is available globally on the window object
+// `Context` is available globally as `window.prefabNamespace.Context`
+const options = {
+  apiKey: "YOUR_CLIENT_API_KEY",
+  // highlight-start
+  context: new prefabNamespace.Context({
+    user: {
+      email: "test@example.com",
+    },
+    device: { mobile: true },
+  }),
+  // highlight-end
+};
+
+prefab.init(options).then(() => {
+  console.log(options);
+  console.log("test-flag is " + prefab.isEnabled("test-flag"));
+
+  console.log("ex1-copywrite " + prefab.get("ex1-copywrite"));
+  $(".copywrite").text(prefab.get("ex1-copywrite"));
+});
+```
+
+</TabItem>
+</Tabs>
 
 ## `poll()`
 
@@ -182,3 +247,5 @@ it("shows the turbo button when the feature is enabled", () => {
 | `stopPolling`   | `prefab.stopPolling()`             | stops the polling process                                                                    |
 | `context`       | `prefab.context`                   | get the current context (after `init()`).                                                    |
 | `updateContext` | `prefab.updateContext(newContext)` | update the context and refetch. Pass `false` as a second argument to skip refetching         |
+
+[jsDelivr]: https://www.jsdelivr.com/package/npm/@prefab-cloud/prefab-cloud-js
