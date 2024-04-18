@@ -123,12 +123,11 @@ prefab download --environment test
 
 3. Add the datafile to git `git add prefab.test.108.config.json`.
 4. Set `PREFAB_DATAFILE=prefab.test.108.config.json` in your CI environment.
-5. Set the SDK appropriate version of `Prefab::Options.new(datafile: Rails.env.test? ? "prefab.test.108.config.json" : ENV['PREFAB_DATAFILE'])` in your Prefab initializer
 
 :::tip
 Datafiles can also be useful in Docker builds or other environments where you want to avoid reaching out to Prefab. A very common pattern is to use this for `assets:precompile` in a Ruby on Rails application. That often looks like:
 
-`RUN RAILS_ENV=production REFAB_DATAFILE=prefab.test.108.config.json bundle exec rake assets:precompile
+`RUN RAILS_ENV=production PREFAB_DATAFILE=prefab.test.108.config.json bundle exec rake assets:precompile
 `
 
 If you don't want the test data there, you could also create another environment called 'docker-build' with any other configuration you want and use the CLI to download that as well.

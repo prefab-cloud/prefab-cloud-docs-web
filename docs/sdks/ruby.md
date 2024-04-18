@@ -39,7 +39,7 @@ end
 </summary>
 
 Many ruby web servers fork. In order to work properly we should have a Prefab Client running independently in each fork. You do not need to do this if you are only using threads and not workers.
-We also need to set the reset the logger for ActionView and friends because those get set pre-fork.
+If using SemanticLogger, you will also need to reopen the logger in each fork.
 
 <Tabs groupId="lang">
 <TabItem value="puma" label="Puma">
@@ -326,17 +326,33 @@ case that you are trying to debug issues that occur before this config file has 
 PREFAB_LOG_CLIENT_BOOTSTRAP_LOG_LEVEL = debug
 ```
 
+## Asset Precompilation in Rails
+
+Developers trying to run `rake assets:precompile` or `rails assets:precompile` in CI/CD know the pain of missing environment variables. Prefab can help with this, but you don't want to hardcode your Prefab API key in your Dockerfile. What should you do instead?
+
+We recommend using a [datafile](/docs/explanations/concepts/testing#testing-with-datafiles) for `assets:precompile`. You can generate a datafile for your environment using the Prefab CLI:
+
+```bash
+prefab download --environment test
+```
+
+This will generate a JSON file (e.g., `prefab.test.108.config.json`) based on your Prefab project’s test environment. You can check into your repo for use in CI/CD and automated testing.
+
+Now you can use the datafile for `assets:precompile`:
+
+```bash
+PREFAB_DATAFILE=prefab.test.108.config.json bundle exec rake assets:precompile
+```
+
+Of course, you can generate a datafile for any environment you like and use it in the same way.
+
 ## Testing
 
 ### Test Setup
 
-Specify `LOCAL_ONLY` via an env var and use your [config.yaml file](/docs/explanations/architecture/bootstrapping).
+You can use a datafile for consistency, reproducibility, and offline testing. See [Testing with DataFiles](/docs/explanations/concepts/testing#testing-with-datafiles).
 
-```sh
-export PREFAB_DATASOURCES='LOCAL_ONLY'
-```
-
-If you need to test multiple scenarios that depend on a single config or feature key, you can use a mock or stub to change the Prefab value.
+If you need to test multiple scenarios that depend on a single config or feature key, you can change the Prefab value using a mock or stub.
 
 ### Example Test
 
