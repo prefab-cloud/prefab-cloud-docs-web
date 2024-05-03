@@ -77,29 +77,98 @@ prefab.inContext(context, (pf) => {
 
 ## Dynamic Logging
 
-`prefab.shouldLog(loggerName, desiredLevel, defaultLevel, contexts)` returns true or false
+The node ecosystem has a vast landscape of logging libraries. Rather than making an opinionated choice about which logger you should use, Prefab provides both a simple `console.log` wrapper and a way to integrate with your existing logger.
 
-Another option is to create a Prefab logger to use instead of `console.log`. We will create a Prefab logger with the name `netlify.functions.hello` and the default level of `warn` so we don't get too much output.
+<Tabs groupId="logging">
+<TabItem value="console.log" label="console.log/STDOUT is my thing">
 
-We can replace our `console.log` with some `logger.debug` and `logger.info`, and now it's safe to deploy. They won't emit logs until we turn them on.
+If you're logging to STDOUT (e.g. `console.log`) we provide `prefab.logger` for convenience.
 
-```javascript
-const logger = prefab.logger("netlify.functions.hello", "warn");
+```js
+// Provide a meaningful logger name and default level
+const logger = prefab.logger("express.example.app.users-path", "warn");
 
 // simple info logging
 logger.info(`getting results for ${userId}`);
+```
 
-var sql = "SELECT * FROM table WHERE user_id = $1";
+You can provide the context to the logger as well (for evaluating dynamic log level rules)
 
-// more detailed debug logging
-logger.debug(`running the following SQL ${sql} for ${userId}`);
-db.run(sql, [userId], function (err, rows) {
-  logger.debug("query returned", { rows: rows });
-  return new Response("200 Okey-dokey");
+```js
+logger.info(
+  "express.example.app.users-path",
+  "doing something complicated...",
+  { user: { key: userId } },
+);
+```
+
+Or, using the `inContext` block:
+
+```js
+const prefabContext = { user: { key: userId } };
+
+// ... later in your code
+prefab.inContext(prefabContext, (prefab) => {
+  const logger = prefab.logger("express.example.app.users-path", "warn");
+
+  logger.info(`doing something complicated...`);
 });
 ```
 
-This logging will _not_ show up in your Netlify logs yet, because the logger is `warn` but the logging here is `info` and `debug`. That means it's safe to go ahead and deploy.
+</TabItem>
+<TabItem value="I have a preferred logger" label="I have a preferred logger">
+
+`prefab.shouldLog({loggerName, desiredLevel, defaultLevel, contexts})` returns true or false
+
+You can use this to wrap your existing logging calls. Example:
+
+```js
+const defaultLevel = "warn";
+
+myLogger.info = (loggerName, msg, context) => {
+  if (
+    prefab.shouldLog({
+      loggerName,
+      defaultLevel,
+      desiredLevel: "info",
+      contexts: context,
+    })
+  ) {
+    // Now you call the underlying method on your preferred logger
+    myPreferredLoggerLibrary.info(msg);
+  }
+};
+
+// repeat for debug, warn, error, etc.
+```
+
+Example invocation:
+
+```js
+myLogger.info(
+  "express.example.app.users-path",
+  "doing something complicated...",
+  { user: { key: userId } },
+);
+```
+
+Or, using the `inContext` block:
+
+```js
+const prefabContext = { user: { key: userId } };
+
+// ... later in your code
+prefab.inContext(prefabContext, (prefab) => {
+  myLogger.info(
+    "express.example.app.users-path",
+    "doing something complicated",
+  );
+});
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Reference
 
