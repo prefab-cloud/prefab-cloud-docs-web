@@ -212,6 +212,10 @@ if (shouldLog({ loggerName, desiredLevel, defaultLevel })) {
 
 If no log level value is configured in Prefab for "my.corp.widgets.modal" or higher in the hierarchy, then the `console.info` will not happen. If the value is configured and is INFO or more verbose, the `console.info` will happen.
 
+## Telemetry
+
+If you would like Prefab to collect summary counts of feature flag evaluations, you can pass `collectEvaluationSummaries: true` in the options to `prefab.init`.
+
 ## Testing
 
 In your test suite, you should skip `prefab.init` altogether and instead use `prefab.setConfig` to set up your test state.
