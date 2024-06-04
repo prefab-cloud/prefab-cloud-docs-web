@@ -178,6 +178,10 @@ prefab.updateContext({
 // new context. Future polling will use the new context as well.
 ```
 
+## Telemetry
+
+By default, Prefab will collect summary counts of feature flag evaluations to help you understand how your flags are being used in the real world. You can opt out of this behavior by passing `collectEvaluationSummaries: false` when calling `prefab.init`.
+
 ## Dynamic Config
 
 Config values are accessed the same way as feature flag values. You can use `isEnabled` as a convenience for boolean values, and `get` works for all data types.

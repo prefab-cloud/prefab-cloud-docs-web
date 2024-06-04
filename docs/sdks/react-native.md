@@ -222,6 +222,10 @@ If you're using Prefab for A/B testing, you can supply code for tracking experim
 
 `afterEvaluationCallback` will be called each time you evaluate a feature flag using `get` or `isEnabled`.
 
+## Telemetry
+
+By default, Prefab will collect summary counts of feature flag evaluations to help you understand how your flags are being used in the real world. You can opt out of this behavior by passing `collectEvaluationSummaries={false}` when initializing `PrefabProvider`.
+
 ## Testing
 
 Wrap the component under test in a `PrefabTestProvider` and provide a config object to set up your test state.
