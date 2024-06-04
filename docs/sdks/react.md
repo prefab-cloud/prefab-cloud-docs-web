@@ -222,7 +222,7 @@ If you're using Prefab for A/B testing, you can supply code for tracking experim
 
 ## Telemetry
 
-If you would like Prefab to collect summary counts of feature flag evaluations, you can pass `collectEvaluationSummaries={true}` when initializing `PrefabProvider`.
+By default, Prefab will collect summary counts of feature flag evaluations to help you understand how your flags are being used in the real world. You can opt out of this behavior by passing `collectEvaluationSummaries={false}` when initializing `PrefabProvider`.
 
 ## Testing
 
