@@ -118,8 +118,8 @@ The Prefab client needs to load your feature flags from the [Prefab CDN](/docs/e
 ```jsx
 const { get, isEnabled, loading } = usePrefab();
 
-console.log(loading); // true
-console.log(get("my-string-flag)); // undefined for all flags
+console.log(loading); // false
+console.log(get("my-string-flag)); // undefined for all flags regardless of type
 console.log(isEnabled("my-boolean-flag")); // false for all flags
 ```
 
