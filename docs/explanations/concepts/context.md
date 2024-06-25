@@ -33,7 +33,7 @@ For usage examples, see your relevant SDK client documentation.
 
 ## Global and scoped context
 
-To avoid deeply passing around awareness of the current user, request, etc., Prefab allows you to set Context globally and also for a thread/request. The mechanisms for doing so will vary by language and framework.
+To avoid deeply passing around awareness of the current user, request, etc., Prefab allows you to set Context globally and also for a thread/request scope or block. The mechanisms for doing so will vary by language and framework.
 
 When context is set, log levels and feature flags will be evaluated in that context. If you provide just-in-time context to your FF evaluations, it will be merged with the thread/request context and global context. More on merging below.
 
@@ -220,10 +220,19 @@ const WrappedApp = () => {
 
 <TabItem value="python" label="Python">
 
-In Python, there is only the global context. You can't specify a JIT context. Prefab fetches evaluated feature flags based on the context you provided.
+Python supports global context set in options, context set as thread local, and JIT context.
 
 ```python
 from prefab_cloud_python import Options, Client, Context
+
+global_context = {
+    "deployment" {
+       "key" : "api"
+       "az" : "us-east-1"
+     }
+}
+prefab = Client(Options(global_context=global_context))
+
 
 context = {
     "user": {
@@ -242,11 +251,11 @@ context = {
 
 shared_context = Context(context)
 
-prefab = Client(Options())
-
+#set in thread local
 Context.set_current(shared_context)
 
-prefab.enabled("my-first-feature-flag")
+# optionally pass directly to the client
+prefab.enabled("my-first-feature-flag", context={...})
 ```
 
 </TabItem>
