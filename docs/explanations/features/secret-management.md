@@ -4,7 +4,15 @@ sidebar_label: Secret Management
 sidebar_position: 2
 ---
 
-Prefab has zero-knowledge support for [sharing your secrets](https://prefab.cloud/features/secret-management/) between developers and between your different applications. We use a simple & straightforward cryptography story is as straightforward as it secrets can be. This simplifies sharing secrets for local development and sharing secrets between multiple applications or languages because you only need a single secret.
+Prefab has zero-knowledge support for [sharing your secrets](https://prefab.cloud/features/secret-management/) between developers and between your different applications. We use simple & straightforward cryptography and Prefab never sees anything unencrypted. This simplifies sharing secrets for local development and sharing secrets between multiple applications or languages because you only need a single encryption/decryption secret. (Multiple secrets is perfectly fine too, use as many as you require).
+
+Prefab owns: 
+- CLI to locally encrypt and push to Prefab
+- Distributing the encrypted values to your systems
+- SDKs to decrypt `Prefab.get("my-secret") => "the message"`
+
+You own:
+- Sharing the encryption/decryption secret(s) with the correct people / services
 
 ## How Does It Work
 
@@ -72,7 +80,7 @@ This will:
 4. Push and encrypted blob to Prefab under the key `my.api.key`
 
 
-Here's a pictoral representation of what we've done so far
+Here's a pictorial representation of what we've done so far
 
 ```mermaid
 graph
@@ -174,8 +182,9 @@ Confirm: change the default for my.new.string in Production to `sk_live_123`? ye
 ✔ Successfully changed default to `sk_live_123`
 ```
 
-Note: You can use as many encryption keys as you want. You could have 1 per env or multiple per env to have smaller trust circles.
-
+:::tip
+Note: You can use as many encryption keys as you want. It is a common practice to have 2, one for production and one for all other environments. But you can have as many secrets as you need in order to align with the trust groups you require.
+:::
 
 
 ## Full Example Diagram
