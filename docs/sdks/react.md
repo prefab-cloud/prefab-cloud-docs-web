@@ -222,7 +222,15 @@ If you're using Prefab for A/B testing, you can supply code for tracking experim
 
 ## Telemetry
 
-By default, Prefab will collect summary counts of feature flag evaluations to help you understand how your flags are being used in the real world. You can opt out of this behavior by passing `collectEvaluationSummaries={false}` when initializing `PrefabProvider`.
+By default, Prefab will collect summary counts of config and feature flag evaluations to help you understand how your configs and flags are being used in the real world. You can opt out of this behavior by passing `collectEvaluationSummaries={false}` when initializing `PrefabProvider`.
+
+Prefab also stores the context that you pass in. The context keys are used to power autocomplete in the rule editor, and the individual values power the Contexts page for troubleshooting targeting rules and individual flag overrides. If you want to change what Prefab stores, you can pass a different value for `collectContextMode`.
+
+| `collectContextMode` value | Behavior                                                       |
+| -------------------------- | -------------------------------------------------------------- |
+| `PERIODIC_EXAMPLE`         | Stores context values and context keys. This is the default.   |
+| `SHAPE_ONLY`               | Stores context keys only.                                      |
+| `NONE`                     | Stores nothing. Context will only be used for rule evaluation. |
 
 ## Testing
 
