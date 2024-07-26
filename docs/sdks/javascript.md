@@ -178,10 +178,6 @@ prefab.updateContext({
 // new context. Future polling will use the new context as well.
 ```
 
-## Telemetry
-
-By default, Prefab will collect summary counts of feature flag evaluations to help you understand how your flags are being used in the real world. You can opt out of this behavior by passing `collectEvaluationSummaries: false` when calling `prefab.init`.
-
 ## Dynamic Config
 
 Config values are accessed the same way as feature flag values. You can use `isEnabled` as a convenience for boolean values, and `get` works for all data types.
@@ -215,6 +211,35 @@ if (shouldLog({ loggerName, desiredLevel, defaultLevel })) {
 ```
 
 If no log level value is configured in Prefab for "my.corp.widgets.modal" or higher in the hierarchy, then the `console.info` will not happen. If the value is configured and is INFO or more verbose, the `console.info` will happen.
+
+## Tracking Experiment Exposures
+
+If you're using Prefab for A/B testing, you can supply code for tracking experiment exposures to your data warehouse or analytics tool of choice.
+
+```javascript
+import { prefab, Context } from "@prefab-cloud/prefab-cloud-js";
+
+const options = {
+  apiKey: "YOUR_CLIENT_API_KEY",
+  context: new Context({
+    user: { key: "abcdef", email: "test@example.com" },
+    device: { key: "hijklm", mobile: true },
+  }),
+  // highlight-start
+  afterEvaluationCallback: (key, value) => {
+    // call your analytics tool here...in this example we are sending data to posthog
+    window.posthog?.capture("Feature Flag Evaluation", {
+      key,
+      value,
+    });
+  },
+  // highlight-end
+};
+
+await prefab.init(options);
+```
+
+`afterEvaluationCallback` will be called each time you evaluate a feature flag or config using `get` or `isEnabled`.
 
 ## Telemetry
 
