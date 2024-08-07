@@ -1,9 +1,9 @@
 ---
-title: Experiment
-sidebar_label: Experiment
+title: Experiments & AB Test
+sidebar_label: Experiments
 ---
 
-## Using Prefab for Experimentation
+## Using Prefab for Experimentation & AB Testing
 
 There are 4 parts to running experiments:
 
@@ -13,25 +13,27 @@ What arm of the experiment should a user be in? The control or a treatment? Some
 ### 2) Exposure Tracking
 Now that we know which bucket the user is in, we need to write this down someplace. It's important to think of this separately from bucketing. A common mistake can occur when the code that evaluates buckets automatically records the exposure. Imagine experimenting with the contents of a modal. The underlying page will have made the request to get the experiment buckets, but we shouldn't record **exposure** until the modal is actually rendered. 
 
-### 3) Conversion Tracking
+### 3) Conversion / Metric Tracking
 Conversion tracking is where we track `order-placed` or `add-to-cart` or `cpu-usage` or whatever the goal of our experiment is. This is likely already in your system of record.
 
 ### 4) Analysis
-This is the big one. We need a tool that will look at our funnel from Exposure to Conversion. We are almost certainly going to want to be able to segment the data and slice and dice. We are making business decisions based on the results here, so we should do analysis in the source of truth. That's often the data warehouse and whatever analysis tool you have on top of it. But it may also be your product analytics suite.
+This is the big one. We need a tool that will look at our funnel from Exposure to Conversion. We are almost certainly going to want to be able to segment the data and slice and dice. We are making business decisions based on the results here, so we should do analysis in the source of truth. This is often the data warehouse and whatever analysis tool you have on top of it, but it may also be your product analytics suite.
 
 ## The Prefab Approach
-Prefab is designed to give you a terrific solution to **bucketing**, so that you can **do your analysis in your existing tool**. In order to do AB test analysis inside a FeatureFlag tool, you would need to extract the conversion data and analysis segments from your source of truth and ingest them in the FeatureFlag tool. While not impossible, this leads to multiple sources of truth and conflicting results.
+Prefab is designed to give you a terrific solution to **targeting & bucketing**, that works with **your existing analysis tool**. In order to do AB test analysis inside a FeatureFlag tool, you would need to extract the conversion data and analysis segments from your source of truth and ingest them in the FeatureFlag tool. While not impossible, this leads to multiple sources of truth and conflicting results. So choose the analysis tool that works for your org and Prefab will turn it into an experiment machine.
 
 
 ## Example - Setting up an Experiment in Mixpanel
+
+Let's walk through an example of adding experimentation to Mixpanel by bucketing users in Prefab.
 
 First we'll create a new experiment: `experiment.ex-2.bigger-button`. We'll do it as type `string` rather than a boolean so that we can have nice `Control` and `Treatment` variants (and leave ourselves the option of a `Holdout` option).
 ![image](/img/docs/how-tos/exp-prefab-create.jpg)
 Next we'll add these `Control` and `Treatment` variants.
 ![image](/img/docs/how-tos/exp-prefab-variants.jpg)
-We'll select % rollout for the value. 
+We'll select `Perent Rollout` for the value. 
 ![image](/img/docs/how-tos/exp-prefab-percent-rollout.jpg)
-We can choose to "split evenly". Note the sticky property. This tells us which piece of [Context](/docs/explanations/concepts/context.md) to use to see the random generator. Our application sets context like `{user: {key: '123-45f', name: 'Bob Beemer'}}` so `user.key` is the correct way to be sticky here. This will ensure that any user that is bucketed into the `Treatment` stays in the treatment everytime they use the application.
+We can choose to "split evenly". Note the sticky property. This tells us which piece of [Context](/docs/explanations/concepts/context.md) to use to seed the random bucket generator. Our application sets context like `{user: {key: '123-45f', name: 'Bob Beemer'}}` so `user.key` is the correct way to be sticky here. This will ensure that any user that is bucketed into the `Treatment` stays in the treatment everytime they use the application.
 ![image](/img/docs/how-tos/exp-prefab-split-evenly.jpg)
 
 ### Setting up Exposure Tracking (Mixpanel example)
@@ -88,4 +90,13 @@ The **tricky part** is that we can now do a "conversion rate segmentation" and "
 Success! We can see our AB Test in it's full glory. We can see that we have some separation in the conversion rate between the two arms. Mixpanel is actually labeling this as a significant conversion change.
 ![image](/img/docs/how-tos/mixpanel-significant.jpg)
 
+## Testing Experiments Locally
+As a developer building out the new feature. It's pretty common to want to be able to quickly toggle back and forth between the variants of your experiment. You could do this by just changing the development value, but that will affect everyone on your team. 
 
+Prefab's [developer tools](/docs/tools/cli.md) have you covered. Because the CLI knows who you are, it can easily add and remove a targeted override just for you. Here's what that looks like: 
+![image](/img/docs/how-tos/prefab-cli-anim.gif)
+
+And here's the resulting rule that you'll see in the Prefab UI.
+![image](/img/docs/how-tos/exp-override.jpg)
+
+Happy experimenting!

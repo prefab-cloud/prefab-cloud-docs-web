@@ -197,7 +197,7 @@ const MyComponent () => {
 
 ## Tracking Experiment Exposures
 
-If you're using Prefab for A/B testing, you can supply code for tracking experiment exposures to your data warehouse or analytics tool of choice.
+If you're using [Prefab for A/B testing](/docs/how-tos/experiment.md), you can supply code for tracking experiment exposures to your data warehouse or analytics tool of choice.
 
 ```jsx
 <PrefabProvider

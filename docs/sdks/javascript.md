@@ -214,7 +214,7 @@ If no log level value is configured in Prefab for "my.corp.widgets.modal" or hig
 
 ## Tracking Experiment Exposures
 
-If you're using Prefab for A/B testing, you can supply code for tracking experiment exposures to your data warehouse or analytics tool of choice.
+If you're using [Prefab for A/B testing](/docs/how-tos/experiment.md), you can supply code for tracking experiment exposures to your data warehouse or analytics tool of choice.
 
 ```javascript
 import { prefab, Context } from "@prefab-cloud/prefab-cloud-js";
