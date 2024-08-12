@@ -32,42 +32,89 @@ function HomepageHeader() {
   );
 }
 
+const linkClasses =
+  "flex flex-col items-center bg-brand-purple-light dark:bg-slate-700 text-lg font-bold rounded-xl p-4 lg:p-8 border-4 border-solid border-brand-purple-light dark:border-brand-slate hover:border-brand-purple dark:hover:border-brand-coral hover:no-underline";
+
+const imgStyles = { maxWidth: "200px", padding: "1rem" };
+
 function Langs() {
   const { siteConfig } = useDocusaurusContext();
-  const linkClasses =
-    "flex flex-col items-center bg-brand-purple-light dark:bg-slate-700 text-lg font-bold rounded-xl p-4 lg:p-8 border-4 border-solid border-brand-purple-light dark:border-brand-slate hover:border-brand-purple dark:hover:border-brand-coral hover:no-underline";
 
   return (
     <Section>
       <h2>Select Your Language</h2>
       <div className="grid grid-cols-3 gap-8">
         <Link className={linkClasses} to="/docs/sdks/ruby">
-          <img src="/img/langs/ruby.png" className="" alt="Ruby" />
+          <img
+            src="/img/langs/ruby.png"
+            style={imgStyles}
+            className=""
+            alt="Ruby"
+          />
           <span>Ruby</span>
         </Link>
         <Link className={linkClasses} to="/docs/sdks/java">
-          <img src="/img/langs/java.png" className="" alt="Java" />
+          <img
+            src="/img/langs/java.png"
+            style={imgStyles}
+            className=""
+            alt="Java"
+          />
           <span>Java</span>
         </Link>
         <Link className={linkClasses} to="/docs/sdks/node">
-          <img src="/img/langs/node.png" className="" alt="Node" />
+          <img
+            src="/img/langs/node.png"
+            style={imgStyles}
+            className=""
+            alt="Node"
+          />
           <span>Node</span>
         </Link>
-        <Link className={linkClasses} to="/docs/sdks/react">
-          <img src="/img/langs/react.png" className="" alt="React" />
-          <span>React</span>
+        <Link className={linkClasses} to="/docs/sdks/python">
+          <img
+            src="/img/langs/python.png"
+            style={imgStyles}
+            className=""
+            alt="Python"
+          />
+          <span>Python</span>
+        </Link>
+        <Link className={linkClasses} to="/docs/sdks/go">
+          <img
+            src="/img/langs/go.png"
+            style={imgStyles}
+            className=""
+            alt="Go"
+          />
+          <span>Go</span>
         </Link>
         <Link className={linkClasses} to="/docs/sdks/javascript">
-          <img src="/img/langs/js.png" className="" alt="JS" />
+          <img
+            src="/img/langs/js.png"
+            style={imgStyles}
+            className=""
+            alt="JS"
+          />
           <span>Javascript</span>
         </Link>
-        <Link className={linkClasses} to="/docs/sdks/elixir">
-          <img src="/img/langs/elixir.png" className="" alt="Elixir" />
-          <span>Elixir</span>
+        <Link className={linkClasses} to="/docs/sdks/react">
+          <img
+            src="/img/langs/react.png"
+            style={imgStyles}
+            className=""
+            alt="React"
+          />
+          <span>React</span>
         </Link>
-        <Link className={linkClasses} to="/docs/sdks/python">
-          <img src="/img/langs/python.png" className="" alt="Python" />
-          <span>Python</span>
+        <Link className={linkClasses} to="/docs/sdks/elixir">
+          <img
+            src="/img/langs/elixir.png"
+            style={imgStyles}
+            className=""
+            alt="Elixir"
+          />
+          <span>Elixir</span>
         </Link>
       </div>
       <div className="flex flex-col gap-4 md:gap-8 items-center">
