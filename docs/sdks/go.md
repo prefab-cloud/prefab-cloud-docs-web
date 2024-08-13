@@ -22,6 +22,8 @@ For boolean flags, you can use the `FeatureIsOn` function:
 enabled, ok := client.FeatureIsOn("my.feature.name", prefab.ContextSet{})
 ```
 
+Flags that don't exist yet are considered off, so you can happily add `FeatureIsOn` checks to your code before the flag is created.
+
 <details className="alert--info">
 <summary>
 Feature flags don't have to return just true or false.
@@ -138,5 +140,8 @@ client, err := prefab.NewClient(prefab.WithConfigs(configs))
 
 ## Notable pending features
 
+The following notable features are still in-progress for the Go client:
+
 - Telemetry
 - Loading from a JSON dump data source (e.g. downloaded via [the CLI](../tools/cli#download))
+- [Editor Tools](../tools/editor-tools) support
