@@ -53,7 +53,7 @@ Example: `prefab create my.new.string --type string --value="hello world" --secr
 
 ### download
 
-`prefab download` will download a datafile for a given environment. [Datafiles](/docs/explanations/concepts/testing) are helpful for offline testing and CI.
+`prefab download` will download a datafile for a given environment. [Datafiles](/docs/explanations/concepts/testing) are helpful for offline testing, CI, and running your own JS/React endpoint with the [`serve`](#serve) command.
 
 Example:
 
