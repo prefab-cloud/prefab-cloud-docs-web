@@ -132,7 +132,7 @@ Example Dockerfile
 ```
 FROM node:20
 WORKDIR /app
-RUN npm i -g @prefab-cloud/prefab@next
+RUN npm i -g @prefab-cloud/prefab
 COPY prefab.Production.589.config.json /app
 ENV PREFAB_LOCAL_ONLY=true
 EXPOSE 9898
