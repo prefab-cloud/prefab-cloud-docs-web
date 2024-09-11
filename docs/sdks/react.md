@@ -2,6 +2,10 @@
 title: React
 ---
 
+:::note
+If you're using React Native, check out the [React Native SDK](/docs/sdks/react-native).
+:::
+
 ## Install the latest version
 
 Use your favorite package manager to install `@prefab-cloud/prefab-cloud-react` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-react) | [github](https://github.com/prefab-cloud/prefab-cloud-react)
