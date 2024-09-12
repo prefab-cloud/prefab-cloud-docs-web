@@ -8,18 +8,20 @@ Note: right now, this is a thin wrapper around the [React Client](./react.md). L
 
 Use your favorite package manager to install `@prefab-cloud/prefab-cloud-react-native` [npm](https://www.npmjs.com/package/@prefab-cloud/prefab-cloud-react-native) | [github](https://github.com/prefab-cloud/prefab-cloud-react-native)
 
+You will also need to install `base-64` and `react-native-get-random-values` as dependencies.
+
 <Tabs groupId="lang">
 <TabItem value="npm" label="npm">
 
 ```bash
-npm install @prefab-cloud/prefab-cloud-react-native
+npm install @prefab-cloud/prefab-cloud-react-native base-64 react-native-get-random-values
 ```
 
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
 ```bash
-yarn add @prefab-cloud/prefab-cloud-react-native
+yarn add @prefab-cloud/prefab-cloud-react-native base-64 react-native-get-random-values
 ```
 
 </TabItem>
