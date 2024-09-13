@@ -2,7 +2,7 @@
 title: React Native
 ---
 
-Note: right now, this is a thin wrapper around the [React Client](./react.md). Let us know what features you'd like to see.
+Note: right now, this is a thin wrapper around the [React Client](./react.md). If there are specific React Native features you would like to see, please let us know!
 
 ## Install the latest version
 
