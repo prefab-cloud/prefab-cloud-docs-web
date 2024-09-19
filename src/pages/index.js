@@ -35,7 +35,7 @@ function HomepageHeader() {
 const linkClasses =
   "flex flex-col items-center bg-brand-purple-light dark:bg-slate-700 text-lg font-bold rounded-xl p-4 lg:p-8 border-4 border-solid border-brand-purple-light dark:border-brand-slate hover:border-brand-purple dark:hover:border-brand-coral hover:no-underline";
 
-const imgStyles = { maxWidth: "200px", padding: "1rem" };
+const imgStyles = { maxWidth: "200px", width: "100%", padding: "1rem" };
 
 function Langs() {
   const { siteConfig } = useDocusaurusContext();
@@ -43,7 +43,7 @@ function Langs() {
   return (
     <Section>
       <h2>Select Your Language</h2>
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8">
         <Link className={linkClasses} to="/docs/sdks/ruby">
           <img
             src="/img/langs/ruby.png"
