@@ -4,10 +4,6 @@ title: Python
 
 ## Getting Started with the Python SDK
 
-
-[Sign up to be notified about updates](https://forms.gle/2qsjMFvjGnkTnA9T8)
-:::
-
 Add `prefab_cloud_python` to your package dependencies
 
 ```python
@@ -261,8 +257,8 @@ import logging
 
  # basic logging setup - yours may vary
 
-logging.basicConfig(level=logging.DEBUG) 
 root_logger = logging.getLogger()
+root_logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler(sys.stdout)
 ch.setFormatter(
     logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
@@ -320,7 +316,7 @@ Please contact us for help with your configuration if it varies from one of thes
 
 ## Debugging
 
-At this time, it's not possible to dynamically control the loglevel of the prefab client itself. Instead control the Prefab client's log level by changing the `prefab_client_log_level` in the `Options` class at start up.
+At this time, it's not possible to dynamically control the loglevel of the prefab client itself. Instead control the Prefab client's log level by changing the `bootstrap_loglevel` in the `Options` class at start up.
 
 By default this level is set to `Logging.WARNING`
 
