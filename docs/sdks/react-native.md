@@ -51,6 +51,10 @@ const WrappedApp = () => {
 };
 ```
 
+:::tip
+If you wish for the user's device to poll for updates to flags, you can pass a `pollInterval` (in milliseconds) to the `PrefabProvider`.
+:::
+
 ## Feature Flags
 
 Now use the `usePrefab` hook to fetch flags. `isEnabled` is a convenience method for boolean flags.
