@@ -258,14 +258,14 @@ import logging
  # basic logging setup - yours may vary
 
 root_logger = logging.getLogger()
-root_logger.setLevel(logging.DEBUG)
+root_logger.setLevel(logging.DEBUG) # set to DEBUG so that LoggerFilter will see all log records
 ch = logging.StreamHandler(sys.stdout)
 ch.setFormatter(
     logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 )
 root_logger.addHandler(ch)
 
-# key step
+# key step - add the Prefab LoggerFilter to the StreamHandler
 ch.addFilter(LoggerFilter())
 ```
 
@@ -312,6 +312,15 @@ See [example](https://github.com/prefab-cloud/prefab-cloud-python/blob/main/exam
 Note the LoggerProcessor has an overrideable `logger_name` method so you can subclass and determine your own logger name from elements on the logger record as needed.
 
 Please contact us for help with your configuration if it varies from one of these standard cases.
+
+### Uvicorn Logging
+Uvicorn will default to setting up it's own logging. If you'd like to use your own logging configuration, you can do so by passing `log_config=None` as shown below
+```python
+if __name__ == "__main__":   
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_config=None)
+    # or
+    uvicorn.run("__main__:app", host="0.0.0.0", port=8000, log_config=None, reload=True)
+```
 
 
 ## Debugging
