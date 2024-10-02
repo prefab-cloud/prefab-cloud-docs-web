@@ -10,7 +10,7 @@ go get github.com/prefab-cloud/prefab-cloud-go@latest
 
 ## Initialize Client
 
-First, add `prefab "github.com/prefab-cloud/prefab-cloud-go/pkg"` to your imports.
+Add `prefab "github.com/prefab-cloud/prefab-cloud-go/pkg"` to your imports.
 
 Then, initialize the client with your API key:
 
