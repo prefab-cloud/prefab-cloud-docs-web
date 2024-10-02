@@ -346,6 +346,30 @@ PREFAB_DATAFILE=prefab.test.108.config.json bundle exec rake assets:precompile
 
 Of course, you can generate a datafile for any environment you like and use it in the same way.
 
+## Bootstrap & Stub Client-side JavaScript flags and configs
+
+If you're using JavaScript on the client side, you can use the Prefab Ruby client to bootstrap your client-side flags and configs. This helps you avoid loading states while you wait on an HTTP request to Prefab's evaluation endpoint. You can skip the HTTP request altogether.
+
+### With the Frontend SDKs
+
+If you want the power of the [JavaScript SDK](/docs/sdks/javascript) or [React SDK](/docs/sdks/react), you can use the Ruby client to bootstrap the page with the evaluated flags and configs for the current user context. Just put this in the DOM (perhaps in your application layout) before you load your Prefab frontend SDK.
+
+```erb
+<%= Prefab.bootstrap_javascript(context) %>
+```
+
+Things work as they normally would with the frontend SDKs, you'll just skip the HTTP request.
+
+### Without the Frontend SDKs
+
+If you don't want to use the frontend SDKs, you can get a global `window.prefab` object to call `get` and `isEnabled` on the client side.
+
+```erb
+<%= Prefab.generate_javascript_stub(context, callback = nil) %>
+```
+
+This will give you feature flags and config values for your current context. You can provide an optional callback to record experiment exposures or other metrics. No HTTP request or SDK needed!
+
 ## Testing
 
 ### Test Setup
