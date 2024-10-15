@@ -125,7 +125,9 @@ If `max-jobs-per-second` is available, `wasFound` will be `true` and `value` wil
 
 ## Testing
 
-For testing, your best approach is to set up a client with in-memory configs:
+You can use a datafile for consistency, reproducibility, and offline testing. See [Testing with DataFiles](/docs/explanations/concepts/testing#testing-with-datafiles).
+
+If you need to test multiple scenarios that depend on a single config or feature key, you can change set up a client with in-memory configs:
 
 ```go
 configs := map[string]interface{}{
@@ -147,5 +149,4 @@ client, err := prefab.NewClient(prefab.WithConfigs(configs))
 The following notable features are still in-progress for the Go client:
 
 - Telemetry
-- Loading from a JSON dump data source (e.g. downloaded via [the CLI](../tools/cli#download))
 - [Editor Tools](../tools/editor-tools) support
