@@ -25,7 +25,8 @@ See `prefab --help` for all the available commands. `prefab [COMMAND] --help` wi
 
 You must export `PREFAB_API_KEY` or provide your API key via the `--api-key=XYZ` flag.
 
-<details><summary>Using the 1password cli for your API key</summary>
+<details>
+<summary>Using the 1password cli for your API key</summary>
 
 To use the [1password cli](https://developer.1password.com/docs/cli/get-started) for this, you can do the following (replace the `op://...` with the secret reference for your API key).
 
