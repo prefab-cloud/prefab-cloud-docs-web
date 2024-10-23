@@ -22,7 +22,7 @@
     "axios": ">=0.28.0",
     "clsx": "^1.1.1",
     "got": ">=11.8.5",
-    "mermaid": "^10.1.0",
+    "mermaid": "^10.9.3",
     "path-to-regexp": ">=3.3.0",
     "postcss": "^8.4.27",
     "posthog-docusaurus": "^2.0.0",
