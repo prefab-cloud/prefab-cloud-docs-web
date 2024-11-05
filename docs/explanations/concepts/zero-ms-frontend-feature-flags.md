@@ -67,7 +67,7 @@ graph TD
 Just invoke the `bootstrap_javascript` method in your view with the current user's context:
 
 ```erb
-<%= Prefab.bootstrap_javascript(context) %>
+<%== Prefab.bootstrap_javascript(context) %>
 ```
 
 </TabItem>

@@ -355,7 +355,7 @@ If you're using JavaScript on the client side, you can use the Prefab Ruby clien
 If you want the power of the [JavaScript SDK](/docs/sdks/javascript) or [React SDK](/docs/sdks/react), you can use the Ruby client to bootstrap the page with the evaluated flags and configs for the current user context. Just put this in the DOM (perhaps in your application layout) before you load your Prefab frontend SDK.
 
 ```erb
-<%= Prefab.bootstrap_javascript(context) %>
+<%== Prefab.bootstrap_javascript(context) %>
 ```
 
 Things work as they normally would with the frontend SDKs, you'll just skip the HTTP request.
