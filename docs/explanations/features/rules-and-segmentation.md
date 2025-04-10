@@ -21,7 +21,7 @@ Note that the variant determined by percentage rollouts is "sticky" to the provi
 
 ## Available Rules
 
-## String Rules
+### String Rules
 
 | Name          | Function                 | Example usage                                                              | Notes |
 |---------------|--------------------------|----------------------------------------------------------------------------|-------|
@@ -33,8 +33,10 @@ Note that the variant determined by percentage rollouts is "sticky" to the provi
 | `Property Does Not Start With One Of` | Use `Property Does Not Starts With One Of` to target users with an attribute that does not start with a value. || See note below on SDK version requirements for new rule operators|
 | `Property Contains One Of` | Use `Property Contains One Of` to target users with an attribute that contains a value. || See note below on SDK version requirements for new rule operators |
 | `Property Does Not Contain One Of` | Use `Property Does Not Contain One Of` to target users with an attribute that does not contain a value. || See note below on SDK version requirements for new rule operators|
+| `Property Matches` | Use `Property Matches` to target users with an attribute that matches a regular expression (Regex) || See note below on SDK version requirements for new rule operators |
+| `Property Does Not Match` | Use `Property Does Not Match` to target users with an attribute that does not match a regular expression (Regex) || See note below on SDK version requirements for new rule operators|
 
-## Numeric Rules
+### Numeric Rules
 
 | Name          | Function                 | Example usage                                                              | Notes |
 |---------------|--------------------------|----------------------------------------------------------------------------|-------|
@@ -44,7 +46,7 @@ Note that the variant determined by percentage rollouts is "sticky" to the provi
 | `Property Is Less Than Or Equal To` | Use `Property Is Less Than Or Equal To` to target with a numeric attribute less than than or equal to a  threshold | If you set `Criteria Property` to `company.employees` and `Criteria Value` to 100, then the rule will match users belonging to a company with 100 or fewer employees |See note below on SDK version requirements for new rule operators|
 
 
-## Date Rules
+### Date Rules
 
 Note: Date context values can be specified as milliseconds since epoch or RFC3339 formatted strings
 
@@ -53,5 +55,28 @@ Note: Date context values can be specified as milliseconds since epoch or RFC333
 | `Property Is Before` | Use `Property Is Before` to target with a date attribute before than a threshold | If you set `Criteria Property` to `user.createdAt` and `Criteria Value` to '2025-01-01T00:00:00Z', then the rule will match users created before Jan 1, 2025.  | See note below on SDK version requirements for new rule operators |
 | `Property Is After` | Use `Property Is After` to target with a date attribute after a threshold | If you set `Criteria Property` to `user.createdAt` and `Criteria Value` to '2025-01-01T00:00:00Z', then the rule will match users created after Jan 1, 2025.  | See note below on SDK version requirements for new rule operators |
 
+
+### Semantic Version Rules
+
+| Name          | Function                 | Example usage                                                              | Notes |
+|---------------|--------------------------|----------------------------------------------------------------------------|-------|
+| `Property Is Semver Less Than` | Use `Property Is Semver Less Than` to target an attribute referring to a software version | If you set `Criteria Property` to `sdk.version` and `Criteria Value` to '2.0.0', then the rule will match versions less than `2.0.0` | See note below on SDK version requirements for new rule operators |
+| `Property Is Semver Equal To` | Use `Property Is Semver Equal To` to target an attribute referring to a software version | If you set `Criteria Property` to `sdk.version` and `Criteria Value` to '2.0.0', then the rule will match versions equal to than `2.0.0` | See note below on SDK version requirements for new rule operators |
+| `Property Is Semver Greater To` | Use `Property Is Semver Greater Than` to target an attribute referring to a software version | If you set `Criteria Property` to `sdk.version` and `Criteria Value` to '2.0.0', then the rule will match versions greater than `2.0.0` | See note below on SDK version requirements for new rule operators |
+
+
+## SDK Compatibility
+
+The prefab-js and prefab-react SDKs evaluate rules remotely so any version will support the operaters with SDK Version requirements.
+
+For in-process evaluation of the newer rules marked above these are the minimum versions
+
+| Language | Version |
+|----------| --------|
+| Go | 0.0.8 |
+| Java | 0.3.25 |
+| Node | 0.4.4 |
+| Python | 0.11.0 |
+| Ruby | 1.8.8 |
 
 
