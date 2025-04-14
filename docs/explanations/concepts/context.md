@@ -13,7 +13,7 @@ graph TD;
     subgraph Server
         Filter
         subgraph Filter[Set Context In Filter]
-            D["Prefab.setContext (<br/>user: {key: 123, name: bob},<br/>team: {key: 456, tier: enterprise}<br/>cloud: {key: pod/web-55bbd, region: us-east})"]
+            D["Prefab.setContext (<br/>user: {key: 123, name: bob},<br/>team: {key: 456, name: Lumon, tier: enterprise}<br/>cloud: {pod: pod/web-55bbd, region: us-east})"]
             subgraph ApplicationCode[Application Code]
                 E[prefab.enabled? my-flag // target user, team or cloud]
             end
@@ -264,12 +264,14 @@ prefab.enabled("my-first-feature-flag", context={...})
 
 ## Context keys
 
-:::note
-**`key` is special**
+:::success
+**`key` and `name` are special**
 
-The key is the one special attribute of a context. It should be the unchanging, primary key of whatever your context is. For a user, that's likely the tracking ID set when you first saw them. For a team, it's probably the primary key of the table. For a Kubernetes pod, the pod id. Key is the handle Prefab if you want to add this context entity to a feature flag.
+The `key` is a special attribute of a context. It should be the unchanging, primary key of whatever your context is. For a user, that's likely the tracking ID set when you first saw them. For a team, it's probably the primary key of the Team table. For a Kubernetes pod, the pod id. Key is the handle you should use in Prefab if you want to add this context entity to a feature flag. 
 
-It's ok if there isn't a good key. If you add `{cloud: {region: us-east, availability-zone: us-east-1a}}`, you'll be able to target `cloud.region` or `cloud.availability-zone` with rules. If you add `cloud.key: "i-1234567890abcdef0"` you'll additionally be able to search for this context entity in context search tool.
+The `name` is a user friendly helper to lookup the key. When you target by `key`, you'll be able to use the `name` to lookup the entity.
+
+It's ok if there isn't a good key. If you add `{cloud: {region: us-east, availability-zone: us-east-1a}}`, you'll be able to target `cloud.region` or `cloud.availability-zone` with rules. If you add `cloud.key: "i-1234567890abcdef0"` you'll additionally be able to search for this context entity in context search tool. Don't set `key` for ephemeral entities that you don't want a saved context for. They will just clutter things up.
 
 If you provide a `name` attributes (as a sibling to `key`), it will be used in the Prefab UI to display the context entity as a "friendly" alternative to `key`. If you don't provide a `name`, Prefab will use the `key` as the display name.
 :::
@@ -284,7 +286,8 @@ Given the context:
 {
   user: {
     key: "1234",
-    email: "test@example.com",
+    name: "Ricken Hale",
+    email: "rhale@theyou.com",
   },
 
   device: {
