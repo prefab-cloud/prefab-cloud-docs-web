@@ -107,15 +107,6 @@ function Langs() {
           />
           <span>React</span>
         </Link>
-        <Link className={linkClasses} to="/docs/sdks/elixir">
-          <img
-            src="/img/langs/elixir.png"
-            style={imgStyles}
-            className=""
-            alt="Elixir"
-          />
-          <span>Elixir</span>
-        </Link>
       </div>
       <div className="flex flex-col gap-4 md:gap-8 items-center">
         <div className="text-lg md:text-2xl font-bold text-center">
