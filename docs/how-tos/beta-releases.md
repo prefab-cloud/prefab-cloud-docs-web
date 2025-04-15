@@ -53,23 +53,6 @@ A feature flag check will always return false until it is fully enabled or a rul
 ```
 
 </TabItem>
-<TabItem value="elixir" label="Elixir">
-
-```elixir
-  enabled = Prefab.Client.enabled?(
-    client,
-    "my-feature-name",
-    lookup_key: current_user.lookup_key,
-    attributes: [email: current_user.email_domain]
-  )
-
-  case enabled do
-    true -> # serve the new feature
-    false -> # serve the old version of the page
-  end
-```
-
-</TabItem>
 </Tabs>
 
 ## Rules
