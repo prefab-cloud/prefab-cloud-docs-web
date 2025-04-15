@@ -174,25 +174,6 @@ print(prefab.enabled('features.example-flag', context))
 ```
 
 </TabItem>
-<TabItem value="elixir" label="Elixir">
-
-```elixir
-options = Prefab.Options.new(api_key: "SDK-KEY, or set ENV var PREFAB_API_KEY")
-client = Prefab.Client.new(options)
-
-# true for 5% of the users
-Prefab.Client.enabled?(client, "features.example-flag", lookup_key: "123")
-
-# true because of the beta group rule
-Prefab.Client.enabled?(
-  client,
-  "features.example-flag",
-  lookup_key: "456",
-  attributes: %{"customer-group" => "beta"}
-)
-```
-
-</TabItem>
 </Tabs>
 
 And that's it! A nice feature flag with a complex rule and a partial rollout in 5 minutes.
