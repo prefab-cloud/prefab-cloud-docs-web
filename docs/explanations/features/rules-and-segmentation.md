@@ -75,8 +75,8 @@ For in-process evaluation of the newer rules marked above these are the minimum 
 |----------| --------|
 | Go | 0.2.1 |
 | Java | 0.3.25 |
-| Node | 0.4.4 |
+| Node | 0.4.8 |
 | Python | 0.12.0 |
-| Ruby | 1.8.8 |
+| Ruby | 1.8.9 |
 
 
