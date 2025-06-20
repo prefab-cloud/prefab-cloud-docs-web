@@ -290,4 +290,5 @@ it("shows the turbo button when the feature is enabled", () => {
 | `updateContext` | `prefab.updateContext(newContext)` | update the context and refetch. Pass `false` as a second argument to skip refetching         |
 | `extract`       | `prefab.extract()`                    | returns the current config as a plain object of key, config value pairs                      |
 | `hydrate`       | `prefab.hydrate(configurationObject)` | sets the current config based on a plain object of key, config value pairs                   |
+
 [jsDelivr]: https://www.jsdelivr.com/package/npm/@prefab-cloud/prefab-cloud-js
