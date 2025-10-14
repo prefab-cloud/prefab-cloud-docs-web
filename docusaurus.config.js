@@ -94,6 +94,14 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      announcementBar: {
+        id: 'reforge_acquisition',
+        content:
+          'Prefab has been acquired and has re-launched as Reforge Launch. Please use the new documentation at <a target="_blank" rel="noopener noreferrer" href="https://docs.reforge.com">docs.reforge.com</a>',
+        backgroundColor: '#2962F5',
+        textColor: '#ffffff',
+        isCloseable: false,
+      },
       navbar: {
         title: "",
         logo: {
