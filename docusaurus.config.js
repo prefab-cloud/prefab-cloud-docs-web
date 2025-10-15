@@ -97,9 +97,9 @@ const config = {
       announcementBar: {
         id: 'reforge_acquisition',
         content:
-          'Prefab has been acquired and has re-launched as Reforge Launch. Please use the new documentation at <a target="_blank" rel="noopener noreferrer" href="https://docs.reforge.com">docs.reforge.com</a>',
-        backgroundColor: '#2962F5',
-        textColor: '#ffffff',
+          'Prefab is now <a target="_blank" rel="noopener noreferrer" href="https://www.reforge.com/blog/introducing-reforge-launch">Reforge Launch</a>. Please use the new documentation at <a href="https://docs.reforge.com">docs.reforge.com</a>',
+        backgroundColor: '#FFF3B0',
+        textColor: '#2E2B00',
         isCloseable: false,
       },
       navbar: {
