@@ -80,3 +80,15 @@ summary h4 {
   line-height: 1.5rem;
   margin-bottom: 0;
 }
+
+/* Large acquisition announcement banner */
+div[class*='announcementBar'] {
+  font-size: 2rem !important;
+  padding: 4rem 2rem !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+}
+
+div[class*='announcementBarContent'] {
+  font-size: 2rem !important;
+}
